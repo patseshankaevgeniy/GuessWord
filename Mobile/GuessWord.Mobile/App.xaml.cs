@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using GuessWord.Mobile.Views;
+using Xamarin.Forms;
 
 namespace GuessWord.Mobile
 {
@@ -8,7 +9,7 @@ namespace GuessWord.Mobile
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new AddWordView();
         }
 
         protected override void OnStart()

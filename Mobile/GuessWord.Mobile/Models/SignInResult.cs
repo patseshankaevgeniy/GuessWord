@@ -3,6 +3,6 @@
     public class SignInResult
     {
         public bool Succeeded { get; set; }
-        public AuthErrorType ErrorType { get; set; }
+        public AuthErrorType? ErrorType { get; set; }
     }
 }

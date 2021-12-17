@@ -49,7 +49,9 @@ namespace GuessWord.Mobile.ViewModels
             var result = _authService.TrySignIn(Login, Password);
             if (result.Succeeded)
             {
-
+                ServerErrorText = "Sign in is succeeded";
+                IsServerErrorVisible = true;
+                return;
             }
             if (result.ErrorType == AuthErrorType.UserNotFound)
             {
@@ -73,6 +75,8 @@ namespace GuessWord.Mobile.ViewModels
         public bool Validate()
         {
             var isValid = true;
+
+            IsServerErrorVisible = false;
 
             if (string.IsNullOrEmpty(Login))
             {

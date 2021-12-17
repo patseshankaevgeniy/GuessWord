@@ -10,6 +10,8 @@ namespace GuessWord.Mobile
             InitializeComponent();
 
             MainPage = new AddWordView();
+            MainPage = new SignInView();
+            // MainPage = new NavigationPage(new SignIn());
         }
 
         protected override void OnStart()

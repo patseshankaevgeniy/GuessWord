@@ -9,6 +9,7 @@ namespace GuessWord.Mobile.ViewModels
     public class SignInViewModel : BaseViewModel
     {
         private readonly IAuthService _authService;
+        private readonly INavigationService _navigationService;
 
         public string Login { get; set; }
         public string LoginErrorText { get; set; }
@@ -26,20 +27,22 @@ namespace GuessWord.Mobile.ViewModels
 
         public Command SignInCommand { get; set; }
 
-        public SignInViewModel(IAuthService authService)
+        public SignInViewModel(
+            IAuthService authService, 
+            INavigationService navigationService)
         {
             _authService = authService;
-
+            _navigationService = navigationService;
             GoToSignUpCommand = new Command(NavigateToSignUp);
             SignInCommand = new Command(SignIn);
         }
 
-        private void NavigateToSignUp()
+        private async void NavigateToSignUp()
         {
-
+            await _navigationService.NavigateToSignUpAsync(Login);
         }
 
-        private void SignIn()
+        private async void SignIn()
         {
             if (!Validate())
             {
@@ -49,10 +52,10 @@ namespace GuessWord.Mobile.ViewModels
             var result = _authService.TrySignIn(Login, Password);
             if (result.Succeeded)
             {
-                ServerErrorText = "Sign in is succeeded";
-                IsServerErrorVisible = true;
+                await _navigationService.NavigateToMainAsync();
                 return;
             }
+
             if (result.ErrorType == AuthErrorType.UserNotFound)
             {
                 LoginErrorText = "This login is not registered.";
@@ -64,6 +67,7 @@ namespace GuessWord.Mobile.ViewModels
                 IsPasswordErrorVisible = true;
                 return;
             }
+
             else
             {
                 ServerErrorText = "Sorry, server error.";

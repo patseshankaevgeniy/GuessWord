@@ -5,6 +5,7 @@ using Xamarin.Forms;
 
 namespace GuessWord.Mobile.ViewModels
 {
+    [QueryProperty(nameof(Login), nameof(Login))]
     public class SignUpViewModel : BaseViewModel
     {
         private readonly IAuthService _authService;

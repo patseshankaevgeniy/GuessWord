@@ -2,13 +2,13 @@
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GuessWord.Mobile.Services
 {
     public class AuthService : IAuthService
     {
- 
-        private const string SignInUrl = "https://403b-178-172-234-92.ngrok.io/api/auth/signIn";
+        private const string SignInUrl = "https://ab89-178-172-234-92.ngrok.io/api/auth/signIn";
 
         public  SignInResult TrySignIn(string login, string password)
         {
@@ -33,7 +33,13 @@ namespace GuessWord.Mobile.Services
 
         public SignUpResult TrySignUp(string login, string password, string username)
         {
-            throw new System.NotImplementedException();
+            var result = new SignUpResult {Success = true, ErrorType = AuthErrorType.UnknowExeption};
+            return result; 
+        }
+
+        public Task<bool> CheckSignInAsync()
+        {
+            return Task.FromResult(false);
         }
     }
 }

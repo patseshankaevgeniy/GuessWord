@@ -1,4 +1,5 @@
 ﻿using GuessWord.Mobile.Models;
+using System.Threading.Tasks;
 
 namespace GuessWord.Mobile.Services
 {
@@ -6,5 +7,6 @@ namespace GuessWord.Mobile.Services
     {
         SignInResult TrySignIn(string login, string password);
         SignUpResult TrySignUp(string login, string password, string username);
+        Task<bool> CheckSignInAsync();
     }
 }

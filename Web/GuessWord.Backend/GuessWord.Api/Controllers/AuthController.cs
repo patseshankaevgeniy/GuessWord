@@ -34,5 +34,14 @@ namespace GuessWord.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("signUp")]
+        public ActionResult SignUp([FromBody]SignUpModel model)
+        {
+            var result = new Models.SignInResult();
+           
+            return Ok(result);
+
+        }
     }
 }

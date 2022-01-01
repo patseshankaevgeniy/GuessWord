@@ -11,7 +11,6 @@ namespace GuessWord.Mobile.Views
         public SignUpView()
         {
             InitializeComponent();
-            //BindingContext = App.ServiceProvider.GetService<SignUpViewModel>();
         }
 
         protected override void OnAppearing()

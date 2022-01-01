@@ -34,7 +34,7 @@
             <Label 
                 Grid.Row="1"
                 Grid.Column="1"
-                Text="Name" />
+                Text="Name"/>
 
             <Entry 
                 Grid.Row="2"
@@ -54,7 +54,7 @@
             <Label 
                 Grid.Row="5"
                 Grid.Column="1"
-                Text="Login" />
+                Text="Login"/>
 
             <Entry 
                 Grid.Row="6"
@@ -74,8 +74,7 @@
             <Label 
                 Grid.Row="9"
                 Grid.Column="1"
-                Text="Password" 
-                />
+                Text="Password"/>
 
             <Entry 
                 Grid.Row="10"
@@ -83,7 +82,7 @@
                 x:Name="PasswordEntry"
                 Text="{Binding Password}"
                 BackgroundColor="#dcd8d9"
-                Placeholder="Password"   />
+                Placeholder="Password"/>
 
             <Label
                 Grid.Row="11"
@@ -98,12 +97,6 @@
                 BackgroundColor="#dcd8d9"
                 Command="{Binding SignUpCommand}"
                 Text="Sign Up"/>
-
-            <Button
-                Grid.Row="15"
-                Grid.Column="1"
-                BackgroundColor="#dcd8d9"
-                Text="Back"/>
         </Grid>
     </mvvm:BaseView.Content>
 </mvvm:BaseView>

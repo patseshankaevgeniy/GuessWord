@@ -32,7 +32,7 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 Text="Login" 
-                Margin="0"/>
+                Margin="10"/>
 
             <Entry 
                 Grid.Row="2"
@@ -48,7 +48,7 @@
                 Text="{Binding LoginErrorText}"
                 IsVisible="{Binding IsLoginErrorVisible}"
                 TextColor="Red"/>
-
+            
             <Label 
                 Grid.Row="5"
                 Grid.Column="1"
@@ -60,6 +60,7 @@
                 Grid.Row="6"
                 Grid.Column="1"
                 x:Name="PasswordEntry"
+                IsPassword="True"
                 Text="{Binding Password}"
                 Placeholder="Your password"
                 BackgroundColor="#dcd8d9"/>

@@ -6,6 +6,8 @@ using Xamarin.Forms;
 
 namespace GuessWord.Mobile.ViewModels
 {
+    [QueryProperty(nameof(Login), nameof(Login))]
+    [QueryProperty(nameof(Password), nameof(Password))]
     public class SignInViewModel : BaseViewModel
     {
         private readonly IAuthService _authService;
@@ -21,7 +23,6 @@ namespace GuessWord.Mobile.ViewModels
 
         public string ServerErrorText { get; set; }
         public bool IsServerErrorVisible { get; set; }
-
 
         public Command GoToSignUpCommand { get; set; }
 
@@ -49,7 +50,7 @@ namespace GuessWord.Mobile.ViewModels
                 return;
             }
 
-            var result = _authService.TrySignIn(Login, Password);
+            var result = await _authService.TrySignInAsync(Login, Password);
             if (result.Succeeded)
             {
                 await _navigationService.NavigateToMainAsync();
@@ -74,6 +75,7 @@ namespace GuessWord.Mobile.ViewModels
                 IsServerErrorVisible = true;
                 return;
             }
+
         }
 
         public bool Validate()

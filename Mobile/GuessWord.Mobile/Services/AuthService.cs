@@ -1,61 +1,60 @@
 ﻿using GuessWord.Mobile.Models;
-using Newtonsoft.Json;
-using System.Net.Http;
-using System.Text;
+using System;
 using System.Threading.Tasks;
 
 namespace GuessWord.Mobile.Services
 {
     public class AuthService : IAuthService
     {
-        private const string SignInUrl = "https://ab89-178-172-234-92.ngrok.io/api/auth/signIn";
-        private const string SignUpUrl = "https://c378-178-172-234-92.ngrok.io/api/auth/signUp";
+        private readonly IBackendClient _backendClient;
 
-        public  SignInResult TrySignIn(string login, string password)
+        public AuthService(IBackendClient backendClient)
         {
-            var signInModel = new { UserName = login, Password = password };
-            var json = JsonConvert.SerializeObject(signInModel);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var httpClient = new HttpClient();
-            var httpResponse = httpClient.PostAsync(SignInUrl, data).Result;
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                var stringModel = httpResponse.Content.ReadAsStringAsync().Result;
-                var signInResult = JsonConvert.DeserializeObject<SignInResult>(stringModel);
-                return signInResult;
-            }
-            else
-            {
-                var result = new SignInResult { Succeeded = false, ErrorType = AuthErrorType.UnknowExeption };
-                return result;
-            }
+            _backendClient = backendClient;
         }
 
-        public SignUpResult TrySignUp(string login, string password, string username)
+        public async Task<SignInResultDto> TrySignInAsync(string login, string password)
         {
-            var signUpModel = new { UserLogin = login, UserPassword = password, UserName = username };
-            var json = JsonConvert.SerializeObject(signUpModel);
-            var data = new StringContent(json,Encoding.UTF8, "application/json");
+            var dto = new SignInDto { Login = login, Password = password };
+            try
+            {
+                return await _backendClient.PostAsync<SignInResultDto, SignInDto>("auth/signIn", dto);
 
-            var httpsClient = new HttpClient();
-            var httpsResponse = httpsClient.PostAsync(SignUpUrl, data).Result;
-            if (httpsResponse.IsSuccessStatusCode)
-            {
-                var stringModel = httpsResponse.Content.ReadAsStringAsync().Result;
-                var signUpResult = JsonConvert.DeserializeObject<SignUpResult>(stringModel);
-                return signUpResult;
             }
-            else
+            catch (Exception)
             {
-            var result = new SignUpResult {Success = true, ErrorType = AuthErrorType.UnknowExeption};
-            return result; 
+                var result = new SignInResultDto { Succeeded = false, ErrorType = AuthErrorType.UnknowExeption };
+                return result;
             }
         }
 
         public Task<bool> CheckSignInAsync()
         {
-            return Task.FromResult(false);
+            var properties = Xamarin.Forms.Application.Current.Properties;
+            if (properties.ContainsKey("login") && properties.ContainsKey("password"))
+            {
+                return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
+        }
+
+        public async Task<SignUpResultDto> TrySignUpAsync(string name, string login, string password)
+        {
+            var dto = new SignUpDto { Name = name, Login = login, Password = password };
+            try
+            {
+                var result = await _backendClient.PostAsync<SignUpResultDto, SignUpDto>("auth/signUp", dto);
+                if (result.Succeeded)
+                {
+                    
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                var result = new SignUpResultDto { Succeeded = false, ErrorType = AuthErrorType.UnknowExeption };
+                return result;
+            }
         }
     }
 }

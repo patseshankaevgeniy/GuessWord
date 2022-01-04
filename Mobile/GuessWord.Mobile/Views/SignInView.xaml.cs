@@ -1,4 +1,5 @@
 ﻿using GuessWord.Mobile.Infrastructure;
+using GuessWord.Mobile.Services;
 using GuessWord.Mobile.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;

@@ -19,6 +19,7 @@ namespace GuessWord.Mobile
             services.AddTransient<SignInViewModel>();
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IBackendClient, BackendClient>();
             ServiceProvider = services.BuildServiceProvider();
 
             MainPage = new AppShell();
@@ -27,12 +28,16 @@ namespace GuessWord.Mobile
         protected async override void OnStart()
         {
             var authService = ServiceProvider.GetService<IAuthService>();
+            var navigationService = ServiceProvider.GetService<INavigationService>();
+            
             if (!await authService.CheckSignInAsync())
             {
-                var navigationService = ServiceProvider.GetService<INavigationService>();
-                await navigationService.NavigateToSignInAsync();
+                await navigationService.NavigateToMainAsync();
             }
-           
+            else
+            {
+               await navigationService.NavigateToSignInAsync();
+            }
         }
 
         protected override void OnSleep()

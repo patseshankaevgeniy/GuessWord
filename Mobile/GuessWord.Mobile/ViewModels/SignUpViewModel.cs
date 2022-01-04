@@ -9,6 +9,7 @@ namespace GuessWord.Mobile.ViewModels
     public class SignUpViewModel : BaseViewModel
     {
         private readonly IAuthService _authService;
+        private readonly INavigationService _navigationService;
 
         public string UserName { get; set; }
         public string UserNameErrorText { get; set; }
@@ -22,31 +23,45 @@ namespace GuessWord.Mobile.ViewModels
         public string PasswordErrorText { get; set; }
         public bool IsPasswordErrorVisible { get; set; }
 
-        public string ServerErrorText { get; set; }
-        public bool IsServerErrorVisible { get; set; }
-
-
         public Command SignUpCommand { get; set; }
 
-        public SignUpViewModel(IAuthService authService)
+        public SignUpViewModel(
+            IAuthService authService, 
+            INavigationService navigationService)
         {
             _authService = authService;
-
+            _navigationService = navigationService;
             SignUpCommand = new Command(SignUp);
         }
 
-        private void SignUp()
+        private async void NavigateToSignInAfterRegistre()
+        {
+            await _navigationService.NavigateToSignInAfterRegistreAsync(Login, Password);
+        }
+
+        private async void SignUp()
         {
             if (!Validate())
             {
                 return;
             }
 
-            var result = _authService.TrySignUp(UserName, Login, Password);
-            if (result.Success)
+            var result = await _authService.TrySignUpAsync(UserName, Login, Password);
+            if (result.Succeeded)
             {
-                LoginErrorText = "Hello";
-                IsLoginErrorVisible = true;
+                var properties = Xamarin.Forms.Application.Current.Properties;
+                if (!properties.ContainsKey("login") && !properties.ContainsKey("password"))
+                {
+                    properties.Add("login", Login);
+                    properties.Add("password", Password);
+                }
+                else
+                {
+                    properties["login"] = Login;
+                    properties["password"] = Password;
+                }
+
+                NavigateToSignInAfterRegistre();
                 return;
             }
             if (result.ErrorType == AuthErrorType.LoginAlreadyExists)
@@ -61,7 +76,6 @@ namespace GuessWord.Mobile.ViewModels
             }
             else if (result.ErrorType == AuthErrorType.WrongPassword)
             {
-                //Wrong password
                 PasswordErrorText = "Invalid password.";
                 IsPasswordErrorVisible = true;
                 return;
@@ -78,14 +92,17 @@ namespace GuessWord.Mobile.ViewModels
         {
             var isValid = true;
 
-            IsServerErrorVisible = false;
-
             if (string.IsNullOrEmpty(UserName))
             {
                 UserNameErrorText = "Name is empty.";
                 IsUserNameErrorVisible = true;
                 isValid = false;
             }
+            else
+            {
+                IsUserNameErrorVisible = false;
+            }
+
             if (string.IsNullOrEmpty(Login))
             {
                 LoginErrorText = "Login is empty.";
@@ -96,6 +113,7 @@ namespace GuessWord.Mobile.ViewModels
             {
                 IsLoginErrorVisible = false;
             }
+
             if (string.IsNullOrEmpty(Password))
             {
                 PasswordErrorText = "Password is empty.";

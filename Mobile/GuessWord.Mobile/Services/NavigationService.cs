@@ -38,5 +38,10 @@ namespace GuessWord.Mobile.Services
         {
             await _shell.GoToAsync($"//{nameof(WordsView)}");
         }
+
+        public async Task NavigateToSignInAfterRegistreAsync(string login, string password)
+        {
+            await _shell.GoToAsync($"//{nameof(SignInView)}?{nameof(SignInViewModel.Login)}={login}&{nameof(SignInViewModel.Password)}={password}");
+        }
     }
 }

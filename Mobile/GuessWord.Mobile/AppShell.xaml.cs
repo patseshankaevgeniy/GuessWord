@@ -1,5 +1,4 @@
-﻿using GuessWord.Mobile.Views;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace GuessWord.Mobile
 {
@@ -8,8 +7,6 @@ namespace GuessWord.Mobile
         public AppShell()
         {
             InitializeComponent();
-           
         }
-
     }
 }

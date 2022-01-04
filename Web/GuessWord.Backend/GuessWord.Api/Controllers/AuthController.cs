@@ -1,4 +1,6 @@
 ﻿using GuessWord.Api.Models;
+using GuessWord.BusinessLogic.Models;
+using GuessWord.BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GuessWord.Api.Controllers
@@ -6,33 +8,37 @@ namespace GuessWord.Api.Controllers
     [Route("api/auth")]
     public class AuthController : ControllerBase
     {
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
+        {
+            _authService = authService;
+        }
 
         [HttpPost("signIn")]
-        public ActionResult SignIn([FromBody]SignInModel model)
+        public ActionResult<SignInResultDto> SignIn([FromBody] SignInDto model)
         {
-            var result = new Models.SignInResult();
-
-            if (model.UserName == "Dzhon" && model.Password == "1234")
+            if (model == null)
             {
-                result.Succeeded = true;
-            }
-            else if (model.UserName != "Dzhon")
-            {
-                result.Succeeded = false;
-                result.ErrorType = AuthErrorType.UserNotFound;
-            }
-            else if (model.Password != "1234")
-            {
-                result.Succeeded = false;
-                result.ErrorType = AuthErrorType.WrongPassword;
-            }
-            else
-            {
-                result.Succeeded = false;
-                result.ErrorType = AuthErrorType.UnknowExeption;
+                return BadRequest("Model is empty");
             }
 
-            return Ok(result);
+            var signInResult = _authService.SignIn(model.Login, model.Password);
+
+            return Ok(signInResult);
+        }
+
+        [HttpPost("signUp")]
+        public ActionResult<SignUpResultDto> SignUp([FromBody] SignUpDto model)
+        {
+            if (model == null)
+            {
+                return BadRequest("Model is empty");
+            }
+
+            var signUpResult = _authService.SignUp(model.Name, model.Login, model.Password);
+
+            return Ok(signUpResult);
         }
     }
 }

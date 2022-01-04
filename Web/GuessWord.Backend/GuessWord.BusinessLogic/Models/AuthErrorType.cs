@@ -1,4 +1,4 @@
-﻿namespace GuessWord.Api.Models
+﻿namespace GuessWord.BusinessLogic.Models
 {
     public enum AuthErrorType
     {

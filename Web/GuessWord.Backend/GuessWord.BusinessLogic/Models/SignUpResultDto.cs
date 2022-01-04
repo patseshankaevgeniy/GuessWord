@@ -1,6 +1,6 @@
-﻿namespace GuessWord.Mobile.Models
+﻿namespace GuessWord.BusinessLogic.Models
 {
-    public class SignInResult
+    public class SignUpResultDto
     {
         public bool Succeeded { get; set; }
         public AuthErrorType? ErrorType { get; set; }

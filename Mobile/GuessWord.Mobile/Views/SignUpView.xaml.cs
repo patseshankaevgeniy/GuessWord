@@ -1,5 +1,4 @@
 ﻿using GuessWord.Mobile.Infrastructure;
-using GuessWord.Mobile.Services;
 using GuessWord.Mobile.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -7,15 +6,16 @@ using Xamarin.Forms.Xaml;
 namespace GuessWord.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SignInView : BaseView<SignInViewModel>
+    public partial class SignUpView : BaseView<SignUpViewModel>
     {
-        public SignInView()
+        public SignUpView()
         {
             InitializeComponent();
         }
 
         protected override void OnAppearing()
         {
+            UserNameEntry.TextChanged += EntryOnTextChanged;
             LoginEntry.TextChanged += EntryOnTextChanged;
             PasswordEntry.TextChanged += EntryOnTextChanged;
             base.OnAppearing();
@@ -23,6 +23,7 @@ namespace GuessWord.Mobile.Views
 
         protected override void OnDisappearing()
         {
+            UserNameEntry.TextChanged -= EntryOnTextChanged;
             LoginEntry.TextChanged -= EntryOnTextChanged;
             PasswordEntry.TextChanged -= EntryOnTextChanged;
             base.OnDisappearing();

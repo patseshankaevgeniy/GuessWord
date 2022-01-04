@@ -1,11 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GuessWord.BusinessLogic\GuessWord.BusinessLogic.csproj" />
     <ProjectReference Include="..\GuessWord.DataAccess\GuessWord.DataAccess.csproj" />
   </ItemGroup>
 

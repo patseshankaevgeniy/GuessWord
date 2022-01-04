@@ -1,6 +1,5 @@
 ﻿using GuessWord.Mobile.Services;
 using GuessWord.Mobile.ViewModels;
-using GuessWord.Mobile.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xamarin.Forms;
@@ -19,15 +18,26 @@ namespace GuessWord.Mobile
             services.AddTransient<SignUpViewModel>();
             services.AddTransient<SignInViewModel>();
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IBackendClient, BackendClient>();
             ServiceProvider = services.BuildServiceProvider();
 
-            MainPage = new SignInView();
-            // MainPage = new NavigationPage(new SignIn());
+            MainPage = new AppShell();
         }
 
-        protected override void OnStart()
+        protected async override void OnStart()
         {
-
+            var authService = ServiceProvider.GetService<IAuthService>();
+            var navigationService = ServiceProvider.GetService<INavigationService>();
+            
+            if (!await authService.CheckSignInAsync())
+            {
+                await navigationService.NavigateToMainAsync();
+            }
+            else
+            {
+               await navigationService.NavigateToSignInAsync();
+            }
         }
 
         protected override void OnSleep()

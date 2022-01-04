@@ -1,39 +1,60 @@
 ﻿using GuessWord.Mobile.Models;
-using Newtonsoft.Json;
-using System.Net.Http;
-using System.Text;
+using System;
+using System.Threading.Tasks;
 
 namespace GuessWord.Mobile.Services
 {
     public class AuthService : IAuthService
     {
- 
-        private const string SignInUrl = "https://403b-178-172-234-92.ngrok.io/api/auth/signIn";
+        private readonly IBackendClient _backendClient;
 
-        public  SignInResult TrySignIn(string login, string password)
+        public AuthService(IBackendClient backendClient)
         {
-            var signInModel = new { UserName = login, Password = password };
-            var json = JsonConvert.SerializeObject(signInModel);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            _backendClient = backendClient;
+        }
 
-            var httpClient = new HttpClient();
-            var httpResponse = httpClient.PostAsync(SignInUrl, data).Result;
-            if (httpResponse.IsSuccessStatusCode)
+        public async Task<SignInResultDto> TrySignInAsync(string login, string password)
+        {
+            var dto = new SignInDto { Login = login, Password = password };
+            try
             {
-                var stringModel = httpResponse.Content.ReadAsStringAsync().Result;
-                var signInResult = JsonConvert.DeserializeObject<SignInResult>(stringModel);
-                return signInResult;
+                return await _backendClient.PostAsync<SignInResultDto, SignInDto>("auth/signIn", dto);
+
             }
-            else
+            catch (Exception)
             {
-                var result = new SignInResult { Succeeded = false, ErrorType = AuthErrorType.UnknowExeption };
+                var result = new SignInResultDto { Succeeded = false, ErrorType = AuthErrorType.UnknowExeption };
                 return result;
             }
         }
 
-        public SignUpResult TrySignUp(string login, string password, string username)
+        public Task<bool> CheckSignInAsync()
         {
-            throw new System.NotImplementedException();
+            var properties = Xamarin.Forms.Application.Current.Properties;
+            if (properties.ContainsKey("login") && properties.ContainsKey("password"))
+            {
+                return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
+        }
+
+        public async Task<SignUpResultDto> TrySignUpAsync(string name, string login, string password)
+        {
+            var dto = new SignUpDto { Name = name, Login = login, Password = password };
+            try
+            {
+                var result = await _backendClient.PostAsync<SignUpResultDto, SignUpDto>("auth/signUp", dto);
+                if (result.Succeeded)
+                {
+                    
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                var result = new SignUpResultDto { Succeeded = false, ErrorType = AuthErrorType.UnknowExeption };
+                return result;
+            }
         }
     }
 }

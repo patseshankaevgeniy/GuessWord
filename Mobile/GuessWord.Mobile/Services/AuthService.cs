@@ -6,7 +6,9 @@ namespace GuessWord.Mobile.Services
 {
     public class AuthService : IAuthService
     {
+        private const string SignedInKey = "signedIn";
         private readonly IBackendClient _backendClient;
+
 
         public AuthService(IBackendClient backendClient)
         {
@@ -18,8 +20,14 @@ namespace GuessWord.Mobile.Services
             var dto = new SignInDto { Login = login, Password = password };
             try
             {
-                return await _backendClient.PostAsync<SignInResultDto, SignInDto>("auth/signIn", dto);
+                var result = await _backendClient.PostAsync<SignInResultDto, SignInDto>("auth/signIn", dto);
+                if (result.Succeeded)
+                {
+                    var properties = Xamarin.Forms.Application.Current.Properties;
+                    properties.Add(SignedInKey, true);
+                }
 
+                return result;
             }
             catch (Exception)
             {
@@ -31,11 +39,7 @@ namespace GuessWord.Mobile.Services
         public Task<bool> CheckSignInAsync()
         {
             var properties = Xamarin.Forms.Application.Current.Properties;
-            if (properties.ContainsKey("login") && properties.ContainsKey("password"))
-            {
-                return Task.FromResult(false);
-            }
-            return Task.FromResult(true);
+            return Task.FromResult(properties.ContainsKey(SignedInKey) && (bool)properties[SignedInKey]);
         }
 
         public async Task<SignUpResultDto> TrySignUpAsync(string name, string login, string password)
@@ -46,7 +50,7 @@ namespace GuessWord.Mobile.Services
                 var result = await _backendClient.PostAsync<SignUpResultDto, SignUpDto>("auth/signUp", dto);
                 if (result.Succeeded)
                 {
-                    
+
                 }
                 return result;
             }

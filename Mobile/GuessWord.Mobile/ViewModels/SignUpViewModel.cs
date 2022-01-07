@@ -49,18 +49,6 @@ namespace GuessWord.Mobile.ViewModels
             var result = await _authService.TrySignUpAsync(UserName, Login, Password);
             if (result.Succeeded)
             {
-                var properties = Xamarin.Forms.Application.Current.Properties;
-                if (!properties.ContainsKey("login") && !properties.ContainsKey("password"))
-                {
-                    properties.Add("login", Login);
-                    properties.Add("password", Password);
-                }
-                else
-                {
-                    properties["login"] = Login;
-                    properties["password"] = Password;
-                }
-
                 NavigateToSignInAfterRegistre();
                 return;
             }

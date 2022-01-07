@@ -5,6 +5,8 @@ namespace GuessWord.Mobile.Infrastructure
 {
     public class BaseView<TViewModel> : ContentPage where TViewModel : BaseViewModel
     {
+        private bool _initialized = false;
+
         public TViewModel ViewModel { get; set; }
 
         public BaseView()
@@ -13,6 +15,16 @@ namespace GuessWord.Mobile.Infrastructure
             BindingContext = viewModel;
             ViewModel = viewModel;
 
+        }
+
+        protected override async void OnAppearing()
+        {
+            if (!_initialized)
+            {
+                await ViewModel.OnInitializedAsync();
+                _initialized = true;
+            }
+            base.OnAppearing();
         }
     }
 }

@@ -1,12 +1,83 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="GuessWord.Mobile.Views.PlayView">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Play"
+<mvvm:BaseView x:TypeArguments="vm:PlayViewModel"
+               xmlns:mvvm="clr-namespace:GuessWord.Mobile.Infrastructure;assembly=GuessWord.Mobile"
+               xmlns:vm="clr-namespace:GuessWord.Mobile.ViewModels"
+               xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               x:Class="GuessWord.Mobile.Views.PlayView">
+    <mvvm:BaseView.Content>
+        <Grid BackgroundColor="#e9e7e8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="130"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label 
+                Grid.Row="1"
+                Grid.Column="2"
+                Text="{Binding Step}"
                 VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+                HorizontalOptions="CenterAndExpand" /> 
+            
+            <Label 
+                Grid.Row="3"
+                Grid.Column="1"
+                Text="{Binding TargetWord}"/>
+            
+            <Button
+                Grid.Row="5"
+                Grid.Column="1"
+                Text="{Binding FirstOption}"
+                Command="{Binding SelectFirstOptionCommand}"/>
+            
+            <Button
+                Grid.Row="7"
+                Grid.Column="1"
+                Text="{Binding SecondOption}"
+                Command="{Binding SelectSecondOptionCommand}"/>
+            
+            <Button
+                Grid.Row="9"
+                Grid.Column="1"
+                Text="{Binding ThirdOption}"
+                Command="{Binding SelectThirdOptionCommand}"/>
+            
+            <Button
+                Grid.Row="11"
+                Grid.Column="0"
+                Margin="0"
+                Text="{Binding PastLevel}"
+                Command="{Binding GoToPreviosCommand}"/>
+
+            <Button
+                Grid.Row="11"
+                Grid.Column="1"
+                Margin="50,0"
+                Text="Finish"
+                Command="{Binding FinishCommand}"/>
+
+            <Button
+                Grid.Row="11"
+                Grid.Column="2"
+                Margin="0"
+                Text="{Binding NextLevel}"
+                Command="{Binding GoToNextCommand}"/>
+        </Grid>
+    </mvvm:BaseView.Content>
+</mvvm:BaseView>

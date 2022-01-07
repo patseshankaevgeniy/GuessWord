@@ -9,5 +9,7 @@ namespace GuessWord.Mobile.Services
         Task NavigateToSignUpAsync(string login);
         Task NavigateBackAsync();
         Task NavigateToMainAsync();
+        Task NavigateToPlayViewAsync();
+        Task NavigateToFinishGameAsync();
     }
 }

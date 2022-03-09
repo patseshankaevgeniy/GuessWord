@@ -37,62 +37,57 @@ namespace GuessWord.BusinessLogic.Services
             var words = _wordsRepository.GetOptionsWords(userId);
             List<int> targetWordsIndex = new List<int> { -1 };
 
+            for (int i = 0; i < targetWords.Count; i++)
             {
+                var randomIndex = _randomizer.Next(0, targetWords.Count - 1);
 
-                for (int i = 0; i < targetWords.Count; i++)
+                for (int j = 0; j < targetWords.Count; j++)
                 {
-                    var randomIndex = _randomizer.Next(0, targetWords.Count - 1);
-
-                    for (int j = 0; j < targetWords.Count; j++)
+                    if (targetWordsIndex[j] == randomIndex)
                     {
-                        if (targetWordsIndex[j] == randomIndex)
+                        if (randomIndex == targetWords.Count - 1)
                         {
-                            if (randomIndex == targetWords.Count - 1)
-                            {
-                                randomIndex = 0;
-                            }
-                            else
-                            {
-                            randomIndex++;
-                            j = 0;
-                            }
-                        }
-                        if (j == targetWordsIndex.Count - 1)
-                        {
-                            targetWordsIndex.Add(randomIndex);
-                            break;
-                        }
-                    }
-
-                    var step = new StepDto
-                    {
-                        Target = targetWords[randomIndex].Value,
-                        Options = new List<OptionDto>()
-                    };
-                    var correctOptionIndex = _randomizer.Next(0, optionsCount - 1);
-                    for (int p = 0; p < optionsCount; p++)
-                    {
-                        var option = new OptionDto();
-                        if (p == correctOptionIndex)
-                        {
-                            option.Word = targetWords[randomIndex].Translation;
-                            option.IsCorrect = true;
+                            randomIndex = 0;
                         }
                         else
                         {
-                            option.Word = words[_randomizer.Next(words.Count - 1)].Value;
-                            option.IsCorrect = false;
+                            randomIndex++;
+                            j = 0;
                         }
-                        option.OrderNumber = p;
-
-                        step.Options.Add(option);
                     }
-
-                    level.Steps.Add(step);
+                    if (j == targetWordsIndex.Count - 1)
+                    {
+                        targetWordsIndex.Add(randomIndex);
+                        break;
+                    }
                 }
 
-            }
+                var step = new StepDto
+                {
+                    Target = targetWords[randomIndex].Value,
+                    Options = new List<OptionDto>()
+                };
+                var correctOptionIndex = _randomizer.Next(0, optionsCount - 1);
+                for (int p = 0; p < optionsCount; p++)
+                {
+                    var option = new OptionDto();
+                    if (p == correctOptionIndex)
+                    {
+                        option.Word = targetWords[randomIndex].Translation;
+                        option.IsCorrect = true;
+                    }
+                    else
+                    {
+                        option.Word = words[_randomizer.Next(words.Count - 1)].Value;
+                        option.IsCorrect = false;
+                    }
+                    option.OrderNumber = p;
 
+                    step.Options.Add(option);
+                }
+
+                level.Steps.Add(step);
+            }
 
             level.Count = targetWords.Count;
 

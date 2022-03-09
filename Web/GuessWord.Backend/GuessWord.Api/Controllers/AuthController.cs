@@ -24,8 +24,8 @@ namespace GuessWord.Api.Controllers
             }
 
             var signInResult = _authService.SignIn(model.Login, model.Password);
-
             return Ok(signInResult);
+
         }
 
         [HttpPost("signUp")]
@@ -40,5 +40,6 @@ namespace GuessWord.Api.Controllers
 
             return Ok(signUpResult);
         }
+
     }
 }

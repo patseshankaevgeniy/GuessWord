@@ -1,4 +1,5 @@
 ﻿using GuessWord.Domain.Entities;
+using System.Collections.Generic;
 
 namespace GuessWord.DataAccess.Repositories
 {

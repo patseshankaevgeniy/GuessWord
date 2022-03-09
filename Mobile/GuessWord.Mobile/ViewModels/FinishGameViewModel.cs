@@ -1,5 +1,8 @@
 ﻿using GuessWord.Mobile.Infrastructure;
+using GuessWord.Mobile.Models;
 using GuessWord.Mobile.Services;
+using System;
+using Xamarin.Forms;
 
 namespace GuessWord.Mobile.ViewModels
 {
@@ -8,12 +11,34 @@ namespace GuessWord.Mobile.ViewModels
         private readonly INavigationService _navigationService;
         private readonly ILevelsController _levelsController;
 
+        private int _currentStep;
+        private LevelDto _currentLevel;
+        private int _levelNumber;
+
+        public string TargetWord;
+        public bool ResultTargetWord;
+
+        public Command GoBackCommand { get; set; }
+        public Command RepeatCommand { get; set; }
+
         public FinishGameViewModel(
             INavigationService navigationService,
             ILevelsController levelsController)
         {
             _navigationService = navigationService;
             _levelsController = levelsController;
+            GoBackCommand = new Command(NavigateToBackPage);
+            RepeatCommand = new Command(NavigateToPlayView);
+        }
+
+        private async void NavigateToPlayView()
+        {
+            await _navigationService.NavigateToPlayViewAsync();
+        }
+
+        private void NavigateToBackPage(object obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

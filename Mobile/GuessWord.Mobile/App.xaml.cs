@@ -17,9 +17,13 @@ namespace GuessWord.Mobile
             var services = new ServiceCollection();
             services.AddTransient<SignUpViewModel>();
             services.AddTransient<SignInViewModel>();
-            services.AddSingleton<IAuthService, AuthService>();
+            services.AddTransient<HomeViewModel>();
+            services.AddTransient<PlayViewModel>();
+            services.AddTransient<FinishGameViewModel>();
+            services.AddSingleton<ILevelsController, LevelsController>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IBackendClient, BackendClient>();
+            services.AddSingleton<IAuthService, AuthService>();
             ServiceProvider = services.BuildServiceProvider();
 
             MainPage = new AppShell();
@@ -29,14 +33,14 @@ namespace GuessWord.Mobile
         {
             var authService = ServiceProvider.GetService<IAuthService>();
             var navigationService = ServiceProvider.GetService<INavigationService>();
-            
-            if (!await authService.CheckSignInAsync())
+
+            if (await authService.CheckSignInAsync())
             {
                 await navigationService.NavigateToMainAsync();
             }
             else
             {
-               await navigationService.NavigateToSignInAsync();
+                await navigationService.NavigateToSignInAsync();
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using GuessWord.BusinessLogic.Models;
+using GuessWord.BusinessLogic.Services.Interfaces;
 using GuessWord.DataAccess;
 using GuessWord.DataAccess.Repositories;
 
@@ -7,10 +8,14 @@ namespace GuessWord.BusinessLogic.Services
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
+        private readonly ITokenService _tokenService;
 
-        public AuthService(IUserRepository userRepository)
+        public AuthService(
+            IUserRepository userRepository,
+            ITokenService tokenService)
         {
             _userRepository = userRepository;
+            _tokenService = tokenService;
         }
 
         public SignInResultDto SignIn(string login, string password)
@@ -23,6 +28,15 @@ namespace GuessWord.BusinessLogic.Services
                 signInResult.ErrorType = AuthErrorType.UserNotFound;
                 return signInResult;
             }
+
+            if (user.Login == login && user.Password != password)
+            {
+                signInResult.Succeeded = false;
+                signInResult.ErrorType = AuthErrorType.WrongPassword;
+                return signInResult;
+            }
+
+            signInResult.Token = _tokenService.BuildToken(user);
 
             return signInResult;
         }

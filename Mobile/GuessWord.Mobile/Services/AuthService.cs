@@ -1,6 +1,7 @@
 ﻿using GuessWord.Mobile.Models;
 using System;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace GuessWord.Mobile.Services
 {
@@ -38,7 +39,7 @@ namespace GuessWord.Mobile.Services
 
         public Task<bool> CheckSignInAsync()
         {
-            var properties = Xamarin.Forms.Application.Current.Properties;
+            var properties = Application.Current.Properties;
             return Task.FromResult(properties.ContainsKey(SignedInKey) && (bool)properties[SignedInKey]);
         }
 

@@ -2,9 +2,9 @@
 
 namespace GuessWord.Mobile.Models
 {
-    public class Step
+    public class StepDto
     {
         public string Target { get; set; }
-        public List<Option> Options { get; set; }
+        public List<OptionDto> Options { get; set; }
     }
 }

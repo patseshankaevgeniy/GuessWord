@@ -24,14 +24,16 @@
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="Words" Icon="icon_about.png" Route="WordsView" ContentTemplate="{DataTemplate local:WordsView}" />
-        <ShellContent Title="Play" Icon="icon_about.png" ContentTemplate="{DataTemplate local:PlayView}" />
+        <ShellContent Title="Home" Icon="icon_about.png"  Route="HomeView" ContentTemplate="{DataTemplate local:HomeView}" />
+        <ShellContent Title="Words" Icon="icon_about.png" ContentTemplate="{DataTemplate local:WordsView}" />
         <ShellContent Title="Settings" Icon="icon_about.png"  ContentTemplate="{DataTemplate local:SettingsView}" />
     </TabBar>
 
     <TabBar>
         <ShellContent Route="SignInView" ContentTemplate="{DataTemplate local:SignInView}" />
     </TabBar>
+    <ShellContent Route="PlayView" ContentTemplate="{DataTemplate local:PlayView}" />
+    <ShellContent Route="FinishGameView" ContentTemplate="{DataTemplate local:FinishGameView}" />
 
 
 </Shell>

@@ -5,6 +5,6 @@ namespace GuessWord.Mobile.Services
 {
     public interface ILevelsController
     {
-        Task<Level> GetLevelAsync();
+        Task<LevelDto> GetLevelAsync();
     }
 }

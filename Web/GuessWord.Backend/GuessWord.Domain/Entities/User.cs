@@ -1,4 +1,7 @@
-﻿namespace GuessWord.Domain.Entities
+﻿using GuessWord.DataAccess;
+using System.Collections.Generic;
+
+namespace GuessWord.Domain.Entities
 {
     public class User
     {
@@ -6,5 +9,7 @@
         public string Name { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
+
+        public ICollection<UserRole> UserRoles { get; set; }
     }
 }

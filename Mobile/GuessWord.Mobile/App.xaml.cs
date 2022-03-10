@@ -24,6 +24,7 @@ namespace GuessWord.Mobile
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IBackendClient, BackendClient>();
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
             ServiceProvider = services.BuildServiceProvider();
 
             MainPage = new AppShell();

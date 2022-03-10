@@ -8,12 +8,14 @@ namespace GuessWord.Mobile.Services
     public class AuthService : IAuthService
     {
         private const string SignedInKey = "signedIn";
+        private const string UserToken = "userToken";
         private readonly IBackendClient _backendClient;
+        private readonly ICurrentUserService _userService;
 
-
-        public AuthService(IBackendClient backendClient)
+        public AuthService(IBackendClient backendClient, ICurrentUserService userService)
         {
             _backendClient = backendClient;
+            _userService = userService;
         }
 
         public async Task<SignInResultDto> TrySignInAsync(string login, string password)
@@ -24,8 +26,11 @@ namespace GuessWord.Mobile.Services
                 var result = await _backendClient.PostAsync<SignInResultDto, SignInDto>("auth/signIn", dto);
                 if (result.Succeeded)
                 {
-                    var properties = Xamarin.Forms.Application.Current.Properties;
-                    properties.Add(SignedInKey, true);
+                    _userService.AccessToken = result.Token;
+                    //var properties = Application.Current.Properties;
+                    //properties.Add(SignedInKey, true);
+                    //properties.Add(UserToken, result.Token);
+
                 }
 
                 return result;

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,16 +9,24 @@ namespace GuessWord.Mobile.Services
 {
     public class BackendClient : IBackendClient
     {
-        private const string BackendUrl = "https://456e-178-172-234-92.ngrok.io/";
+        private const string BackendUrl = "https://e870-178-172-234-92.ngrok.io/api/";
+        private readonly ICurrentUserService _userService;
+
+        public BackendClient (ICurrentUserService userService)
+            {
+            _userService = userService;
+        }
 
         public async Task<TOut> GetAsync<TOut>(string url)
         {
+
             if (string.IsNullOrEmpty(url))
             {
                 throw new ArgumentException(nameof(url));
             }
 
             using var httpsClient = new HttpClient();
+            httpsClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userService.AccessToken);
             var httpsResponse = await httpsClient.GetAsync(BackendUrl + url);
             if (httpsResponse.IsSuccessStatusCode)
             {

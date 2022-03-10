@@ -38,7 +38,7 @@
                 Grid.Row="2"
                 Grid.Column="1"
                 x:Name="LoginEntry"
-                Text="{Binding savedUsername}"
+                Text="{Binding Login}"
                 Placeholder="Your login" 
                 BackgroundColor="#dcd8d9"/>
 

@@ -32,10 +32,10 @@ namespace GuessWord.Mobile
 
         protected async override void OnStart()
         {
-            var authService = ServiceProvider.GetService<IAuthService>();
+            var currentUserService = ServiceProvider.GetService<ICurrentUserService>();
             var navigationService = ServiceProvider.GetService<INavigationService>();
 
-            if (await authService.CheckSignInAsync())
+            if (currentUserService.IsSignedIn)
             {
                 await navigationService.NavigateToMainAsync();
             }

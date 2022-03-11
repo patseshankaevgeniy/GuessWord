@@ -7,6 +7,5 @@ namespace GuessWord.Mobile.Services
     {
         Task<SignInResultDto> TrySignInAsync(string login, string password);
         Task<SignUpResultDto> TrySignUpAsync(string login, string password, string username);
-        Task<bool> CheckSignInAsync();
     }
 }

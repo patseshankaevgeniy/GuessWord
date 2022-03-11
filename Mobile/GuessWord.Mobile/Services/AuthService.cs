@@ -7,8 +7,6 @@ namespace GuessWord.Mobile.Services
 {
     public class AuthService : IAuthService
     {
-        private const string SignedInKey = "signedIn";
-        private const string UserToken = "userToken";
         private readonly IBackendClient _backendClient;
         private readonly ICurrentUserService _userService;
 
@@ -27,10 +25,6 @@ namespace GuessWord.Mobile.Services
                 if (result.Succeeded)
                 {
                     _userService.AccessToken = result.Token;
-                    //var properties = Application.Current.Properties;
-                    //properties.Add(SignedInKey, true);
-                    //properties.Add(UserToken, result.Token);
-
                 }
 
                 return result;
@@ -40,12 +34,6 @@ namespace GuessWord.Mobile.Services
                 var result = new SignInResultDto { Succeeded = false, ErrorType = AuthErrorType.UnknowExeption };
                 return result;
             }
-        }
-
-        public Task<bool> CheckSignInAsync()
-        {
-            var properties = Application.Current.Properties;
-            return Task.FromResult(properties.ContainsKey(SignedInKey) && (bool)properties[SignedInKey]);
         }
 
         public async Task<SignUpResultDto> TrySignUpAsync(string name, string login, string password)

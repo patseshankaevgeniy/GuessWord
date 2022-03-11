@@ -23,6 +23,7 @@ namespace GuessWord.Api
                 var db = scope.ServiceProvider.GetService<ApplicationDbContext>();
                 await db.Database.MigrateAsync();
                 await SeedData.AddDefaultUsersAsync(db);
+                await SeedData.AddDefaultWordsAsync(db);
             }
             catch (Exception)
             {

@@ -15,7 +15,8 @@ namespace GuessWord.Mobile.Services
 
         public async Task<LevelDto> GetLevelAsync()
         {
-            return await _backendClient.GetAsync<LevelDto>("api/levels");
+            return await _backendClient.GetAsync<LevelDto>("levels");
         }
     }
 }
+ 

@@ -7,8 +7,8 @@ namespace GuessWord.DataAccess
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Word> Words { get; set; }
-        public DbSet<UserWord> UserWords { get; set; }
-        public DbSet<Translation> Translations { get; set; }
+        public DbSet<UserWord> UsersWords { get; set; }
+        public DbSet<WordTranslation> Translations { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
 

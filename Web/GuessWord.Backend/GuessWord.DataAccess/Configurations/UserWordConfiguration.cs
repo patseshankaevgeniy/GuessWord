@@ -8,8 +8,20 @@ namespace GuessWord.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<UserWord> builder)
         {
-            builder.ToTable("UsersWords", "dbo");
+            builder.ToTable("UserWords", "dbo");
             builder.HasKey(x => x.Id);
+
+            builder
+                .HasOne(x => x.Word)
+                .WithMany(x => x.UserWords)
+                .HasForeignKey(x => x.WordId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasOne(x => x.User)
+                .WithMany(x => x.UserWords)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

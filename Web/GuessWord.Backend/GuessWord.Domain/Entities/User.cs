@@ -11,5 +11,6 @@ namespace GuessWord.Domain.Entities
         public string Password { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; }
+        public ICollection<UserWord> UserWords { get; set; }
     }
 }

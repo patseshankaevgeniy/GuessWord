@@ -14,44 +14,31 @@ namespace GuessWord.DataAccess
                 return;
             }
 
-            var words = new List<Word>
+            var user = await db.Users.FirstOrDefaultAsync(x => x.Name == "Dzhon");
+            if (user == null)
             {
-                new Word
+                return;
+            }
+
+            var userWords = new List<UserWord>
+            {
+                new UserWord
                 {
-                    Language = 0,
-                    Value = "Home"
-                },
-                new Word
-                {
-                    Language = 0,
-                    Value = "Work"
-                },
-                new Word
-                {
-                    Language = 0,
-                    Value = "Day"
-                },
-                new Word
-                {
-                    Language = 1,
-                    Value = "Дом"
-                },
-                new Word
-                {
-                    Language = 1,
-                    Value = "Работа"
-                },
-                new Word
-                {
-                    Language = 1,
-                    Value = "День"
+                    User = user,
+                    Word = new Word
+                    {
+                        Language = 0,
+                        Value = "Home",
+                        Translations = new List<WordTranslation>
+                        {
+                            new WordTranslation{Translation = new Word{Language = 1,Value = "Дом"}}
+                        }
+                    },
                 }
             };
 
-
-            db.Words.AddRange(words);
+            db.UsersWords.AddRange(userWords);
             await db.SaveChangesAsync();
-
         }
 
         public static async Task AddDefaultUsersAsync(ApplicationDbContext db)

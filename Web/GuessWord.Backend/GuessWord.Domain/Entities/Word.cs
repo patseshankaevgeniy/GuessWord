@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GuessWord.Domain.Enums;
+using System.Collections.Generic;
 
 namespace GuessWord.Domain.Entities
 {
@@ -6,7 +7,7 @@ namespace GuessWord.Domain.Entities
     {
         public int Id { get; set; }
         public string Value { get; set; }
-        public int Language { get; set; }
+        public Language Language { get; set; }
 
         public ICollection<UserWord> UserWords { get; set; }
         public ICollection<WordTranslation> Translations { get; set; }

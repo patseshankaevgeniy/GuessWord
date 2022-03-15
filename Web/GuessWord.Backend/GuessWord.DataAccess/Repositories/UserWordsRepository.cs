@@ -17,17 +17,8 @@ namespace GuessWord.DataAccess.Repositories
             _db = db;
         }
 
-        public bool AddUserWord(Word word)
-        {
-            throw new NotImplementedException();
-        }
 
-        public bool DeleteUserWord(Word word)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<UserWord>> GetUserWordsAsync(int userId)
+        public async Task<List<UserWord>> GetAllAsync(int userId)
         {
             var userWords = await _db.UsersWords
                 .Include(x => x.Word)
@@ -38,8 +29,32 @@ namespace GuessWord.DataAccess.Repositories
 
             return userWords;
         }
+      
+        public Task<UserWord> GetAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public async Task<UserWord> CreateAsync(UserWord userWord)
+        {
+            _db.UsersWords.Add(userWord);
+            _db.SaveChanges();
 
-        public bool UpdateUserWord(Word word)
+            userWord = await _db.UsersWords
+                .Include(x => x.Word)
+                .ThenInclude(x => x.Translations)
+                .ThenInclude(x=> x.Translation)
+                .FirstOrDefaultAsync(u => u.Id == userWord.Id);
+                
+            return userWord;
+        }
+
+        public Task<UserWord> UpdateAsync(Word word)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RemoveAsync(int id)
         {
             throw new NotImplementedException();
         }

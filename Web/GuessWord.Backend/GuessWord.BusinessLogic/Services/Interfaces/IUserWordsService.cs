@@ -7,5 +7,6 @@ namespace GuessWord.BusinessLogic.Services.Interfaces
     public interface IUserWordsService
     {
         Task<List<UserWordDto>> GetUserWordsAsync();
+        Task<UserWordDto> CreateUserWordAsync(UserWordDto userWord);
     }
 }

@@ -6,9 +6,10 @@ namespace GuessWord.DataAccess.Repositories
 {
     public interface IUserWordsRepository
     {
-        Task<List<UserWord>> GetUserWordsAsync(int userId);
-        bool AddUserWord(Word word);
-        bool DeleteUserWord(Word word);
-        bool UpdateUserWord(Word word);
+        Task<List<UserWord>> GetAllAsync(int userId);
+        Task<UserWord> GetAsync(int id);
+        Task<UserWord> CreateAsync(UserWord userWord);
+        Task<UserWord> UpdateAsync(Word word);
+        Task RemoveAsync(int id);
     }
 }

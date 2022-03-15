@@ -1,5 +1,6 @@
 ﻿using GuessWord.BusinessLogic.Services;
 using GuessWord.BusinessLogic.Services.Interfaces;
+using GuessWord.BusinessLogic.Services.Mappers;
 using GuessWord.DataAccess.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,11 +12,11 @@ namespace GuessWord.BusinessLogic
         {
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILevelsService, LevelsService>();
-            services.AddScoped<IWordsRepository, WordsRepository>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IUserWordsService, UserWordsService>();
+            services.AddScoped<IUserWordMapper, UserWordMapper>();
+
 
             
             return services;

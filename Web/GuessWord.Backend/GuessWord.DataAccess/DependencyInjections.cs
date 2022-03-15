@@ -10,6 +10,8 @@ namespace GuessWord.DataAccess
         public static IServiceCollection AddDataAccessDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IUserWordsRepository, UserWordsRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IWordsRepository, WordsRepository>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {

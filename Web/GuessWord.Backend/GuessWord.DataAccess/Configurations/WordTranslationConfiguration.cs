@@ -16,6 +16,13 @@ namespace GuessWord.DataAccess.Configurations
                 .WithMany(t => t.Translations)
                 .HasForeignKey(t => t.WordId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasOne(t => t.Translation)
+                .WithMany()
+                .HasForeignKey(t => t.TranslationId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
+
     }
 }

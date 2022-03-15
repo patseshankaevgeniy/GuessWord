@@ -10,6 +10,7 @@ namespace GuessWord.DataAccess.Configurations
         {
             builder.ToTable("UserWords", "dbo");
             builder.HasKey(x => x.Id);
+            builder.HasIndex(x => new { x.WordId, x.UserId }).IsUnique();
 
             builder
                 .HasOne(x => x.Word)

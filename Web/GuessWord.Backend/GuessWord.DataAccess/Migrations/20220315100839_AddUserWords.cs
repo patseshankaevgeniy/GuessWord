@@ -42,8 +42,7 @@ namespace GuessWord.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WordId = table.Column<int>(type: "int", nullable: false),
-                    WordTranslationId = table.Column<int>(type: "int", nullable: false),
-                    TranslationId = table.Column<int>(type: "int", nullable: true)
+                    TranslationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,10 +69,11 @@ namespace GuessWord.DataAccess.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserWords_WordId",
+                name: "IX_UserWords_WordId_UserId",
                 schema: "dbo",
                 table: "UserWords",
-                column: "WordId");
+                columns: new[] { "WordId", "UserId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_WordTranslations_TranslationId",
@@ -135,7 +135,7 @@ namespace GuessWord.DataAccess.Migrations
                 table: "UserWords");
 
             migrationBuilder.DropIndex(
-                name: "IX_UserWords_WordId",
+                name: "IX_UserWords_WordId_UserId",
                 schema: "dbo",
                 table: "UserWords");
 

@@ -1,4 +1,5 @@
 ﻿using GuessWord.Domain.Entities;
+using GuessWord.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace GuessWord.DataAccess
                         Value = "Home",
                         Translations = new List<WordTranslation>
                         {
-                            new WordTranslation{Translation = new Word{Language = 1,Value = "Дом"}}
+                            new WordTranslation{Translation = new Word{Language = Language.Russian,Value = "Дом"}}
                         }
                     },
                 }

@@ -6,7 +6,11 @@ namespace GuessWord.BusinessLogic.Services.Interfaces
 {
     public interface IUserWordsService
     {
-        Task<List<UserWordDto>> GetUserWordsAsync();
-        Task<UserWordDto> CreateUserWordAsync(UserWordDto userWord);
+        Task<List<UserWordDto>> GetAllAsync();
+        Task<UserWordDto> GetAsync(int id);
+        Task<UserWordDto> CreateAsync(UserWordDto userWordDto);
+        Task<UserWordDto> UpdateAsync(UserWordDto userWordDto, int id);
+        Task DeleteAsync(int id);
+
     }
 }

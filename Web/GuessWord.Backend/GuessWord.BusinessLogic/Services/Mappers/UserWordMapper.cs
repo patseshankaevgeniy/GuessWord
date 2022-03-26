@@ -6,7 +6,7 @@ namespace GuessWord.BusinessLogic.Services.Mappers
 {
     public class UserWordMapper : IUserWordMapper
     {
-        public UserWordDto Mapp(UserWord userWord)
+        public UserWordDto Map(UserWord userWord)
         {
             var userWordDto = new UserWordDto
             {

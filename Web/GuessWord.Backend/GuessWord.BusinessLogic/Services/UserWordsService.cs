@@ -30,11 +30,41 @@ namespace GuessWord.BusinessLogic.Services
             _wordMapper = wordMapper;
         }
 
-        public async Task<UserWordDto> CreateUserWordAsync(UserWordDto userWordDto)
+        public async Task<List<UserWordDto>> GetAllAsync()
+        {
+            var userWords = await _userWordsRepository.GetAllAsync(_currentUser.UserId);
+            var userWordDtos = userWords
+                .Select(userWord => new UserWordDto
+                {
+                    Id = userWord.Id,
+                    Word = userWord.Word.Value,
+                    Translations = userWord.Word.Translations
+                        .Select(x => x.Translation.Value)
+                        .ToList()
+                })
+                .ToList();
+
+            return userWordDtos;
+        }
+
+        public async Task<UserWordDto> GetAsync(int id)
+        {
+            var userWord = await _userWordsRepository.GetAsync(id);
+            if (userWord == null)
+            {
+                throw new NotFoundException($"Can't find userWord with id: {id}");
+            }
+
+            var userWordDto = _wordMapper.Map(userWord);
+
+            return userWordDto;
+        }
+
+        public async Task<UserWordDto> CreateAsync(UserWordDto userWordDto)
         {
             if (string.IsNullOrEmpty(userWordDto.Word))
             {
-                throw new ValidationExeption("Word cannot be null or empty");
+                throw new ValidationException("Word cannot be null or empty");
             }
 
             var word = await _wordsRepository.GetByNameAsync(userWordDto.Word);
@@ -57,26 +87,53 @@ namespace GuessWord.BusinessLogic.Services
             };
 
             userWord = await _userWordsRepository.CreateAsync(userWord);
-            userWordDto = _wordMapper.Mapp(userWord);
+            userWordDto = _wordMapper.Map(userWord);
 
             return userWordDto;
         }
 
-        public async Task<List<UserWordDto>> GetUserWordsAsync()
+        public async Task<UserWordDto> UpdateAsync(UserWordDto userWordDto, int id)
         {
-            var userWords = await _userWordsRepository.GetAllAsync(_currentUser.UserId);
-            var userWordDtos = userWords
-                .Select(userWord => new UserWordDto
-                {
-                    Id = userWord.Id,
-                    Word = userWord.Word.Value,
-                    Translations = userWord.Word.Translations
-                        .Select(x => x.Translation.Value)
-                        .ToList()
-                })
-                .ToList();
+            if (userWordDto == null)
+            {
+                throw new ValidationException("bad word");
+            }
 
-            return userWordDtos;
+            var userWord = await _userWordsRepository.GetAsync(id);
+
+            if (userWord == null)
+            {
+                throw new ValidationException("No word");
+            }
+
+            if (_currentUser.UserId != userWord.UserId)
+            {
+                throw new AccessViolationException("No rights");
+            }
+
+            userWord.Status = userWordDto.Status;
+
+            userWord = await _userWordsRepository.UpdateAsync(userWord);
+
+            userWordDto = _wordMapper.Map(userWord);
+            return userWordDto;
+
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var userWord = await _userWordsRepository.GetAsync(id);
+            if (userWord == null)
+            {
+                throw new NotFoundException($"Can't find userWord with id: {id}");
+            }
+
+            if (_currentUser.UserId != userWord.UserId)
+            {
+                throw new AccessViolationException("No rights");
+            }
+
+            await _userWordsRepository.RemoveAsync(userWord);
         }
     }
 }

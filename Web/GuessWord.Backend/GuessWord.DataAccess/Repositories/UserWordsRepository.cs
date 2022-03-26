@@ -1,6 +1,5 @@
 ﻿using GuessWord.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -24,17 +23,25 @@ namespace GuessWord.DataAccess.Repositories
                 .Include(x => x.Word)
                 .ThenInclude(x => x.Translations)
                 .ThenInclude(x => x.Translation)
+                .AsNoTracking()
                 .Where(x => x.UserId == userId)
                 .ToListAsync();
 
             return userWords;
         }
-      
-        public Task<UserWord> GetAsync(int id)
+
+        public async Task<UserWord> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            var userWord = await _db.UsersWords
+                .Include(x => x.Word)
+                .ThenInclude(x => x.Translations)
+                .ThenInclude(x => x.Translation)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.WordId == id);
+
+                return userWord;
         }
-        
+
         public async Task<UserWord> CreateAsync(UserWord userWord)
         {
             _db.UsersWords.Add(userWord);
@@ -43,20 +50,23 @@ namespace GuessWord.DataAccess.Repositories
             userWord = await _db.UsersWords
                 .Include(x => x.Word)
                 .ThenInclude(x => x.Translations)
-                .ThenInclude(x=> x.Translation)
+                .ThenInclude(x => x.Translation)
                 .FirstOrDefaultAsync(u => u.Id == userWord.Id);
-                
+
             return userWord;
         }
 
-        public Task<UserWord> UpdateAsync(Word word)
+        public async Task<UserWord> UpdateAsync(UserWord userWord)
         {
-            throw new NotImplementedException();
+            var word = _db.UsersWords.Update(userWord);
+            await _db.SaveChangesAsync();
+            return word.Entity;
         }
 
-        public Task RemoveAsync(int id)
+        public async Task RemoveAsync(UserWord userWord)
         {
-            throw new NotImplementedException();
+            _db.UsersWords.Remove(userWord);
+            await _db.SaveChangesAsync();
         }
     }
 }

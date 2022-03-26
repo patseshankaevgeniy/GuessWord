@@ -1,7 +1,6 @@
 ﻿using GuessWord.Mobile.Models;
 using System;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace GuessWord.Mobile.Services
 {
@@ -25,6 +24,7 @@ namespace GuessWord.Mobile.Services
                 if (result.Succeeded)
                 {
                     _userService.AccessToken = result.Token;
+                    _userService.IsSignedIn = true;
                 }
 
                 return result;

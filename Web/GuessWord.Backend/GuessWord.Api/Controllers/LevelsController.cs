@@ -1,10 +1,12 @@
 ﻿using GuessWord.Api.Models;
 using GuessWord.BusinessLogic.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace GuessWord.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/levels")]
     public class LevelsController : ControllerBase

@@ -9,7 +9,7 @@ namespace GuessWord.DataAccess.Repositories
         Task<List<UserWord>> GetAllAsync(int userId);
         Task<UserWord> GetAsync(int id);
         Task<UserWord> CreateAsync(UserWord userWord);
-        Task<UserWord> UpdateAsync(Word word);
-        Task RemoveAsync(int id);
+        Task<UserWord> UpdateAsync(UserWord userWord);
+        Task RemoveAsync(UserWord userWord);
     }
 }

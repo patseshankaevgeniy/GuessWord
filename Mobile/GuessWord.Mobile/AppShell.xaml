@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:GuessWord.Mobile.Views"
        Title="NavigationProject"
@@ -25,15 +25,18 @@
 
     <TabBar>
         <ShellContent Title="Home" Icon="icon_about.png"  Route="HomeView" ContentTemplate="{DataTemplate local:HomeView}" />
-        <ShellContent Title="Words" Icon="icon_about.png" ContentTemplate="{DataTemplate local:WordsView}" />
+        <ShellContent Title="Words" Icon="icon_about.png" ContentTemplate="{DataTemplate local:UserWordView}" />
         <ShellContent Title="Settings" Icon="icon_about.png"  ContentTemplate="{DataTemplate local:SettingsView}" />
     </TabBar>
 
     <TabBar>
         <ShellContent Route="SignInView" ContentTemplate="{DataTemplate local:SignInView}" />
     </TabBar>
+    
     <ShellContent Route="PlayView" ContentTemplate="{DataTemplate local:PlayView}" />
     <ShellContent Route="FinishGameView" ContentTemplate="{DataTemplate local:FinishGameView}" />
+    <ShellContent Route="UserWordView" ContentTemplate="{DataTemplate local:UserWordView}" />
+    <ShellContent Route="WordDetailsView" ContentTemplate="{DataTemplate local:WordDetailsView}" />
 
 
 </Shell>

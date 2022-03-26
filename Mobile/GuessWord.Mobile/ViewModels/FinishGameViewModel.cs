@@ -36,9 +36,9 @@ namespace GuessWord.Mobile.ViewModels
             await _navigationService.NavigateToPlayViewAsync();
         }
 
-        private void NavigateToBackPage(object obj)
+        private async void NavigateToBackPage()
         {
-            throw new NotImplementedException();
+            await _navigationService.NavigateToMainAsync();
         }
     }
 }

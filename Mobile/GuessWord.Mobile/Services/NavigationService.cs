@@ -14,11 +14,12 @@ namespace GuessWord.Mobile.Services
             _shell = Shell.Current;
             Routing.RegisterRoute(nameof(PlayView), typeof(PlayView));
             Routing.RegisterRoute(nameof(SettingsView), typeof(SettingsView));
-            Routing.RegisterRoute(nameof(WordsView), typeof(WordsView));
             Routing.RegisterRoute(nameof(SignInView), typeof(SignInView));
             Routing.RegisterRoute(nameof(SignUpView), typeof(SignUpView));
             Routing.RegisterRoute(nameof(HomeView), typeof(HomeView));
             Routing.RegisterRoute(nameof(FinishGameView), typeof(FinishGameView));
+            Routing.RegisterRoute(nameof(UserWordView), typeof(UserWordView));
+            Routing.RegisterRoute(nameof(WordDetailsView), typeof(WordDetailsView));
         }
 
         public async Task NavigateToSignInAsync()
@@ -54,6 +55,16 @@ namespace GuessWord.Mobile.Services
         public async Task NavigateToFinishGameAsync()
         {
             await _shell.GoToAsync($"//{nameof(FinishGameView)}");
+        }
+
+        public async Task NavigateToUserWordAsync()
+        {
+            await _shell.GoToAsync($"//{nameof(UserWordView)}");
+        }
+
+        public async Task NavigateToWordViewAsync(int wordId)
+        {
+            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(WordDetailsView)}?{nameof(WordDetailsViewModel.WordId)}={wordId}");
         }
     }
 }

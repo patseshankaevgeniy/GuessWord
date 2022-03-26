@@ -6,6 +6,6 @@ namespace GuessWord.BusinessLogic.Services.Mappers
 {
     public interface IUserWordMapper
     {
-        UserWordDto Mapp(UserWord userWord);
+        UserWordDto Map(UserWord userWord);
     }
 }

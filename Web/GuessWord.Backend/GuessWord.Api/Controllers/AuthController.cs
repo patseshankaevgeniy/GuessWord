@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GuessWord.Api.Controllers
 {
+
     [Route("api/auth")]
     public class AuthController : ControllerBase
     {

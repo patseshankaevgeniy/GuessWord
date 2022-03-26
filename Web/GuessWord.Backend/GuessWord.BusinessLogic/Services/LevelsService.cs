@@ -34,7 +34,7 @@ namespace GuessWord.BusinessLogic.Services
 
             var userId = _currentUserService.UserId;
             var targetWords = _wordsRepository.GetWordsWithTranslation(userId, WordStatus.InProgress);
-            var words = _wordsRepository.GetOptionsWords(userId);
+            var words = await _wordsRepository.GetOptionsWordsAsync();
             List<int> targetWordsIndex = new List<int> { -1 };
 
             for (int i = 0; i < targetWords.Count; i++)

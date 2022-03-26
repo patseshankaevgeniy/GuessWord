@@ -24,26 +24,20 @@ namespace GuessWord.DataAccess.Repositories
             return newWord;
         }
 
-        public List<Word> GetOptionsWords(int userId)
+        public async Task<List<Word>> GetOptionsWordsAsync()
         {
-            var result = from userWord in _db.UsersWords
-                         join words in _db.Words on userWord.Id equals words.Id
-                         join tranlation in _db.Translations on userWord.Id equals tranlation.Id
-                         where userWord.Id != userId && userWord.WordId != userId
-                         select new Word
-                         {
-                             Id = words.Id,
-                             Value = words.Value,
-                             Language = words.Language
-                         };
-            return result.ToList();
+            var words = await _db.Words
+                .Where(x => x.Language == Language.Russian)
+                .ToListAsync();
+
+            return words;
         }
 
         public async Task<Word> GetByNameAsync(string value)
         {
             var word = await _db.Words
-                .Include(x=> x.Translations)
-                .ThenInclude(x=> x.Translation)
+                .Include(x => x.Translations)
+                .ThenInclude(x => x.Translation)
                 .FirstOrDefaultAsync(x => x.Value == value);
             return word;
         }

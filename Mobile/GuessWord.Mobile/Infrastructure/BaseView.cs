@@ -19,12 +19,13 @@ namespace GuessWord.Mobile.Infrastructure
 
         protected override async void OnAppearing()
         {
+            base.OnAppearing();
+           
             if (!_initialized)
             {
                 await ViewModel.OnInitializedAsync();
                 _initialized = true;
             }
-            base.OnAppearing();
         }
     }
 }

@@ -46,7 +46,7 @@ namespace GuessWord.Tests
                 }) ;
 
             _mockWordsRepository
-                .Setup(x => x.GetOptionsWords(It.IsAny<int>()))
+                .Setup(x => x.GetOptionsWordsAsync(It.IsAny<int>()))
                 .Returns(new List<Word>
                 {
                     new Word {Value = "one"},

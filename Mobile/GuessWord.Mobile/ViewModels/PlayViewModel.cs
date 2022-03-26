@@ -38,7 +38,6 @@ namespace GuessWord.Mobile.ViewModels
             FinishCommand = new Command(NavigateToFinishGame);
             GoToNextCommand = new Command(ChangeToNextLevel);
             GoToPreviosCommand = new Command(ChangeToPreviosCommand);
-
         }
 
 
@@ -68,7 +67,6 @@ namespace GuessWord.Mobile.ViewModels
                 _currentStep++;
             }
             
-
                 Step = $"{_levelNumber}/{_currentLevel.Count}";
 
                 var step = _currentLevel.Steps[_currentStep];
@@ -86,7 +84,6 @@ namespace GuessWord.Mobile.ViewModels
                 _levelNumber--;
                 _currentStep--;
             }
-           
             
                 Step = $"{_levelNumber}/{_currentLevel.Count}";
                
@@ -101,6 +98,5 @@ namespace GuessWord.Mobile.ViewModels
         {
             await _navigationService.NavigateToFinishGameAsync();
         }
-
     }
 }

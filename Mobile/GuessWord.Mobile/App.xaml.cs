@@ -20,11 +20,16 @@ namespace GuessWord.Mobile
             services.AddTransient<HomeViewModel>();
             services.AddTransient<PlayViewModel>();
             services.AddTransient<FinishGameViewModel>();
+            services.AddTransient<UserWordViewModel>();
+            services.AddTransient<WordDetailsViewModel>();
             services.AddSingleton<ILevelsController, LevelsController>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IBackendClient, BackendClient>();
             services.AddSingleton<IAuthService, AuthService>();
-            services.AddSingleton<ICurrentUserService, CurrentUserService>();
+            //services.AddSingleton<ICurrentUserService, CurrentUserService>();
+            services.AddSingleton<ICurrentUserService, FakeCurrentUserService>();
+           // services.AddSingleton<IUserWordService, UserWordService>();
+            services.AddSingleton<IUserWordService, FakeUserWordService>();
             ServiceProvider = services.BuildServiceProvider();
 
             MainPage = new AppShell();

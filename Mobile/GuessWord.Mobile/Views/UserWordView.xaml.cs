@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
+using GuessWord.Mobile.Infrastructure;
+using GuessWord.Mobile.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace GuessWord.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class WordsView : ContentPage
+    public partial class UserWordView : BaseView<UserWordViewModel>
     {
-        public WordsView()
+        public UserWordView()
         {
             InitializeComponent();
         }

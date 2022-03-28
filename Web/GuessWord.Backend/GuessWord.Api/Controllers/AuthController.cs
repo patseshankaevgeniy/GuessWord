@@ -35,7 +35,10 @@ namespace GuessWord.Api.Controllers
 
         }
 
-        [HttpPost("signUp")]
+        [HttpPost("signUp", Name = "SignUp")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SignUpResultDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
         public ActionResult<SignUpResultDto> SignUp([FromBody] SignUpDto model)
         {
             if (model == null)

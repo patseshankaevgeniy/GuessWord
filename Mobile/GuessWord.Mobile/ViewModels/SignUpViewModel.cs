@@ -1,4 +1,5 @@
-﻿using GuessWord.Mobile.Infrastructure;
+﻿using GuessWord.Mobile.Clients;
+using GuessWord.Mobile.Infrastructure;
 using GuessWord.Mobile.Models;
 using GuessWord.Mobile.Services;
 using Xamarin.Forms;
@@ -47,33 +48,33 @@ namespace GuessWord.Mobile.ViewModels
             }
 
             var result = await _authService.TrySignUpAsync(UserName, Login, Password);
-            //if (result.Succeeded)
-            //{
-            //    NavigateToSignInAfterRegistre();
-            //    return;
-            //}
-            //if (result.ErrorType == AuthErrorType.LoginAlreadyExists)
-            //{
-            //    LoginErrorText = "This login is registered.";
-            //    IsLoginErrorVisible = true;
-            //}
-            //if (result.ErrorType == AuthErrorType.BadUserName)
-            //{
-            //    LoginErrorText = "This Name is registered.";
-            //    IsLoginErrorVisible = true;
-            //}
-            //else if (result.ErrorType == AuthErrorType.WrongPassword)
-            //{
-            //    PasswordErrorText = "Invalid password.";
-            //    IsPasswordErrorVisible = true;
-            //    return;
-            //}
-            //else
-            //{
-            //    LoginErrorText = "Sorry, server error.";
-            //    IsLoginErrorVisible = true;
-            //    return;
-            //}
+            if (result.Succeeded)
+            {
+                NavigateToSignInAfterRegistre();
+                return;
+            }
+            if (result.ErrorType == AuthErrorType.LoginAlreadyExists)
+            {
+                LoginErrorText = "This login is registered.";
+                IsLoginErrorVisible = true;
+            }
+            if (result.ErrorType == AuthErrorType.BadUserName)
+            {
+                LoginErrorText = "This Name is registered.";
+                IsLoginErrorVisible = true;
+            }
+            else if (result.ErrorType == AuthErrorType.WrongPassword)
+            {
+                PasswordErrorText = "Invalid password.";
+                IsPasswordErrorVisible = true;
+                return;
+            }
+            else
+            {
+                LoginErrorText = "Sorry, server error.";
+                IsLoginErrorVisible = true;
+                return;
+            }
         }
 
         public bool Validate()

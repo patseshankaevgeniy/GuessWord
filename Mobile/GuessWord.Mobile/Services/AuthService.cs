@@ -7,13 +7,13 @@ namespace GuessWord.Mobile.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly IBackendClient _backendClient;
         private readonly ICurrentUserService _userService;
         private readonly IGuessWordApiClient _apiClient;
 
-        public AuthService(IBackendClient backendClient, ICurrentUserService userService, IGuessWordApiClient apiClient)
+        public AuthService(
+            ICurrentUserService userService,
+            IGuessWordApiClient apiClient)
         {
-            _backendClient = backendClient;
             _userService = userService;
             _apiClient = apiClient;
         }
@@ -44,7 +44,7 @@ namespace GuessWord.Mobile.Services
             var dto = new SignUpDto { Name = name, Login = login, Password = password };
             try
             {
-                var result = await _backendClient.PostAsync<SignUpResultDto, SignUpDto>("auth/signUp", dto);
+                var result = await _apiClient.SignUpAsync(dto);
                 if (result.Succeeded)
                 {
 

@@ -35,16 +35,24 @@ namespace GuessWord.Mobile
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IBackendClient, BackendClient>();
-            //services.AddSingleton<ICurrentUserService, CurrentUserService>();
-            services.AddSingleton<ICurrentUserService, FakeCurrentUserService>();
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
+            //services.AddSingleton<ICurrentUserService, FakeCurrentUserService>();
             services.AddSingleton<IUserWordService, UserWordService>();
             //services.AddSingleton<IUserWordService, FakeUserWordService>();
             services.AddTransient<IGuessWordApiClient>(services=>
             {
+                try
+                {
                 var currentUserService = services.GetService<ICurrentUserService>();
                 var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", currentUserService.AccessToken);
-                return new GuessWordApiClient("https://1cf5-178-172-234-92.ngrok.io/", httpClient);
+                return new GuessWordApiClient("https://4712-178-172-234-92.ngrok.io/", httpClient);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
             });
             ServiceProvider = services.BuildServiceProvider();
 

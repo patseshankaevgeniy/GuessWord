@@ -6,7 +6,13 @@ namespace GuessWord.Mobile.Services
     {
         public string AccessToken
         {
-            get => (string)Application.Current.Properties[nameof(AccessToken)];
+            get
+            {
+                var properties = Application.Current.Properties;
+                return properties.ContainsKey(nameof(AccessToken))
+                     ? (string)Application.Current.Properties[nameof(AccessToken)]
+                     : "";
+            }
             set => Application.Current.Properties[nameof(AccessToken)] = value;
         }
 

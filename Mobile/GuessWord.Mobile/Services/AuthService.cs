@@ -1,4 +1,5 @@
-﻿using GuessWord.Mobile.Models;
+﻿using GuessWord.Mobile.Clients;
+using GuessWord.Mobile.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -8,11 +9,13 @@ namespace GuessWord.Mobile.Services
     {
         private readonly IBackendClient _backendClient;
         private readonly ICurrentUserService _userService;
+        private readonly IGuessWordApiClient _apiClient;
 
-        public AuthService(IBackendClient backendClient, ICurrentUserService userService)
+        public AuthService(IBackendClient backendClient, ICurrentUserService userService, IGuessWordApiClient apiClient)
         {
             _backendClient = backendClient;
             _userService = userService;
+            _apiClient = apiClient;
         }
 
         public async Task<SignInResultDto> TrySignInAsync(string login, string password)
@@ -20,7 +23,7 @@ namespace GuessWord.Mobile.Services
             var dto = new SignInDto { Login = login, Password = password };
             try
             {
-                var result = await _backendClient.PostAsync<SignInResultDto, SignInDto>("auth/signIn", dto);
+                var result = await _apiClient.SignInAsync(dto);
                 if (result.Succeeded)
                 {
                     _userService.AccessToken = result.Token;

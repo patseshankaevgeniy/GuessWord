@@ -45,20 +45,20 @@ namespace GuessWord.Tests
                     new WordWithTranslation {Value = "Погода",Translation = "weather"}
                 }) ;
 
-            _mockWordsRepository
-                .Setup(x => x.GetOptionsWordsAsync(It.IsAny<int>()))
-                .Returns(new List<Word>
-                {
-                    new Word {Value = "one"},
-                    new Word {Value = "two"},
-                    new Word {Value = "only"},
-                    new Word {Value = "current"},
-                    new Word {Value = "level"},
-                    new Word {Value = "apple"},
-                    new Word {Value = "orange"},
-                    new Word {Value = "red"},
-                    new Word {Value = "world"},
-                });
+            //_mockWordsRepository
+            //    .Setup(x => x.GetOptionsWordsAsync(It.IsAny<int>()))
+            //    .Returns(new List<Word>
+            //    {
+            //        new Word {Value = "one"},
+            //        new Word {Value = "two"},
+            //        new Word {Value = "only"},
+            //        new Word {Value = "current"},
+            //        new Word {Value = "level"},
+            //        new Word {Value = "apple"},
+            //        new Word {Value = "orange"},
+            //        new Word {Value = "red"},
+            //        new Word {Value = "world"},
+            //    });
 
             // Act
             var actualLevel = await _levelsService.GetLevelAsync();

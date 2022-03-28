@@ -32,7 +32,7 @@ namespace GuessWord.Mobile.Services
 
                 return result;
             }
-            catch (Exception)
+            catch
             {
                 var result = new SignInResultDto { Succeeded = false, ErrorType = AuthErrorType.UnknowExeption };
                 return result;

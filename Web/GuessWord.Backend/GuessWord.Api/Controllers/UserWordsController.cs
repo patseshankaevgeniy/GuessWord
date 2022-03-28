@@ -64,14 +64,7 @@ namespace GuessWord.Api.Controllers
                 return BadRequest("Word is empty");
             }
 
-            try
-            {
-                userWord = await _userWordsService.CreateAsync(userWord);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            userWord = await _userWordsService.CreateAsync(userWord);
 
             return Created($"api/user-words/{userWord.Id}", userWord);
         }
@@ -88,7 +81,7 @@ namespace GuessWord.Api.Controllers
             }
             try
             {
-            var updateWord = await _userWordsService.UpdateAsync(userWordDto, id.Value);
+                var updateWord = await _userWordsService.UpdateAsync(userWordDto, id.Value);
             }
             catch (NotFoundException ex)
             {

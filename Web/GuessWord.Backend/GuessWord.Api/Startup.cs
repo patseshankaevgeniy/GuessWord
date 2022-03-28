@@ -1,4 +1,5 @@
-﻿using GuessWord.BusinessLogic;
+﻿using GuessWord.Api.Meddleware;
+using GuessWord.BusinessLogic;
 using GuessWord.DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -113,6 +114,7 @@ namespace GuessWord.Api
                     options.RoutePrefix = "docs";
                 })
                 .UseHttpsRedirection()
+                .UseMiddleware<CustomExceptionHandlerMiddleware>()
                 .UseRouting()
                 .UseAuthentication()
                 .UseAuthorization()

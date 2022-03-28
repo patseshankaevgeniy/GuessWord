@@ -1,4 +1,5 @@
 ﻿using GuessWord.Api.Models;
+using GuessWord.BusinessLogic.Exceptions;
 using GuessWord.BusinessLogic.Models;
 using GuessWord.BusinessLogic.Services;
 using Microsoft.AspNetCore.Http;
@@ -20,13 +21,13 @@ namespace GuessWord.Api.Controllers
 
         [HttpPost("signIn", Name = "SignIn")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SignInResultDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
         public ActionResult<SignInResultDto> SignIn([FromBody] SignInDto model)
         {
             if (model == null)
             {
-                return BadRequest("Model is empty");
+                throw new ValidationException("Model is empty");
             }
 
             var signInResult = _authService.SignIn(model.Login, model.Password);

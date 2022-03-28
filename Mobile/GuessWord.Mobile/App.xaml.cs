@@ -1,7 +1,11 @@
-﻿using GuessWord.Mobile.Services;
+﻿using GuessWord.Mobile.Clients;
+using GuessWord.Mobile.Services;
 using GuessWord.Mobile.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Globalization;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using Xamarin.Forms;
 
 namespace GuessWord.Mobile
@@ -13,6 +17,11 @@ namespace GuessWord.Mobile
         public App()
         {
             InitializeComponent();
+            
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) => {
+                System.Exception ex = (System.Exception)args.ExceptionObject;
+                Console.WriteLine(ex);
+            };
 
             var services = new ServiceCollection();
             services.AddTransient<SignUpViewModel>();
@@ -24,12 +33,19 @@ namespace GuessWord.Mobile
             services.AddTransient<WordDetailsViewModel>();
             services.AddSingleton<ILevelsController, LevelsController>();
             services.AddSingleton<INavigationService, NavigationService>();
-            services.AddSingleton<IBackendClient, BackendClient>();
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IBackendClient, BackendClient>();
             //services.AddSingleton<ICurrentUserService, CurrentUserService>();
             services.AddSingleton<ICurrentUserService, FakeCurrentUserService>();
-           // services.AddSingleton<IUserWordService, UserWordService>();
-            services.AddSingleton<IUserWordService, FakeUserWordService>();
+            services.AddSingleton<IUserWordService, UserWordService>();
+            //services.AddSingleton<IUserWordService, FakeUserWordService>();
+            services.AddTransient<IGuessWordApiClient>(services=>
+            {
+                var currentUserService = services.GetService<ICurrentUserService>();
+                var httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", currentUserService.AccessToken);
+                return new GuessWordApiClient("https://1cf5-178-172-234-92.ngrok.io/", httpClient);
+            });
             ServiceProvider = services.BuildServiceProvider();
 
             MainPage = new AppShell();

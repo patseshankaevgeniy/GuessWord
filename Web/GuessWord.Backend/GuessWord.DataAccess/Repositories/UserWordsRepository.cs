@@ -37,7 +37,7 @@ namespace GuessWord.DataAccess.Repositories
                 .ThenInclude(x => x.Translations)
                 .ThenInclude(x => x.Translation)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.WordId == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
 
                 return userWord;
         }

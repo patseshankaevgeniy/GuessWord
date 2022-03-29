@@ -33,16 +33,16 @@ namespace GuessWord.Mobile.Services
 
         public async Task<UserWord> GetAsync(int id)
         {
-            //var userWordDto = await _backendClient.GetAsync<UserWordDto>($"user-words/{id}");
+            var userWordDto = await _apiClient.GetUserWordByIdAsync(id);
 
-            //var userWord = new UserWord
-            //{
-            //    Id = userWordDto.Id,
-            //    Word = userWordDto.Word,
-            //    Status = userWordDto.Status.ToString(),
-            //    Translations = userWordDto.Translations.Aggregate((left, right) => left + " , " + right)
-            //};
-            var userWord = new UserWord();
+            var userWord = new UserWord
+            {
+                Id = userWordDto.Id,
+                Word = userWordDto.Word,
+                Status = userWordDto.Status.ToString(),
+                Translations = userWordDto.Translations.Aggregate((left, right) => left + " , " + right)
+            };
+            
             return userWord;
         }
 

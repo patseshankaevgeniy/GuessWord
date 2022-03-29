@@ -31,8 +31,8 @@ namespace GuessWord.Api.Controllers
             return Ok(userWords);
         }
 
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpGet("{id}", Name = "GetUserWordById")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserWordDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<UserWordDto>> GetAsync(int? id)

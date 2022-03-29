@@ -1,5 +1,5 @@
 ﻿using GuessWord.Mobile.Clients;
-using GuessWord.Mobile.Models;
+using GuessWord.Mobile.Models.Enums;
 using System;
 using System.Threading.Tasks;
 
@@ -34,7 +34,7 @@ namespace GuessWord.Mobile.Services
             }
             catch
             {
-                var result = new SignInResultDto { Succeeded = false, ErrorType = AuthErrorType.UnknowExeption };
+                var result = new SignInResultDto { Succeeded = false, ErrorType = (int)AuthErrorType.UnknowExeption };
                 return result;
             }
         }
@@ -53,7 +53,7 @@ namespace GuessWord.Mobile.Services
             }
             catch (Exception)
             {
-                var result = new SignUpResultDto { Succeeded = false, ErrorType = AuthErrorType.UnknowExeption };
+                var result = new SignUpResultDto { Succeeded = false, ErrorType = (int)AuthErrorType.UnknowExeption };
                 return result;
             }
         }

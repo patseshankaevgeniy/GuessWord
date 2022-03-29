@@ -25,14 +25,14 @@ namespace GuessWord.BusinessLogic.Services
             if (user == null)
             {
                 signInResult.Succeeded = false;
-                signInResult.ErrorType = AuthErrorType.UserNotFound;
+                signInResult.ErrorType = (int)AuthErrorType.UserNotFound;
                 return signInResult;
             }
 
             if (user.Login == login && user.Password != password)
             {
                 signInResult.Succeeded = false;
-                signInResult.ErrorType = AuthErrorType.WrongPassword;
+                signInResult.ErrorType = (int)AuthErrorType.WrongPassword;
                 return signInResult;
             }
 
@@ -48,7 +48,7 @@ namespace GuessWord.BusinessLogic.Services
             if (userId == Constants.DublicateResult)
             {
                 signUpResult.Succeeded = false;
-                signUpResult.ErrorType = AuthErrorType.LoginAlreadyExists;
+                signUpResult.ErrorType = (int)AuthErrorType.LoginAlreadyExists;
                 return signUpResult;
             }
 

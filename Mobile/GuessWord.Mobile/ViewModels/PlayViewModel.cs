@@ -1,6 +1,7 @@
-﻿using GuessWord.Mobile.Infrastructure;
-using GuessWord.Mobile.Models;
+﻿using GuessWord.Mobile.Clients;
+using GuessWord.Mobile.Infrastructure;
 using GuessWord.Mobile.Services;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -44,54 +45,60 @@ namespace GuessWord.Mobile.ViewModels
         public override async Task OnInitializedAsync()
         {
             var level = await _levelsController.GetLevelAsync();
+
+
+
             if (level != null)
             {
                 _currentLevel = level;
                 _currentStep = 0;
                 _levelNumber = 1;
-                var step = level.Steps[_currentStep];
+                var step = level.Steps.ToList();
+                //[_currentStep];
 
-                Step = $"{_levelNumber}/{_currentLevel.Count}";
-                TargetWord = step.Target;
-                FirstOption = step.Options[0].Word;
-                SecondOption = step.Options[1].Word;
-                ThirdOption = step.Options[2].Word;
+                //Step = $"{_levelNumber}/{_currentLevel.Count}";
+                //TargetWord = step.;
+                //FirstOption = step[0].;
+                //SecondOption = step.Options[1].Word;
+                //ThirdOption = step.Options[2].Word;
             }
         }
 
         private void ChangeToNextLevel()
         {
-            if (_levelNumber < _currentLevel.Count && _currentStep < _currentLevel.Count - 1)
-            {
-                _levelNumber++;
-                _currentStep++;
-            }
-            
-                Step = $"{_levelNumber}/{_currentLevel.Count}";
+            //if (_levelNumber < _currentLevel.Count && _currentStep < _currentLevel.Count - 1)
+            //{
+            //    _levelNumber++;
+            //    _currentStep++;
+            //}
 
-                var step = _currentLevel.Steps[_currentStep];
+            //    Step = $"{_levelNumber}/{_currentLevel.Count}";
 
-                TargetWord = step.Target;
-                FirstOption = step.Options[0].Word;
-                SecondOption = step.Options[1].Word;
-                ThirdOption = step.Options[2].Word;
+
+
+            //    var step = _currentLevel.Steps[_currentStep];
+
+            //    TargetWord = step.Target;
+            //    FirstOption = step.Options[0].Word;
+            //    SecondOption = step.Options[1].Word;
+            //    ThirdOption = step.Options[2].Word;
         }
 
         private void ChangeToPreviosCommand()
         {
-            if (_levelNumber > 0 && _currentStep >0)
-            {
-                _levelNumber--;
-                _currentStep--;
-            }
-            
-                Step = $"{_levelNumber}/{_currentLevel.Count}";
-               
-                var step = _currentLevel.Steps[_currentStep];
-                TargetWord = step.Target;
-                FirstOption = step.Options[0].Word;
-                SecondOption = step.Options[1].Word;
-                ThirdOption = step.Options[2].Word;
+            //if (_levelNumber > 0 && _currentStep >0)
+            //{
+            //    _levelNumber--;
+            //    _currentStep--;
+            //}
+
+            //    Step = $"{_levelNumber}/{_currentLevel.Count}";
+
+            //    var step = _currentLevel.Steps[_currentStep];
+            //    TargetWord = step.Target;
+            //    FirstOption = step.Options[0].Word;
+            //    SecondOption = step.Options[1].Word;
+            //    ThirdOption = step.Options[2].Word;
         }
 
         public async void NavigateToFinishGame()

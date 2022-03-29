@@ -1,4 +1,4 @@
-﻿using GuessWord.Mobile.Models;
+﻿using GuessWord.Mobile.Clients;
 using System.Threading.Tasks;
 
 namespace GuessWord.Mobile.Services

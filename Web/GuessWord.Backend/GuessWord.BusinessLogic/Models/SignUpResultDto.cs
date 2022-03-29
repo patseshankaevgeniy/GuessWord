@@ -3,6 +3,6 @@
     public class SignUpResultDto
     {
         public bool Succeeded { get; set; }
-        public AuthErrorType? ErrorType { get; set; }
+        public int? ErrorType { get; set; }
     }
 }

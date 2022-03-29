@@ -1,7 +1,6 @@
-﻿using GuessWord.Mobile.Infrastructure;
-using GuessWord.Mobile.Models;
+﻿using GuessWord.Mobile.Clients;
+using GuessWord.Mobile.Infrastructure;
 using GuessWord.Mobile.Services;
-using System;
 using Xamarin.Forms;
 
 namespace GuessWord.Mobile.ViewModels

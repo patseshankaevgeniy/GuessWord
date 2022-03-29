@@ -1,6 +1,5 @@
-﻿using GuessWord.Mobile.Clients;
-using GuessWord.Mobile.Infrastructure;
-using GuessWord.Mobile.Models;
+﻿using GuessWord.Mobile.Infrastructure;
+using GuessWord.Mobile.Models.Enums;
 using GuessWord.Mobile.Services;
 using Xamarin.Forms;
 
@@ -27,7 +26,7 @@ namespace GuessWord.Mobile.ViewModels
         public Command SignUpCommand { get; set; }
 
         public SignUpViewModel(
-            IAuthService authService, 
+            IAuthService authService,
             INavigationService navigationService)
         {
             _authService = authService;
@@ -53,17 +52,17 @@ namespace GuessWord.Mobile.ViewModels
                 NavigateToSignInAfterRegistre();
                 return;
             }
-            if (result.ErrorType == AuthErrorType.LoginAlreadyExists)
+            if (result.ErrorType == (int)AuthErrorType.LoginAlreadyExists)
             {
                 LoginErrorText = "This login is registered.";
                 IsLoginErrorVisible = true;
             }
-            if (result.ErrorType == AuthErrorType.BadUserName)
+            if (result.ErrorType == (int)AuthErrorType.BadUserName)
             {
                 LoginErrorText = "This Name is registered.";
                 IsLoginErrorVisible = true;
             }
-            else if (result.ErrorType == AuthErrorType.WrongPassword)
+            else if (result.ErrorType == (int)AuthErrorType.WrongPassword)
             {
                 PasswordErrorText = "Invalid password.";
                 IsPasswordErrorVisible = true;

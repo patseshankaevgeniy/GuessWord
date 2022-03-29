@@ -6,12 +6,10 @@ namespace GuessWord.Mobile.Services
 {
     public class LevelsController : ILevelsController
     {
-        private readonly IBackendClient _backendClient;
         private readonly IGuessWordApiClient _apiClient;
 
-        public LevelsController(IBackendClient backendClient, IGuessWordApiClient apiClient)
+        public LevelsController(IGuessWordApiClient apiClient)
         {
-            _backendClient = backendClient;
             _apiClient = apiClient;
         }
 

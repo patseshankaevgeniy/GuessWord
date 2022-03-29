@@ -25,8 +25,9 @@ namespace GuessWord.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<LevelDto>> GetAsync()
         {
+            var level = await _levelsService.GetLevelAsync();
 
-            return await _levelsService.GetLevelAsync();
+            return level;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace GuessWord.Mobile.Services
     {
         Task<List<UserWord>> GetAllAsync();
         Task<UserWord> GetAsync(int id);
-        Task<UserWord> CreateAsync(UserWord userWord);
+        Task<UserWord> CreateAsync(string word);
         Task<UserWord> UpdateAsync(UserWord userWord, int id);
         Task DeleteAsync(int id);
 

@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvvm:BaseView x:TypeArguments="vm:CreateWordViewModel"
+               xmlns:mvvm="clr-namespace:GuessWord.Mobile.Infrastructure;assembly=GuessWord.Mobile" 
+               xmlns:vm="clr-namespace:GuessWord.Mobile.ViewModels"
+               xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               x:Class="GuessWord.Mobile.Views.CreateWordView">
+    <mvvm:BaseView.Content>
+        <Grid BackgroundColor="#e9e7e8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="140"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label 
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="Word"/>
+
+            <Entry 
+                Grid.Row="2"
+                Grid.Column="1"
+                x:Name="WordValueEntry"
+                Text="{Binding Word}"
+                BackgroundColor="#dcd8d9"
+                Placeholder="New word"/>
+
+            <Label
+                Grid.Row="3"
+                Grid.Column="1"
+                Text="{Binding WordErrorText}"
+                IsVisible="{Binding IsWordErrorVisible}"
+                TextColor="Red"/>
+
+            <Label 
+                Grid.Row="5"
+                Grid.Column="1"
+                Text="Translation"/>
+
+            <Entry 
+                Grid.Row="6"
+                Grid.Column="1"
+                x:Name="TranslationEntry"
+                Text="{Binding Translation}"
+                BackgroundColor="#dcd8d9"
+                Placeholder="Translation"/>
+
+            <Label
+                Grid.Row="7"
+                Grid.Column="1"
+                Text="{Binding LoginErrorText}"
+                IsVisible="{Binding IsLoginErrorVisible}"
+                TextColor="Red"/>
+
+            <Button 
+                Grid.Row="13"
+                Grid.Column="1"
+                BackgroundColor="#dcd8d9"
+                Command="{Binding CreateCommand}"
+                Text="Add"/>
+        </Grid>
+    </mvvm:BaseView.Content>
+</mvvm:BaseView>

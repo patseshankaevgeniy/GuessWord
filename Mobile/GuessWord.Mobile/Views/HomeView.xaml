@@ -13,6 +13,10 @@
             <Button
                 Text="Play Game"
                 Command="{Binding GoToPlayCommand}"/>
+
+            <Button
+                Text="Add new Word"
+                Command="{Binding GoToCreateWordCommand}"/>
         </StackLayout>
     </mvvm:BaseView.Content>
 </mvvm:BaseView>

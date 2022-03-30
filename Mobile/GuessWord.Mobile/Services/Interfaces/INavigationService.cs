@@ -14,6 +14,7 @@ namespace GuessWord.Mobile.Services
         Task NavigateToFinishGameAsync();
         Task NavigateToUserWordAsync();
         Task NavigateToWordViewAsync(int wordId);
+        Task NavigateToCreateWordViewAsync();
 
     }
 }

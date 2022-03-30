@@ -62,7 +62,7 @@ namespace GuessWord.Mobile.ViewModels
 
         private async void SaveWordAsync()
         {
-            var result = await _userWordService.CreateAsync(userWord);
+            var result = await _userWordService.CreateAsync(userWord.Word);
         }
 
         private void DeleteAsync()

@@ -11,12 +11,19 @@ namespace GuessWord.Mobile.ViewModels
 
         public Command GoToPlayCommand { get; set; }
         public Command GoToUserWordCommand { get; set; }
+        public Command GoToCreateWordCommand { get; set; }
 
         public HomeViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
             GoToPlayCommand = new Command(NavigateToPlayView);
             GoToUserWordCommand = new Command(NavigateToUserWordView);
+            GoToCreateWordCommand = new Command(NavigateToCreateWordView);
+        }
+
+        private async void NavigateToCreateWordView()
+        {
+            await _navigationService.NavigateToCreateWordViewAsync();
         }
 
         private async void NavigateToUserWordView()

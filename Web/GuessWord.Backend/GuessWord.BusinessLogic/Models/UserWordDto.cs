@@ -1,5 +1,4 @@
-﻿using GuessWord.Domain.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GuessWord.BusinessLogic.Models
 {
@@ -7,7 +6,7 @@ namespace GuessWord.BusinessLogic.Models
     {
         public int Id { get; set; }
         public string Word { get; set; }
-        public WordStatus Status { get; set; }
+        public int? Status { get; set; }
         public List<string> Translations { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using GuessWord.Mobile.Clients;
 using GuessWord.Mobile.Models;
+using GuessWord.Mobile.Models.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,25 +47,24 @@ namespace GuessWord.Mobile.Services
             return userWord;
         }
 
-        public async Task<UserWord> CreateAsync(UserWord userWord)
+        public async Task<UserWord> CreateAsync(string word)
         {
-            //var userWordDto = new UserWordDto
-            //{
-            //    Word = userWord.Word,
-            //    Status = Models.Enums.WordStatus.New,
-            //    Translations = userWord.Translations.Split(" , ").ToList()
-            //};
-            //userWordDto = await _backendClient.PostAsync<UserWordDto,UserWordDto>("user-words", userWordDto);
+            
+           var userWordDto = await _apiClient.CreateUserWordAsync(word);
 
-            //var newUserWord = new UserWord
-            //{
-            //    Id = userWordDto.Id,
-            //    Word = userWordDto.Word,
-            //    Status = userWordDto.Status.ToString(),
-            //    Translations = userWordDto.Translations.Aggregate((left, right) => left + " , " + right)
-            //};
+            var newUserWord = new UserWord 
+            {
+                Id = userWordDto.Id,
+                Word = userWordDto.Word,
+                Status = userWordDto.Status.ToString()
+            };
 
-            return userWord;
+            if (userWordDto.Translations.Count != 0)
+            {
+                newUserWord.Translations = userWordDto.Translations.Aggregate((left, right) => left + " , " + right);
+            }
+
+            return newUserWord;
 
         }
 

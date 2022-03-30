@@ -60,34 +60,30 @@ namespace GuessWord.BusinessLogic.Services
             return userWordDto;
         }
 
-        public async Task<UserWordDto> CreateAsync(UserWordDto userWordDto)
+        public async Task<UserWordDto> CreateAsync(string wordValue)
         {
-            if (string.IsNullOrEmpty(userWordDto.Word))
-            {
-                throw new ValidationException("Word cannot be null or empty");
-            }
 
-            var word = await _wordsRepository.GetByNameAsync(userWordDto.Word);
+            var word = await _wordsRepository.GetByNameAsync(wordValue);
             if (word == null)
             {
                 word = new Word
                 {
                     Language = Language.English,
-                    Value = userWordDto.Word
+                    Value = wordValue
                 };
                 word = await _wordsRepository.CreateAsync(word);
             }
 
             var userWord = new UserWord
             {
-                Status = userWordDto.Status,
+                Status = (int)WordStatus.New,
                 Word = word,
                 UserId = _currentUser.UserId,
                 TargetRepeatNumber = 2
             };
 
             userWord = await _userWordsRepository.CreateAsync(userWord);
-            userWordDto = _wordMapper.Map(userWord);
+            var userWordDto = _wordMapper.Map(userWord);
 
             return userWordDto;
         }
@@ -111,7 +107,7 @@ namespace GuessWord.BusinessLogic.Services
                 throw new AccessViolationException("No rights");
             }
 
-            userWord.Status = userWordDto.Status;
+            userWord.Status = (WordStatus)userWordDto.Status;
 
             userWord = await _userWordsRepository.UpdateAsync(userWord);
 

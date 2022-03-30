@@ -53,18 +53,18 @@ namespace GuessWord.Api.Controllers
             }
         }
 
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [HttpPost(Name = "CreateUserWord")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserWordDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserWordDto>> CreateAsync([FromBody] UserWordDto userWord)
+        public async Task<ActionResult<UserWordDto>> CreateAsync([FromBody] string word)
         {
-            if (userWord == null)
+            if (string.IsNullOrEmpty(word))
             {
                 return BadRequest("Word is empty");
             }
 
-            userWord = await _userWordsService.CreateAsync(userWord);
+            var userWord = await _userWordsService.CreateAsync(word);
 
             return Created($"api/user-words/{userWord.Id}", userWord);
         }

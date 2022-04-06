@@ -1,6 +1,4 @@
 ﻿using GuessWord.Mobile.Clients;
-using GuessWord.Mobile.Models;
-using GuessWord.Mobile.Models.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,43 +14,45 @@ namespace GuessWord.Mobile.Services
             _apiClient = apiClient;
         }
 
-        public async Task<List<UserWord>> GetAllAsync()
+        public async Task<List<Models.UserWord>> GetAllAsync()
         {
             var userWords = await _apiClient.GetUserWordsAsync();
-
-
+            
             return userWords
-                .Select(x => new UserWord
+                .Select(x => new Models.UserWord
                 {
                     Id = x.Id,
                     Word = x.Word,
                     Status = x.Status.ToString(),
-                    Translations = x.Translations.Aggregate((left, right) => left + " , " + right)
+                    //Translations = x.Translations.Aggregate((left, right) => left + " , " + right)
                 })
                 .ToList();
         }
 
-        public async Task<UserWord> GetAsync(int id)
+        public async Task<Models.UserWord> GetAsync(int id)
         {
-            var userWordDto = await _apiClient.GetUserWordByIdAsync(id);
+            var userWordDto = await _apiClient.GetUserWordAsync(id);
 
-            var userWord = new UserWord
+            var userWord = new Models.UserWord
             {
                 Id = userWordDto.Id,
                 Word = userWordDto.Word,
                 Status = userWordDto.Status.ToString(),
-                Translations = userWordDto.Translations.Aggregate((left, right) => left + " , " + right)
             };
-            
+
+            if (userWordDto.Translations.Count != 0)
+            {
+                userWord.Translations = userWordDto.Translations.Aggregate((left, right) => left + " , " + right);
+            }
+
             return userWord;
         }
 
-        public async Task<UserWord> CreateAsync(string word)
+        public async Task<Models.UserWord> CreateAsync(string word)
         {
-            
-           var userWordDto = await _apiClient.CreateUserWordAsync(word);
+            var userWordDto = await _apiClient.CreateUserWordAsync(word);
 
-            var newUserWord = new UserWord 
+            var newUserWord = new Models.UserWord
             {
                 Id = userWordDto.Id,
                 Word = userWordDto.Word,
@@ -65,19 +65,45 @@ namespace GuessWord.Mobile.Services
             }
 
             return newUserWord;
-
         }
 
-        public Task<UserWord> UpdateAsync(UserWord userWord, int id)
+        public async Task<Models.UserWord> UpdateAsync(string status, int id)
         {
-            throw new System.NotImplementedException();
+            int? wordStatus = new int?();
+            if (status == "Done")
+            {
+                wordStatus = 2;
+            }
+            if (status == "In progress")
+            {
+                wordStatus = 1;
+            }
+            if (status == "New")
+            {
+                wordStatus = 0;
+            }
+
+            var userWordDto = await _apiClient.UpdateUserWordAsync(id, wordStatus);
+
+            var userWord = new Models.UserWord
+            {
+                Id = userWordDto.Id,
+                Word = userWordDto.Word,
+                Status = userWordDto.Status.ToString(),
+            };
+
+            if (userWordDto.Translations.Count != 0)
+            {
+                userWord.Translations = userWordDto.Translations.Aggregate((left, right) => left + " , " + right);
+            }
+
+            return userWord;
+
         }
 
         public async Task DeleteAsync(int id)
         {
-            //var result = await _backendClient.DeleteAsync<ActionResult>($"user-words/{id}");
-            //return Task.FromResult(result);
-            throw new System.Exception();
+            await _apiClient.DeleteUserWordAsync(id);
         }
     }
 }

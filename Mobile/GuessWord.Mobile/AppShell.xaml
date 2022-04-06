@@ -37,6 +37,7 @@
     <ShellContent Route="FinishGameView" ContentTemplate="{DataTemplate local:FinishGameView}" />
     <ShellContent Route="UserWordView" ContentTemplate="{DataTemplate local:UserWordView}" />
     <ShellContent Route="WordDetailsView" ContentTemplate="{DataTemplate local:WordDetailsView}" />
+    <ShellContent Route="CreateWordView" ContentTemplate="{DataTemplate local:CreateWordView}" />
 
 
 </Shell>

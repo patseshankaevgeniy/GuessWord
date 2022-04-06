@@ -27,7 +27,7 @@ namespace GuessWord.Mobile.ViewModels
         public bool IsTranslationVisible { get; set; }
         public bool IsEntryTranslationVisible { get; set; }
 
-        public UserWord userWord { get; set; }
+        public UserWord UserWord { get; set; }
 
         public Command GoBackCommand { get; set; }
         public Command ChangeStatusCommand { get; set; }
@@ -54,15 +54,16 @@ namespace GuessWord.Mobile.ViewModels
             IsTranslationVisible = true;
             TranslationButton = "Change";
             StatusButton = "Change";
-            userWord = await _userWordService.GetAsync(WordId);
-            Status = userWord.Status;
-            Translations = userWord.Translations;
-            Word = userWord.Word;
+            UserWord = await _userWordService.GetAsync(WordId);
+            Status = UserWord.Status;
+            Translations = UserWord.Translations;
+            Word = UserWord.Word;
         }
 
         private async void SaveWordAsync()
         {
-            var result = await _userWordService.CreateAsync(userWord.Word);
+            UserWord.Status = Status;
+            var result = await _userWordService.UpdateAsync(Status, UserWord.Id);
         }
 
         private void DeleteAsync()

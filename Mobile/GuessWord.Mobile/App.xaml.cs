@@ -31,14 +31,15 @@ namespace GuessWord.Mobile
             services.AddTransient<FinishGameViewModel>();
             services.AddTransient<UserWordViewModel>();
             services.AddTransient<WordDetailsViewModel>();
+            services.AddTransient<CreateWordViewModel>();
             services.AddSingleton<ILevelsController, LevelsController>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IBackendClient, BackendClient>();
-            services.AddSingleton<ICurrentUserService, CurrentUserService>();
-           // services.AddSingleton<ICurrentUserService, FakeCurrentUserService>();
-            services.AddSingleton<IUserWordService, UserWordService>();
-            //services.AddSingleton<IUserWordService, FakeUserWordService>();
+            //services.AddSingleton<ICurrentUserService, CurrentUserService>();
+            services.AddSingleton<ICurrentUserService, FakeCurrentUserService>();
+            //services.AddSingleton<IUserWordService, UserWordService>();
+            services.AddSingleton<IUserWordService, FakeUserWordService>();
             services.AddTransient<IGuessWordApiClient>(services=>
             {
                 try
@@ -46,7 +47,7 @@ namespace GuessWord.Mobile
                 var currentUserService = services.GetService<ICurrentUserService>();
                 var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", currentUserService.AccessToken);
-                return new GuessWordApiClient("https://747d-178-172-234-92.ngrok.io/", httpClient);
+                return new GuessWordApiClient("https://6df2-178-172-234-92.ngrok.io/", httpClient);
                 }
                 catch (Exception)
                 {

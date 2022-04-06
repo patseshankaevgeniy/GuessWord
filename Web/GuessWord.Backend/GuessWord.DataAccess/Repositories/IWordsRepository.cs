@@ -7,10 +7,11 @@ namespace GuessWord.DataAccess.Repositories
 {
     public interface IWordsRepository
     {
-        List<WordWithTranslation> GetWordsWithTranslation(int userId, WordStatus status);
-        Task<List<Word>> GetOptionsWordsAsync();
+        Task<List<Word>> GetAllAsync();
         Task<Word> GetByNameAsync(string value);
+        Task<List<Word>> GetByLetterAsync(string letter);
+        Task<List<Word>> GetOptionsWordsAsync();
+        List<WordWithTranslation> GetWordsWithTranslation(int userId, WordStatus status);
         Task<Word> CreateAsync(Word newWord);
-        
     }
 }

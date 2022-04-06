@@ -38,6 +38,7 @@ namespace GuessWord.BusinessLogic.Services
                 {
                     Id = userWord.Id,
                     Word = userWord.Word.Value,
+                    Status = (int)userWord.Status,
                     Translations = userWord.Word.Translations
                         .Select(x => x.Translation.Value)
                         .ToList()
@@ -88,9 +89,9 @@ namespace GuessWord.BusinessLogic.Services
             return userWordDto;
         }
 
-        public async Task<UserWordDto> UpdateAsync(UserWordDto userWordDto, int id)
+        public async Task<UserWordDto> UpdateAsync(int status, int id)
         {
-            if (userWordDto == null)
+            if (status == null)
             {
                 throw new ValidationException("bad word");
             }
@@ -107,11 +108,11 @@ namespace GuessWord.BusinessLogic.Services
                 throw new AccessViolationException("No rights");
             }
 
-            userWord.Status = (WordStatus)userWordDto.Status;
+            userWord.Status = (WordStatus)status;
 
             userWord = await _userWordsRepository.UpdateAsync(userWord);
 
-            userWordDto = _wordMapper.Map(userWord);
+            var userWordDto = _wordMapper.Map(userWord);
             return userWordDto;
 
         }

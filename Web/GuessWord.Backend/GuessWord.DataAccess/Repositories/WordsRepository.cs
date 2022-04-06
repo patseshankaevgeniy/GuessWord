@@ -17,11 +17,47 @@ namespace GuessWord.DataAccess.Repositories
             _db = db;
         }
 
-        public async Task<Word> CreateAsync(Word newWord)
+        public async Task<List<Word>> GetAllAsync()
         {
-            _db.Words.Add(newWord);
-            await _db.SaveChangesAsync();
-            return newWord;
+            var words = await _db.Translations
+                .Include(x => x.Word)
+                .Where(x => x.Word.Language == Language.English)
+                .Select(x => new Word
+                {
+                    Id = x.WordId,
+                    Language = x.Word.Language,
+                    Translations = x.Word.Translations,
+                    Value = x.Word.Value
+                }).ToListAsync();
+
+
+
+            return words;
+        }
+
+        public async Task<Word> GetByNameAsync(string value)
+        {
+            var word = await _db.Words
+                .FirstOrDefaultAsync(x => x.Value == value);
+
+
+            return word;
+        }
+
+        public async Task<List<Word>> GetByLetterAsync(string letter)
+        {
+            var words = await _db.Translations
+                .Include(x => x.Word)
+                .Where(x => x.Word.Value.StartsWith(letter))
+                .Select(x => new Word
+                {
+                    Id = x.WordId,
+                    Language = x.Word.Language,
+                    Translations = x.Word.Translations,
+                    Value = x.Word.Value
+                }).ToListAsync();
+
+            return words;
         }
 
         public async Task<List<Word>> GetOptionsWordsAsync()
@@ -33,18 +69,9 @@ namespace GuessWord.DataAccess.Repositories
             return words;
         }
 
-        public async Task<Word> GetByNameAsync(string value)
+        public  List<WordWithTranslation> GetWordsWithTranslation(int userId, WordStatus status)
         {
-            var word = await _db.Words
-                .Include(x => x.Translations)
-                .ThenInclude(x => x.Translation)
-                .FirstOrDefaultAsync(x => x.Value == value);
-            return word;
-        }
-
-        public List<WordWithTranslation> GetWordsWithTranslation(int userId, WordStatus status)
-        {
-            var result = from userWord in _db.UsersWords
+            var result =  from userWord in _db.UsersWords
                          join word in _db.Words on userWord.WordId equals word.Id
                          join translation in _db.Translations on word.Id equals translation.WordId
                          join word1 in _db.Words on translation.TranslationId equals word1.Id
@@ -56,6 +83,13 @@ namespace GuessWord.DataAccess.Repositories
                          };
 
             return result.ToList();
+        }
+
+        public async Task<Word> CreateAsync(Word newWord)
+        {
+            _db.Words.Add(newWord);
+            await _db.SaveChangesAsync();
+            return newWord;
         }
     }
 }

@@ -33,7 +33,16 @@ namespace GuessWord.Api.Meddleware
                         result.Message = validationException.Message;
                         break;
 
-                    default:
+
+
+                    case NotFoundException notFoundException:
+                        result.StatusCode = (int)HttpStatusCode.NotFound;
+                        result.Message = notFoundException.Message;
+                        break;
+                   
+                        
+                        
+                        default:
                         result.StatusCode = (int)HttpStatusCode.InternalServerError;
                         result.Message = ex.Message;
                         break;

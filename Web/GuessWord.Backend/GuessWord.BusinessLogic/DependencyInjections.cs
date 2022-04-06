@@ -15,7 +15,9 @@ namespace GuessWord.BusinessLogic
             services.AddScoped<ILevelsService, LevelsService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IUserWordsService, UserWordsService>();
+            services.AddScoped<IWordsService, WordsService>();
             services.AddScoped<IUserWordMapper, UserWordMapper>();
+            services.AddScoped<IWordMapper, WordMapper>();
 
 
             

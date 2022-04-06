@@ -35,15 +35,15 @@ namespace GuessWord.Tests
                 .SetupGet(x => x.UserId)
                 .Returns(5);
 
-            _mockWordsRepository
-                .Setup(x => x.GetWordsWithTranslation(It.IsAny<int>(), WordStatus.InProgress))
-                .Returns(new List<WordWithTranslation>
-                {
-                    new WordWithTranslation {Value = "Слово",Translation = "word"},
-                    new WordWithTranslation {Value = "Работа",Translation = "work"},
-                    new WordWithTranslation {Value = "Дом",Translation = "home"},
-                    new WordWithTranslation {Value = "Погода",Translation = "weather"}
-                }) ;
+            //_mockWordsRepository
+            //    .Setup(x => x.GetWordsWithTranslation(It.IsAny<int>(), WordStatus.InProgress))
+            //    .Returns(new List<WordWithTranslation>
+            //    {
+            //        new WordWithTranslation {Value = "Слово",Translation = "word"},
+            //        new WordWithTranslation {Value = "Работа",Translation = "work"},
+            //        new WordWithTranslation {Value = "Дом",Translation = "home"},
+            //        new WordWithTranslation {Value = "Погода",Translation = "weather"}
+            //    }) ;
 
             //_mockWordsRepository
             //    .Setup(x => x.GetOptionsWordsAsync(It.IsAny<int>()))

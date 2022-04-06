@@ -1,4 +1,5 @@
-﻿using GuessWord.BusinessLogic.Exceptions;
+﻿using GuessWord.Api.Models;
+using GuessWord.BusinessLogic.Exceptions;
 using GuessWord.BusinessLogic.Models;
 using GuessWord.BusinessLogic.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -23,15 +24,20 @@ namespace GuessWord.Api.Controllers
 
         [HttpGet(Name = "GetUserWords")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserWordDto>))]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
         public async Task<ActionResult<List<UserWordDto>>> GetAllAsync()
         {
             var userWords = await _userWordsService.GetAllAsync();
+            if (userWords.Count == 0)
+            {
+                throw new NotFoundException("No words");
+            }
             return Ok(userWords);
         }
 
-        [HttpGet("{id}", Name = "GetUserWordById")]
+        [HttpGet("{id}", Name = "GetUserWord")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserWordDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -39,18 +45,16 @@ namespace GuessWord.Api.Controllers
         {
             if (!id.HasValue)
             {
-                return BadRequest("Word is empty");
+                throw new ValidationException("Wrong id");
             }
 
-            try
+            var userWordDto = await _userWordsService.GetAsync(id.Value);
+            if (userWordDto == null)
             {
-                var userWordDto = await _userWordsService.GetAsync(id.Value);
-                return Ok(userWordDto);
+                throw new NotFoundException("");
             }
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            return Ok(userWordDto);
         }
 
         [HttpPost(Name = "CreateUserWord")]
@@ -69,19 +73,20 @@ namespace GuessWord.Api.Controllers
             return Created($"api/user-words/{userWord.Id}", userWord);
         }
 
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpPut("{id}", Name = "UpdateUserWord")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserWordDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserWordDto>> UpdateAsync(int? id, [FromBody] UserWordDto userWordDto)
+        public async Task<ActionResult<UserWordDto>> UpdateAsync(int? id, [FromBody] int? status)
         {
-            if (userWordDto == null || !id.HasValue)
+            if (status == null || !id.HasValue)
             {
                 return BadRequest("");
             }
+            var updateWord = new UserWordDto();
             try
             {
-                var updateWord = await _userWordsService.UpdateAsync(userWordDto, id.Value);
+                updateWord = await _userWordsService.UpdateAsync(status.Value, id.Value);
             }
             catch (NotFoundException ex)
             {
@@ -91,17 +96,20 @@ namespace GuessWord.Api.Controllers
             {
                 return StatusCode(403, ex.Message);
             }
-            return Ok(userWordDto);
+            return Ok(updateWord);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}", Name = "DeleteUserWord")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> DeleteAsync(int? id)
         {
             if (!id.HasValue)
             {
                 return BadRequest("Id is empty");
             }
-
             try
             {
                 await _userWordsService.DeleteAsync(id.Value);

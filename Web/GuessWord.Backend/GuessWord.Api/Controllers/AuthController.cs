@@ -4,7 +4,6 @@ using GuessWord.BusinessLogic.Models;
 using GuessWord.BusinessLogic.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace GuessWord.Api.Controllers
 {
@@ -43,7 +42,7 @@ namespace GuessWord.Api.Controllers
         {
             if (model == null)
             {
-                return BadRequest("Model is empty");
+                throw new ValidationException("Model is empty");
             }
 
             var signUpResult = _authService.SignUp(model.Name, model.Login, model.Password);

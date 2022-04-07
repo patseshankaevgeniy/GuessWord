@@ -28,8 +28,7 @@
 
                     <Grid BackgroundColor="#e0e0e0"
                           Margin="0"
-                          RowSpacing="0"
-                          >
+                          RowSpacing="0">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>

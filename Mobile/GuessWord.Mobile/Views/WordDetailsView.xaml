@@ -39,6 +39,12 @@
                 HorizontalOptions="CenterAndExpand"
                 FontSize="24"/>
 
+            <SearchBar  
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Margin="5,5,0,15"/>
+
             <Label 
                 Grid.Row="4"
                 Grid.Column="1"

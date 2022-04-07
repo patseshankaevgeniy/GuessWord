@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\CreateWordView.xaml.cs">
+      <DependentUpon>CreateWordView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\WordDetailsView.xaml.cs">
       <DependentUpon>WordDetailsView.xaml</DependentUpon>
     </Compile>

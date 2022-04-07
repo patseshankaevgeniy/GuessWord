@@ -7,7 +7,6 @@ namespace GuessWord.Mobile.Services
 {
     public class FakeUserWordService : IUserWordService
     {
-
         List<UserWord> userWords = new List<UserWord>
             {
                 new UserWord{Status = "Done", Translations = "Дом", Word= "Home", Id = 5},
@@ -71,6 +70,16 @@ namespace GuessWord.Mobile.Services
                 }
             }
             throw new Exception("You don't have this word");
+        }
+
+        public Task<UserWord> CreateAsync(string word)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<UserWord> UpdateAsync(string status, int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

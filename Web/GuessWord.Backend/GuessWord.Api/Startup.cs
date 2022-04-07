@@ -3,11 +3,14 @@ using GuessWord.BusinessLogic;
 using GuessWord.DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Security.Claims;
 using System.Text;
 
@@ -16,11 +19,26 @@ namespace GuessWord.Api
     public class Startup
     {
         private readonly IConfiguration _configuration;
+        public IConfigurationRoot Configuration { get; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration,
+            IHostingEnvironment env)
         {
             _configuration = configuration;
+
+        var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+    
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(_configuration)
+                .CreateLogger();
+
+            Log.Information("Starting up");
         }
+
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -28,6 +46,9 @@ namespace GuessWord.Api
             services
                 .AddBusinessLogicDependencies()
                 .AddDataAccessDependencies(_configuration);
+
+            //Serilog Configuration
+           
 
 
             // Api configuration
@@ -104,8 +125,10 @@ namespace GuessWord.Api
 
         }
 
-        public void Configure(IApplicationBuilder builder)
+        public void Configure(IApplicationBuilder builder, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddSerilog();
+
             builder
                 .UseSwagger()
                 .UseSwaggerUI(options =>
@@ -115,6 +138,7 @@ namespace GuessWord.Api
                 })
                 .UseHttpsRedirection()
                 .UseMiddleware<CustomExceptionHandlerMiddleware>()
+                .UseMiddleware<SerilogMiddleware>()
                 .UseRouting()
                 .UseAuthentication()
                 .UseAuthorization()

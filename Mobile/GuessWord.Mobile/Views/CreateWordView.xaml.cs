@@ -15,19 +15,17 @@ namespace GuessWord.Mobile.Views
 
         protected override void OnAppearing()
         {
-            WordValueEntry.TextChanged += EntryOnTextChanged;
-            TranslationEntry.TextChanged += EntryOnTextChanged;
+           
             base.OnAppearing();
         }
 
         protected override void OnDisappearing()
         {
-            WordValueEntry.TextChanged -= EntryOnTextChanged;
-            TranslationEntry.TextChanged -= EntryOnTextChanged;
+            
             base.OnDisappearing();
         }
 
-        private void EntryOnTextChanged(object sender, TextChangedEventArgs args)
+        private void OpenSearchBar(object sender, TextChangedEventArgs args)
         {
             ViewModel.Validate();
         }

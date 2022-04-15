@@ -24,7 +24,8 @@ namespace GuessWord.Mobile.Services
 
         public async Task<List<UserWord>> GetAllAsync()
         {
-            return userWords;
+            //return userWords;
+            return null;
         }
 
         public async Task<UserWord> GetAsync(int id)

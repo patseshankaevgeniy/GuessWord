@@ -1,5 +1,5 @@
 ﻿using GuessWord.Mobile.Infrastructure;
-        using GuessWord.Mobile.Models;
+using GuessWord.Mobile.Models;
 using GuessWord.Mobile.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,7 +15,12 @@ namespace GuessWord.Mobile.ViewModels
         public UserWord SelectedWord { get; set; }
         public IList<UserWord> UserWords { get; set; }
 
-        public Command OnSelectionChanged { get; set; }
+        public Command NavigateToWordCreateViewCommand { get; set; }
+
+
+
+
+        public Command<UserWord> NavigateToWordDetailsCommand { get; set; }
 
         public UserWordViewModel(
             INavigationService navigationService,
@@ -24,12 +29,17 @@ namespace GuessWord.Mobile.ViewModels
             _navigationService = navigationService;
             _userWordService = userWordService;
             UserWords = new List<UserWord>();
-            OnSelectionChanged = new Command(SelectionChanged);
+            NavigateToWordDetailsCommand = new Command<UserWord>(async (userWord) => await NavigateToWordDetailsAsync());
+            NavigateToWordCreateViewCommand = new Command(async () => await NavigateToCreateWordViewAsync());
         }
 
-        public async void SelectionChanged()
+        private async Task NavigateToCreateWordViewAsync()
         {
-            
+            await _navigationService.NavigateToCreateWordViewAsync();
+        }
+
+        public async Task NavigateToWordDetailsAsync()
+        {
             await _navigationService.NavigateToWordViewAsync(SelectedWord.Id);
         }
 

@@ -1,5 +1,4 @@
 ﻿using GuessWord.Mobile.Infrastructure;
-using GuessWord.Mobile.Models;
 using GuessWord.Mobile.Services;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -13,13 +12,14 @@ namespace GuessWord.Mobile.ViewModels
 
         public string Word { get; set; }
         public string WordErrorText { get; set; }
-        public bool IsWordErrorVisible { get; set; }
+        public bool IsWordVisible { get; set; }
 
         public string Translation { get; set; }
         public string TranslationErrorText { get; set; }
-        public bool IsTranslationErrorVisible { get; set; }
+        public bool IsSearchBarVisible { get; set; }
 
-        public Command CreateCommand { get; set; }
+        public Command OpenSearchBarCommand { get; set; }
+        public Command CreateWordCommand { get; set; }
 
         public CreateWordViewModel(
                 IUserWordService userWordService,
@@ -27,7 +27,16 @@ namespace GuessWord.Mobile.ViewModels
         {
             _userWordService = userWordService;
             _navigationService = navigationService;
-            CreateCommand = new Command(async ()=> await CreateAsync());
+            CreateWordCommand = new Command(async () => await CreateAsync());
+            OpenSearchBarCommand = new Command(OpenSearchBar);
+            IsWordVisible = true;
+            IsSearchBarVisible = false;
+        }
+
+        private void OpenSearchBar()
+        {
+            IsWordVisible = false;
+            IsSearchBarVisible = true;
         }
 
         private async Task CreateAsync()
@@ -41,28 +50,6 @@ namespace GuessWord.Mobile.ViewModels
         public bool Validate()
         {
             var isValid = true;
-
-            if (string.IsNullOrEmpty(Word))
-            {
-                WordErrorText = "Name is empty.";
-                IsWordErrorVisible = true;
-                isValid = false;
-            }
-            else
-            {
-                IsWordErrorVisible = false;
-            }
-
-            if (string.IsNullOrEmpty(Translation))
-            {
-                TranslationErrorText = "Translation is empty.";
-                IsTranslationErrorVisible = true;
-                isValid = false;
-            }
-            else
-            {
-                IsTranslationErrorVisible = false;
-            }
             return isValid;
         }
     }

@@ -70,7 +70,7 @@ namespace GuessWord.Mobile.Services
 
         public async Task NavigateToCreateWordViewAsync()
         {
-            await _shell.GoToAsync($"//{nameof(CreateWordView)}");
+            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(CreateWordView)}");
         }
     }
 }

@@ -47,7 +47,7 @@ namespace GuessWord.Mobile
                 var currentUserService = services.GetService<ICurrentUserService>();
                 var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", currentUserService.AccessToken);
-                return new GuessWordApiClient("https://6df2-178-172-234-92.ngrok.io/", httpClient);
+                return new GuessWordApiClient("https://7715-178-172-234-92.ngrok.io/", httpClient);
                 }
                 catch (Exception)
                 {

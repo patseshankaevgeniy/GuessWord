@@ -17,16 +17,22 @@ namespace GuessWord.Mobile.Services
         public async Task<List<Models.UserWord>> GetAllAsync()
         {
             var userWords = await _apiClient.GetUserWordsAsync();
-            
-            return userWords
-                .Select(x => new Models.UserWord
-                {
-                    Id = x.Id,
-                    Word = x.Word,
-                    Status = x.Status.ToString(),
-                    //Translations = x.Translations.Aggregate((left, right) => left + " , " + right)
-                })
-                .ToList();
+
+            if (userWords != null)
+            {
+                return userWords
+                    .Select(x => new Models.UserWord
+                    {
+                        Id = x.Id,
+                        Word = x.Word,
+                        Status = x.Status.ToString(),
+                        Translations = x.Translations.Aggregate((aggregate, value) =>
+                                                                 aggregate.Length == 1 ?
+                                                                 aggregate + value : aggregate + ", " + value)
+                    })
+                    .ToList();
+            }
+            return null;
         }
 
         public async Task<Models.UserWord> GetAsync(int id)

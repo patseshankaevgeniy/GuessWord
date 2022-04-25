@@ -6,16 +6,16 @@ using Xamarin.Forms.Xaml;
 namespace GuessWord.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CreateWordView : BaseView<CreateWordViewModel>
+    public partial class SearchWordView : BaseView<SearchWordViewModel>
     {
-        public CreateWordView()
+        public SearchWordView()
         {
             InitializeComponent();
         }
 
         protected override void OnAppearing()
         {
-           // WordSearchBar.TextChanged += OntextChange;
+            WordSearchBar.TextChanged += OntextChange;
             base.OnAppearing();
         }
 
@@ -28,15 +28,13 @@ namespace GuessWord.Mobile.Views
 
         private async void OntextChange(object sender, TextChangedEventArgs args)
         {
-         // await ViewModel.SearchNewWordAsync(args.NewTextValue);
-            
-
+            await ViewModel.SearchWordsAsync(args.NewTextValue);
 
         }
 
         private void OpenSearchBar(object sender, TextChangedEventArgs args)
         {
-           // ViewModel.Validate();
+            // ViewModel.Validate();
         }
     }
 }

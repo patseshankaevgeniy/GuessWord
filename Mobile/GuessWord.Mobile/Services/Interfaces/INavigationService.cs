@@ -1,5 +1,4 @@
-﻿using GuessWord.Mobile.Models;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace GuessWord.Mobile.Services
 {
@@ -15,6 +14,9 @@ namespace GuessWord.Mobile.Services
         Task NavigateToUserWordAsync();
         Task NavigateToWordViewAsync(int wordId);
         Task NavigateToCreateWordViewAsync();
+        Task NavigateToAddWordViewAsync();
+        Task NavigateToSearchWordViewAsync();
+        Task NavigateToEditWordViewAsync(int wordId);
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using GuessWord.BusinessLogic.Models;
 using GuessWord.Domain.Entities;
+using System.Linq;
 
 namespace GuessWord.BusinessLogic.Services.Mappers
 {
@@ -10,9 +11,8 @@ namespace GuessWord.BusinessLogic.Services.Mappers
             var wordDto = new WordDto
             {
                 Value = word.Value,
-                UserWords = word.UserWords,
-                Translations = word.Translations,
-                Language = word.Language,
+                Translations = word.Translations.Select(x => x.Translation.Value)
+                        .ToList(),
                 Id = word.Id
             };
 

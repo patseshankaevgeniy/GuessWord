@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvvm:BaseView x:TypeArguments="vm:SearchWordViewModel"
+               xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:mvvm="clr-namespace:GuessWord.Mobile.Infrastructure;assembly=GuessWord.Mobile"
+               xmlns:vm="clr-namespace:GuessWord.Mobile.ViewModels"
+               x:Class="GuessWord.Mobile.Views.SearchWordView"
+               Shell.NavBarIsVisible="False">
+    <mvvm:BaseView.Content>
+        <StackLayout>
+            <SearchBar Grid.Row="1"
+                               Grid.Column="0"
+                               Grid.ColumnSpan="3"
+                               x:Name="WordSearchBar"
+                               Placeholder="Write your word..."/>
+
+            <CollectionView    ItemsSource="{Binding SearchWords}"
+                               SelectionMode="Single"
+                               SelectedItem="{Binding SelectedWord}"
+                               SelectionChangedCommand="{Binding AddWordCommand}">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="1"
+                                     VerticalItemSpacing="5"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="#e0e0e0"
+                                      Margin = "0"
+                                      RowSpacing="0">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Row="0"
+                                           Grid.Column="0"
+                                           Text="{Binding Value}"
+                                           FontSize="22"/>
+                            <Label Grid.Row="0"
+                                           Grid.Column="2"
+                                           Text="{Binding Translations}"
+                                           FontSize="22"/>
+
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </mvvm:BaseView.Content>
+</mvvm:BaseView>

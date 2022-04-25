@@ -21,6 +21,9 @@ namespace GuessWord.Mobile.Services
             Routing.RegisterRoute(nameof(UserWordView), typeof(UserWordView));
             Routing.RegisterRoute(nameof(WordDetailsView), typeof(WordDetailsView));
             Routing.RegisterRoute(nameof(CreateWordView), typeof(CreateWordView));
+            Routing.RegisterRoute(nameof(AddWordView), typeof(AddWordView));
+            Routing.RegisterRoute(nameof(SearchWordView), typeof(SearchWordView));
+            Routing.RegisterRoute(nameof(EditWordView), typeof(EditWordView));
         }
 
         public async Task NavigateToSignInAsync()
@@ -71,6 +74,20 @@ namespace GuessWord.Mobile.Services
         public async Task NavigateToCreateWordViewAsync()
         {
             await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(CreateWordView)}");
+        }
+
+        public async Task NavigateToAddWordViewAsync()
+        {
+            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(AddWordView)}");
+        }
+
+        public async Task NavigateToSearchWordViewAsync()
+        {
+            await _shell.GoToAsync($"//{nameof(AddWordView)}/{nameof(SearchWordView)}");
+        } 
+        public async Task NavigateToEditWordViewAsync(int wordId)
+        {
+            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(EditWordView)}?{nameof(EditWordViewModel.WordId)}={wordId}");
         }
     }
 }

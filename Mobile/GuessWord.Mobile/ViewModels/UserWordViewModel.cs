@@ -12,15 +12,14 @@ namespace GuessWord.Mobile.ViewModels
         private readonly INavigationService _navigationService;
         private readonly IUserWordService _userWordService;
 
+        public bool IsNoWordsVisible { get; set; }
+        public bool IsWordsVisible { get; set; }
+
         public UserWord SelectedWord { get; set; }
         public IList<UserWord> UserWords { get; set; }
 
         public Command NavigateToWordCreateViewCommand { get; set; }
-
-
-
-
-        public Command<UserWord> NavigateToWordDetailsCommand { get; set; }
+        public Command<UserWord> NavigateToEditWordViewCommand { get; set; }
 
         public UserWordViewModel(
             INavigationService navigationService,
@@ -29,18 +28,11 @@ namespace GuessWord.Mobile.ViewModels
             _navigationService = navigationService;
             _userWordService = userWordService;
             UserWords = new List<UserWord>();
-            NavigateToWordDetailsCommand = new Command<UserWord>(async (userWord) => await NavigateToWordDetailsAsync());
+            NavigateToEditWordViewCommand = new Command<UserWord>(async (userWord) => await NavigateToEditWordViewAsync());
             NavigateToWordCreateViewCommand = new Command(async () => await NavigateToCreateWordViewAsync());
-        }
+            IsWordsVisible = true;
+            IsNoWordsVisible = false;
 
-        private async Task NavigateToCreateWordViewAsync()
-        {
-            await _navigationService.NavigateToCreateWordViewAsync();
-        }
-
-        public async Task NavigateToWordDetailsAsync()
-        {
-            await _navigationService.NavigateToWordViewAsync(SelectedWord.Id);
         }
 
         public override async Task OnInitializedAsync()
@@ -49,6 +41,7 @@ namespace GuessWord.Mobile.ViewModels
 
             if (userWords != null)
             {
+                IsNoWordsVisible = false;
                 UserWords.Clear();
 
                 foreach (var userWord in userWords)
@@ -56,6 +49,21 @@ namespace GuessWord.Mobile.ViewModels
                     UserWords.Add(userWord);
                 }
             }
+            if (userWords == null)
+            {
+                IsNoWordsVisible = true;
+                IsWordsVisible = false;
+            }
+        }
+
+        private async Task NavigateToCreateWordViewAsync()
+        {
+           await _navigationService.NavigateToAddWordViewAsync();
+        }
+
+        public async Task NavigateToEditWordViewAsync()
+        {
+            await _navigationService.NavigateToEditWordViewAsync(SelectedWord.Id);
         }
     }
 }

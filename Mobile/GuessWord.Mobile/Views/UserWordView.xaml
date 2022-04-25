@@ -8,9 +8,11 @@
                Shell.NavBarIsVisible="False">
 
     <mvvm:BaseView.Content>
+
+
         <StackLayout>
             <Label Padding="20"
-                VerticalOptions="CenterAndExpand"
+                VerticalOptions="StartAndExpand"
                     HorizontalOptions="EndAndExpand">
                 <Label.FormattedText>
                     <FormattedString>
@@ -25,56 +27,60 @@
                 </Label.FormattedText>
             </Label>
 
-            <CollectionView ItemsSource="{Binding UserWords}"
+            <StackLayout IsVisible="{Binding IsNoWordsVisible}">
+                <Label Text="Please add word to learn"/>
+            </StackLayout>
+
+            <StackLayout IsVisible="{Binding IsWordsVisible}">
+                
+                <CollectionView ItemsSource="{Binding UserWords}"
                         SelectionMode="Single"
                         SelectedItem="{Binding SelectedWord}"
-                        SelectionChangedCommand="{Binding OnSelectionChanged}"
-                        EmptyView="Please add word to learn"
-                        Margin="20"
-                        >
-                <CollectionView.ItemsLayout>
+                        SelectionChangedCommand="{Binding NavigateToEditWordViewCommand}"
+                        Margin="20">
+                    <CollectionView.ItemsLayout>
 
-
-                    <GridItemsLayout Orientation="Vertical"
+                        <GridItemsLayout Orientation="Vertical"
                                  Span="1"
                                  VerticalItemSpacing="20"
                                  />
-                </CollectionView.ItemsLayout>
+                    </CollectionView.ItemsLayout>
 
-                <CollectionView.ItemTemplate>
+                    <CollectionView.ItemTemplate>
 
-                    <DataTemplate>
+                        <DataTemplate>
 
-                        <Grid BackgroundColor="#e0e0e0"
+                            <Grid BackgroundColor="#e0e0e0"
                           Margin="0"
                           RowSpacing="0">
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Label Grid.Row="0"
+                                <Label Grid.Row="0"
                                Text="{Binding Word}"
                                FontAttributes="Bold, Italic"
                                FontSize="16"/>
 
-                            <Label Grid.Row="1"
+                                <Label Grid.Row="1"
                                Padding="0"
                                Text="{Binding Translations}"/>
 
-                            <Label Grid.Column="2"
+                                <Label Grid.Column="2"
                                Grid.Row="0"
                                Grid.ColumnSpan="2"
                                Text="{Binding Status}"/>
 
-                        </Grid>
+                            </Grid>
 
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
 
-            </CollectionView>
+                </CollectionView>
+            </StackLayout>
 
 
         </StackLayout>

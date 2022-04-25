@@ -32,6 +32,9 @@ namespace GuessWord.Mobile
             services.AddTransient<UserWordViewModel>();
             services.AddTransient<WordDetailsViewModel>();
             services.AddTransient<CreateWordViewModel>();
+            services.AddTransient<AddWordViewModel>();
+            services.AddTransient<SearchWordViewModel>();
+            services.AddTransient<EditWordViewModel>();
             services.AddSingleton<ILevelsController, LevelsController>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IAuthService, AuthService>();
@@ -40,6 +43,8 @@ namespace GuessWord.Mobile
             services.AddSingleton<ICurrentUserService, FakeCurrentUserService>();
             //services.AddSingleton<IUserWordService, UserWordService>();
             services.AddSingleton<IUserWordService, FakeUserWordService>();
+            //services.AddSingleton<IWordService, WordService>();
+            services.AddSingleton<IWordService, FakeWordService>();
             services.AddTransient<IGuessWordApiClient>(services=>
             {
                 try

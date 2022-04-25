@@ -58,7 +58,7 @@ namespace GuessWord.Api.Controllers
         }
 
         [HttpGet("search/{letter}", Name = "GetByLetter")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(WordDto))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<WordDto>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
         public async Task<ActionResult<List<WordDto>>> GetByLetterAsync(string letter)

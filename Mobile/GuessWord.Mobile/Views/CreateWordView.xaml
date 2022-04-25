@@ -6,7 +6,7 @@
                xmlns:vm="clr-namespace:GuessWord.Mobile.ViewModels"
                x:Class="GuessWord.Mobile.Views.CreateWordView"
                Shell.NavBarIsVisible="False">
-    <mvvm:BaseView.Content>
+    <mvvm:BaseView.Content> 
         <StackLayout>
 
 
@@ -21,6 +21,9 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="45"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
@@ -52,21 +55,137 @@
                            IsVisible="{Binding IsWordVisible}"
                            Text="Word: "/>
 
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Padding="20"
+                           IsVisible="{Binding IsTranslationsVisible}"
+                           Text="{Binding Word}"/>
+
                     <Button Grid.Row="1"
                             Grid.Column="2"
-                           Padding="20"
+                            Padding="20"
                             x:Name="AddWordButton"
-                            Text="add"
+                            Text="{Binding TextWordButton}"
                             TextColor="Blue"
-                            Command="{Binding OpenSearchBarCommand}"
+                            Command="{Binding GoToSearchBarCommand}"
                             IsVisible="{Binding IsWordVisible}"
                             />
+
+                    <Label Grid.Row="2"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Padding="20"
+                           IsVisible="{Binding IsTranslationsVisible}"
+                           Text="Translations: "/>
+
+                    <Button Grid.Row="2"
+                            Grid.Column="2"
+                            Padding="20"
+                            x:Name="TranslationButton"
+                            Text="Add"
+                            TextColor="Blue"
+                            Command="{Binding AddNewTranslationCommand}"
+                            IsVisible="{Binding IsTranslationsVisible}"/>
+
+                    <StackLayout Grid.Row="3"
+                                 Grid.Column="0"
+                                 Grid.ColumnSpan="3"
+                                 IsVisible="{Binding IsAddNewTranslationVisible}"
+                                 BackgroundColor="#dcd8d9">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Entry Grid.Row="0"
+                                   Grid.Column="0"
+                                   Grid.ColumnSpan="2"
+                                   Placeholder="Enter translation"
+                                   x:Name="TranslationEntry"
+                                   Text="{Binding NewTranslation}"/>
+
+                            <Button Grid.Row="0"
+                                    Grid.Column="2"
+                                    Text="Save"
+                                    TextColor="Blue"
+                                    Command="{Binding SaveTranslationCommand}"/>
+                        </Grid>
+
+
+
+                    </StackLayout>
+
+                    <ListView Grid.Row="4"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="3"
+                              IsVisible="{Binding IsAddNewTranslationVisible}"
+                              ItemsSource="{Binding Translations}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout>
+
+                                </StackLayout>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                    </ListView>
+
+
 
                     <SearchBar Grid.Row="1"
                                Grid.Column="0"
                                Grid.ColumnSpan="3"
+                               x:Name="WordSearchBar"
                                IsVisible="{Binding IsSearchBarVisible}"
                                Placeholder="Write your word..."/>
+
+                    <CollectionView Grid.Row="2"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="3"
+                                    ItemsSource="{Binding ViewWords}"
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedWord}"
+                                    IsVisible="{Binding IsSearchBarVisible}"
+                                    SelectionChangedCommand="{Binding ChooseWordCommand}">
+
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                             Span="1"
+                                             VerticalItemSpacing="5"/>
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="#e0e0e0"
+                                      Margin = "0"
+                                      RowSpacing="0">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Row="0"
+                                           Grid.Column="0"
+                                           Text="{Binding Value}"
+                                           FontSize="22"/>
+                                    <Label Grid.Row="0"
+                                           Grid.Column="2"
+                                           Text="{Binding Translations}"
+                                           FontSize="22"/>
+
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+
                 </Grid>
             </StackLayout>
 

@@ -29,15 +29,15 @@ namespace GuessWord.BusinessLogic.Services
         {
             var words = await _wordsRepository.GetAllAsync();
 
-           var wordsDto = words
-                .Select(x => new WordDto
-                {
-                    Id = x.Id,
-                    Language = x.Language,
-                    Translations = x.Translations,
-                    UserWords = x.UserWords,
-                    Value = x.Value
-                }).ToList();
+            var wordsDto = words
+                 .Select(x => new WordDto
+                 {
+                     Id = x.Id,
+                     Value = x.Value,
+                     Translations = x.Translations
+                                             .Select(x => x.Translation.Value)
+                                             .ToList()
+                 }).ToList();
 
             return wordsDto;
         }
@@ -67,9 +67,9 @@ namespace GuessWord.BusinessLogic.Services
                 .Select(x => new WordDto
                 {
                     Id = x.Id,
-                    Language = x.Language,
-                    Translations = x.Translations,
-                    UserWords = x.UserWords,
+                    Translations = x.Translations
+                        .Select(x => x.Translation.Value)
+                        .ToList(),
                     Value = x.Value
                 })
                 .ToList();
@@ -97,7 +97,7 @@ namespace GuessWord.BusinessLogic.Services
 
         public async Task<List<WordWithTranslation>> GetWordsWithTranslation(int userId, WordStatus status)
         {
-            var words =  _wordsRepository.GetWordsWithTranslation(userId, status);
+            var words = _wordsRepository.GetWordsWithTranslation(userId, status);
             return words;
         }
     }

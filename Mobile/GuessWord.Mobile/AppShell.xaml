@@ -2,6 +2,10 @@
 <Shell xmlns="http://xamarin.com/schemas/2014/forms"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:GuessWord.Mobile.Views"
+       xmlns:auth="clr-namespace:GuessWord.Mobile.Views.Auth"
+       xmlns:game="clr-namespace:GuessWord.Mobile.Views.Game"
+       xmlns:settings="clr-namespace:GuessWord.Mobile.Views.Settings"
+       xmlns:userWords="clr-namespace:GuessWord.Mobile.Views.UserWords"
        Title="NavigationProject"
        x:Class="GuessWord.Mobile.AppShell">
 
@@ -26,34 +30,32 @@
     <TabBar>
 
 
-            <ShellContent Title="Home" 
+        <ShellContent Title="Home" 
                           Icon="icon_about.png"
                           Route="HomeView" 
                           ContentTemplate="{DataTemplate local:HomeView}" />
 
 
         <ShellContent Title="Words" 
-                          Route="CreateWordView"
-                          ContentTemplate="{DataTemplate local:UserWordView}"/>
-        
+                          Route="UserWordView"
+                          ContentTemplate="{DataTemplate userWords:UserWordView}"/>
+
         <ShellContent Title="Settings" 
                           Icon="icon_about.png"
-                          ContentTemplate="{DataTemplate local:SettingsView}" />
+                          ContentTemplate="{DataTemplate settings:SettingsView}" />
 
     </TabBar>
 
     <TabBar>
-        <ShellContent Route="SignInView" ContentTemplate="{DataTemplate local:SignInView}" />
+        <ShellContent Route="SignInView" ContentTemplate="{DataTemplate auth:SignInView}" />
     </TabBar>
 
-    <ShellContent Route="CreateWordView" ContentTemplate="{DataTemplate local:CreateWordView}" />
-    <ShellContent Route="AddWordView" ContentTemplate="{DataTemplate local:AddWordView}" />
-    <ShellContent Route="PlayView" ContentTemplate="{DataTemplate local:PlayView}" />
-    <ShellContent Route="FinishGameView" ContentTemplate="{DataTemplate local:FinishGameView}" />
-    <ShellContent Route="UserWordView" ContentTemplate="{DataTemplate local:UserWordView}" />
-    <ShellContent Route="WordDetailsView" ContentTemplate="{DataTemplate local:WordDetailsView}" />
-    <ShellContent Route="SearchWordView" ContentTemplate="{DataTemplate local:SearchWordView}" />
-    <ShellContent Route="EditWordView" ContentTemplate="{DataTemplate local:EditWordView}" />
-
+    <ShellContent Route="SignUpView" ContentTemplate="{DataTemplate auth:SignUpView}" />
+    <ShellContent Route="AddWordView" ContentTemplate="{DataTemplate userWords:AddWordView}" />
+    <ShellContent Route="EditWordView" ContentTemplate="{DataTemplate userWords:EditWordView}" />
+    <ShellContent Route="SearchWordView" ContentTemplate="{DataTemplate userWords:SearchWordView}" />
+    <ShellContent Route="PlayView" ContentTemplate="{DataTemplate game:PlayView}" />
+    <ShellContent Route="FinishGameView" ContentTemplate="{DataTemplate game:FinishGameView}" />
+    <ShellContent Route="FinishGameView" ContentTemplate="{DataTemplate game:FinishGameView}" />
 
 </Shell>

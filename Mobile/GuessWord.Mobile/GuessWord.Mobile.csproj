@@ -11,29 +11,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fody" Version="6.6.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\CreateWordView.xaml.cs">
-      <DependentUpon>CreateWordView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\WordDetailsView.xaml.cs">
-      <DependentUpon>WordDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\SignUpView.xaml.cs">
+    <ProjectReference Include="..\GuessWord.Mobile.Application\GuessWord.Mobile.Application.csproj" />
+    <ProjectReference Include="..\GuessWord.Mobile.Infrastructure\GuessWord.Mobile.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\Auth\SignUpView.xaml.cs">
       <DependentUpon>SignUpView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\UserWordView.xaml.cs">
+    <Compile Update="Views\UserWords\UserWordView.xaml.cs">
       <DependentUpon>UserWordView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -42,31 +36,31 @@
     <EmbeddedResource Update="AppShell.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\AddWordView.xaml">
+    <EmbeddedResource Update="Views\UserWords\AddWordView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\EditWordView.xaml">
+    <EmbeddedResource Update="Views\UserWords\EditWordView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\FinishGameView.xaml">
+    <EmbeddedResource Update="Views\Game\FinishGameView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\HomeView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\PlayView.xaml">
+    <EmbeddedResource Update="Views\Game\PlayView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\SearchWordView.xaml">
+    <EmbeddedResource Update="Views\UserWords\SearchWordView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\SettingsView.xaml">
+    <EmbeddedResource Update="Views\Settings\SettingsView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\SignInView.xaml">
+    <EmbeddedResource Update="Views\Auth\SignInView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\SignUpView.xaml">
+    <EmbeddedResource Update="Views\Auth\SignUpView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

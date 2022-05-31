@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvvm:BaseView x:TypeArguments="vm:UserWordViewModel"
+               xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:vm="clr-namespace:GuessWord.Mobile.Application.UserWords.ViewModels;assembly=GuessWord.Mobile.Application"
+               xmlns:mvvm="clr-namespace:GuessWord.Mobile.Views;assembly=GuessWord.Mobile"
+               x:Class="GuessWord.Mobile.Views.UserWords.UserWordView">
+
+    <mvvm:BaseView.Content>
+
+
+        <StackLayout>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="5"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="1"
+                       Grid.Column="4"
+                       Padding="20"
+                       VerticalOptions="StartAndExpand"
+                       HorizontalOptions="EndAndExpand">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Add"
+                              TextDecorations="Underline"
+                              TextColor="Blue">
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding NavigateToWordCreateViewCommand}"/>
+                                </Span.GestureRecognizers>
+                            </Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+
+                <Label Grid.Row="1"
+                       Grid.Column="1"
+                       Grid.ColumnSpan="3"
+                       VerticalOptions="Center"
+                       IsVisible="{Binding IsNoWordsVisible}"
+                       Text="Please add word to learn"/>
+
+
+
+
+                <StackLayout Grid.Row="1"
+                             Grid.Column="1"
+                             Grid.ColumnSpan="4"
+                             IsVisible="{Binding IsWordsVisible}">
+
+                    <CollectionView ItemsSource="{Binding UserWords}"
+                                SelectionMode="Single"
+                                SelectedItem="{Binding SelectedWord}"
+                                SelectionChangedCommand="{Binding NavigateToEditWordViewCommand}"
+                                Margin="20">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                             Span="1"
+                                             VerticalItemSpacing="20"/>
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame CornerRadius="10"  
+                                       Padding="0">
+                                    <Grid BackgroundColor="#e0e0e0"
+                                          Margin="0"
+                                          RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="5"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="5"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="5"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="5"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="5"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Grid.Row="1"
+                                               Grid.Column="1"
+                                               Text="{Binding Word}"
+                                               FontAttributes="Bold, Italic"
+                                               FontSize="16"/>
+
+                                        <Label Grid.Row="3"
+                                               Grid.Column="1"
+                                               Grid.ColumnSpan="2"
+                                               Text="{Binding Translations}"
+                                               Padding="0"/>
+
+                                        <Label Grid.Column="3"
+                                               Grid.Row="1"
+                                               Text="{Binding Status}"/>
+
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    
+                </StackLayout>
+                
+            </Grid>
+        </StackLayout>
+
+    </mvvm:BaseView.Content>
+</mvvm:BaseView>

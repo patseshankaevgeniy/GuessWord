@@ -9,11 +9,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuessWord.Mobile", "GuessWo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{BAC2058F-9864-41F8-9899-8EB159A5451D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{D7316099-2A44-466F-B64A-0F672E8C454A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{D7316099-2A44-466F-B64A-0F672E8C454A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D5E9757A-8146-4F55-95BA-F626ECEAC30B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessWord.Mobile.Test", "GuessWord.Mobile.Test\GuessWord.Mobile.Test.csproj", "{29FB6EFE-269F-41E1-8E6C-8C35215FA96A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuessWord.Mobile.Test", "GuessWord.Mobile.Test\GuessWord.Mobile.Test.csproj", "{29FB6EFE-269F-41E1-8E6C-8C35215FA96A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessWord.Mobile.Application", "GuessWord.Mobile.Application\GuessWord.Mobile.Application.csproj", "{CC5F6383-54C5-4F48-8BFE-F2DDBFCAE7DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{694853EB-5322-43DE-9D7B-BF241F731AA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuessWord.Mobile.Infrastructure", "GuessWord.Mobile.Infrastructure\GuessWord.Mobile.Infrastructure.csproj", "{A4F31F92-97E1-4896-ABAB-DC19DE43226D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +43,24 @@ Global
 		{29FB6EFE-269F-41E1-8E6C-8C35215FA96A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29FB6EFE-269F-41E1-8E6C-8C35215FA96A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29FB6EFE-269F-41E1-8E6C-8C35215FA96A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC5F6383-54C5-4F48-8BFE-F2DDBFCAE7DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC5F6383-54C5-4F48-8BFE-F2DDBFCAE7DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC5F6383-54C5-4F48-8BFE-F2DDBFCAE7DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC5F6383-54C5-4F48-8BFE-F2DDBFCAE7DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F31F92-97E1-4896-ABAB-DC19DE43226D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F31F92-97E1-4896-ABAB-DC19DE43226D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F31F92-97E1-4896-ABAB-DC19DE43226D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F31F92-97E1-4896-ABAB-DC19DE43226D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D0F597DB-162D-4FC3-95E2-B3A17FC9B374} = {BAC2058F-9864-41F8-9899-8EB159A5451D}
-		{549FFEDD-86D6-4CEC-B007-7C60032024A5} = {D7316099-2A44-466F-B64A-0F672E8C454A}
+		{549FFEDD-86D6-4CEC-B007-7C60032024A5} = {BAC2058F-9864-41F8-9899-8EB159A5451D}
 		{29FB6EFE-269F-41E1-8E6C-8C35215FA96A} = {D5E9757A-8146-4F55-95BA-F626ECEAC30B}
+		{CC5F6383-54C5-4F48-8BFE-F2DDBFCAE7DC} = {D7316099-2A44-466F-B64A-0F672E8C454A}
+		{A4F31F92-97E1-4896-ABAB-DC19DE43226D} = {694853EB-5322-43DE-9D7B-BF241F731AA4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EDE2DE81-6F0D-47C9-988F-E75D543C3CCA}

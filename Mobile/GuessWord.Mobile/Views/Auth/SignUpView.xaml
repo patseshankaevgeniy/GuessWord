@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvvm:BaseView x:TypeArguments="vm:SignUpViewModel"
+               xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:mvvm="clr-namespace:GuessWord.Mobile.Views;assembly=GuessWord.Mobile"
+               xmlns:vm="clr-namespace:GuessWord.Mobile.Application.Auth.ViewModels;assembly=GuessWord.Mobile.Application"
+               x:Class="GuessWord.Mobile.Views.Auth.SignUpView">
+    <mvvm:BaseView.Content>
+        <Grid BackgroundColor="#e9e7e8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="140"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label 
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="Name"/>
+
+            <Entry 
+                Grid.Row="2"
+                Grid.Column="1"
+                x:Name="UserNameEntry"
+                Text="{Binding UserName}"
+                BackgroundColor="#dcd8d9"
+                Placeholder="Name"/>
+
+            <Label
+                Grid.Row="3"
+                Grid.Column="1"
+                Text="{Binding UserNameErrorText}"
+                IsVisible="{Binding IsUserNameErrorVisible}"
+                TextColor="Red"/>
+
+            <Label 
+                Grid.Row="5"
+                Grid.Column="1"
+                Text="Login"/>
+
+            <Entry 
+                Grid.Row="6"
+                Grid.Column="1"
+                x:Name="LoginEntry"
+                Text="{Binding Login}"
+                BackgroundColor="#dcd8d9"
+                Placeholder="Login"/>
+
+            <Label
+                Grid.Row="7"
+                Grid.Column="1"
+                Text="{Binding LoginErrorText}"
+                IsVisible="{Binding IsLoginErrorVisible}"
+                TextColor="Red"/>
+
+            <Label 
+                Grid.Row="9"
+                Grid.Column="1"
+                Text="Password"/>
+
+            <Entry 
+                Grid.Row="10"
+                Grid.Column="1"
+                x:Name="PasswordEntry"
+                Text="{Binding Password}"
+                BackgroundColor="#dcd8d9"
+                Placeholder="Password"/>
+
+            <Label
+                Grid.Row="11"
+                Grid.Column="1"
+                Text="{Binding PasswordErrorText}"
+                IsVisible="{Binding IsPasswordErrorVisible}"
+                TextColor="Red"/>
+
+            <Button 
+                Grid.Row="13"
+                Grid.Column="1"
+                BackgroundColor="#dcd8d9"
+                Command="{Binding SignUpCommand}"
+                Text="Sign Up"/>
+        </Grid>
+    </mvvm:BaseView.Content>
+</mvvm:BaseView>

@@ -1,5 +1,12 @@
-﻿using GuessWord.Mobile.ViewModels;
+﻿using GuessWord.Mobile.Application.Auth.ViewModels;
+using GuessWord.Mobile.Application.Common.Interfaces;
+using GuessWord.Mobile.Application.Common.Models;
+using GuessWord.Mobile.Application.UserWords.ViewModels;
 using GuessWord.Mobile.Views;
+using GuessWord.Mobile.Views.Auth;
+using GuessWord.Mobile.Views.Game;
+using GuessWord.Mobile.Views.Settings;
+using GuessWord.Mobile.Views.UserWords;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -19,75 +26,74 @@ namespace GuessWord.Mobile.Services
             Routing.RegisterRoute(nameof(HomeView), typeof(HomeView));
             Routing.RegisterRoute(nameof(FinishGameView), typeof(FinishGameView));
             Routing.RegisterRoute(nameof(UserWordView), typeof(UserWordView));
-            Routing.RegisterRoute(nameof(WordDetailsView), typeof(WordDetailsView));
-            Routing.RegisterRoute(nameof(CreateWordView), typeof(CreateWordView));
             Routing.RegisterRoute(nameof(AddWordView), typeof(AddWordView));
             Routing.RegisterRoute(nameof(SearchWordView), typeof(SearchWordView));
             Routing.RegisterRoute(nameof(EditWordView), typeof(EditWordView));
         }
 
+        #region Auth
         public async Task NavigateToSignInAsync()
         {
             await _shell.GoToAsync($"//{nameof(SignInView)}");
         }
-
         public async Task NavigateToSignUpAsync(string login)
         {
             await _shell.GoToAsync($"//{nameof(SignInView)}/{nameof(SignUpView)}?{nameof(SignUpViewModel.Login)}={login}");
         }
-
-        public async Task NavigateBackAsync()
-        {
-            await _shell.GoToAsync("..");
-        }
-
-        public async Task NavigateToMainAsync()
-        {
-            await _shell.GoToAsync($"//{nameof(HomeView)}");
-        }
-
         public async Task NavigateToSignInAfterRegistreAsync(string login, string password)
         {
             await _shell.GoToAsync($"//{nameof(SignInView)}?{nameof(SignInViewModel.Login)}={login}&{nameof(SignInViewModel.Password)}={password}");
         }
 
-        public async Task NavigateToPlayViewAsync()
-        {
-            await _shell.GoToAsync($"//{nameof(PlayView)}");
-        }
+        #endregion
 
-        public async Task NavigateToFinishGameAsync()
+        #region UserWords
+        public async Task NavigateToUserWordAsync(bool wordChaneged)
         {
-            await _shell.GoToAsync($"//{nameof(FinishGameView)}");
+            await _shell.GoToAsync($"//{nameof(UserWordView)}?{nameof(UserWordViewModel.SourceChanged)}={wordChaneged}");
         }
-
-        public async Task NavigateToUserWordAsync()
-        {
-            await _shell.GoToAsync($"//{nameof(UserWordView)}");
-        }
-
-        public async Task NavigateToWordViewAsync(int wordId)
-        {
-            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(WordDetailsView)}?{nameof(WordDetailsViewModel.WordId)}={wordId}");
-        }
-
-        public async Task NavigateToCreateWordViewAsync()
-        {
-            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(CreateWordView)}");
-        }
-
         public async Task NavigateToAddWordViewAsync()
         {
-            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(AddWordView)}");
+            await _shell.GoToAsync($"///{nameof(UserWordView)}//{nameof(AddWordView)}");
         }
-
         public async Task NavigateToSearchWordViewAsync()
         {
-            await _shell.GoToAsync($"//{nameof(AddWordView)}/{nameof(SearchWordView)}");
-        } 
+            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(AddWordView)}/{nameof(SearchWordView)}");
+        }
+        public async Task NavigateBackFromSearchAsync()
+        {
+            await _shell.GoToAsync($"//{nameof(SearchWordView)}/{nameof(AddWordView)}");
+        }
+        public async Task NavigateToAddWordViewAfterSearchAsync(string word)
+        {
+            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(AddWordView)}?{nameof(AddWordViewModel.Word)}={word}&{nameof(AddWordViewModel.WordSelected)}={true}");
+        }
         public async Task NavigateToEditWordViewAsync(int wordId)
         {
             await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(EditWordView)}?{nameof(EditWordViewModel.WordId)}={wordId}");
         }
+
+        #endregion
+
+        #region Game
+        public async Task NavigateToPlayViewAsync()
+        {
+            await _shell.GoToAsync($"//{nameof(PlayView)}");
+        }
+        public async Task NavigateToFinishGameAsync()
+        {
+            await _shell.GoToAsync($"//{nameof(FinishGameView)}");
+        }
+        #endregion
+
+        public async Task NavigateBackAsync()
+        {
+            await _shell.GoToAsync("..");
+        } 
+        public async Task NavigateToMainAsync()
+        {
+            await _shell.GoToAsync($"//{nameof(HomeView)}");
+        }
+
     }
 }

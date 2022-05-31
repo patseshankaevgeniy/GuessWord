@@ -1,5 +1,7 @@
-﻿using GuessWord.Mobile.Models;
-using GuessWord.Mobile.Services;
+﻿using GuessWord.Mobile.Application.Common.Interfaces;
+using GuessWord.Mobile.Application.UserWords.Models;
+using GuessWord.Mobile.Application.UserWords.Services;
+using GuessWord.Mobile.Application.UserWords.ViewModels;
 using Moq;
 using System.Collections.Generic;
 using System.Threading.Tasks;

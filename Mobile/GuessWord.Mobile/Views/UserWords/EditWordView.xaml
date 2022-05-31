@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvvm:BaseView x:TypeArguments="vm:EditWordViewModel"
+               xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:mvvm="clr-namespace:GuessWord.Mobile.Views;assembly=GuessWord.Mobile"
+               xmlns:vm="clr-namespace:GuessWord.Mobile.Application.UserWords.ViewModels;assembly=GuessWord.Mobile.Application"
+               x:Class="GuessWord.Mobile.Views.UserWords.EditWordView"
+               x:Name="EditWordViewPage"
+               Shell.NavBarIsVisible="True"
+               Shell.TabBarIsVisible="False">
+    
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior 
+            Command="{Binding GoBackCommand}"
+            IconOverride="back.png"/>
+    </Shell.BackButtonBehavior>
+
+    <mvvm:BaseView.Content>
+
+        <StackLayout>
+
+            <StackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0"
+                           Grid.Column="2"
+                           Padding="10"
+                           IsVisible="{Binding IsSaveVisible}"
+                           VerticalOptions="StartAndExpand"
+                           HorizontalOptions="EndAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Save"
+                                      TextDecorations="Underline"
+                                      TextColor="Blue">
+                                    <Span.GestureRecognizers>
+                                        <TapGestureRecognizer  Command="{Binding SaveUserWordCommand}"/>
+                                    </Span.GestureRecognizers>
+                                </Span>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Label Grid.Row="0"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           Text="Edit the word"
+                           FontSize="24"/>
+                </Grid>
+            </StackLayout>
+
+
+            <Grid VerticalOptions="StartAndExpand"
+                  HorizontalOptions="CenterAndExpand">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="1"
+                       Grid.Column="1"
+                       Padding="20"
+                       Text="Word: "/>
+
+                <Label Grid.Row="1"
+                       Grid.Column="2"
+                       Padding="20"
+                       Text="{Binding Word}"/>
+
+                <Label Grid.Row="2"
+                       Grid.Column="1"
+                       Grid.ColumnSpan="2"
+                       Padding="20"
+                       Text="Translations: "/>
+
+                <Button Grid.Row="2"
+                        Grid.Column="3"
+                        Padding="20"
+                        x:Name="TranslationButton"
+                        Text="Add"
+                        TextColor="Blue"
+                        Command="{Binding AddTranslationCommand}"/>
+
+                <StackLayout Grid.Row="4"
+                             Grid.Column="1"
+                             Grid.ColumnSpan="3">
+
+                    <CollectionView ItemsSource="{Binding Translations}"
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedTranslation}">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                             Span="1"
+                                             VerticalItemSpacing="10"
+                                             />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate >
+                            <DataTemplate >
+                                <Frame 
+                                    CornerRadius="5"
+                                    Padding="0" 
+                                    BackgroundColor="#e0e0e0">
+
+                                    <Grid 
+                                    Margin="0"
+                                    RowSpacing="0">
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="40"/>
+                                        </Grid.RowDefinitions>
+
+                                        <StackLayout Grid.Row="0"
+                                                 Grid.Column="0"
+                                                 Grid.ColumnSpan="2">
+                                            <Label Text="{Binding Value}"/>
+                                        </StackLayout>
+
+
+
+                                        <Button Grid.Row="0"
+                                            Grid.Column="2"
+                                            Text="Edit"
+                                            IsVisible="{Binding EditVisible}"
+                                            CommandParameter="{Binding}"
+                                            Command="{Binding BindingContext.EditTranslationCommand, Source={x:Reference EditWordViewPage}}"/>
+
+                                        <Button Grid.Row="0"
+                                            Grid.Column="3"
+                                            Text="Delete"
+                                            IsVisible="{Binding DeleteVisible}"
+                                            CommandParameter="{Binding}"
+                                            Command ="{Binding BindingContext.DeleteTranslationCommand, Source={x:Reference EditWordViewPage}}"/>
+
+
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+                <StackLayout Grid.Row="5"
+                             Grid.Column="1"
+                             Grid.ColumnSpan="3">
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0"
+                               Grid.Column="0"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               FontSize="22"
+                               Text="Status :"/>
+
+                        <Button Grid.Row="0"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="2"
+                                Text="{Binding Status}"
+                                Margin="0,0,20,0"
+                                Command="{Binding ChangeStatusCommand}"/>
+                    </Grid>
+
+                </StackLayout>
+
+
+            </Grid>
+
+            <Button VerticalOptions="Fill"
+                        Margin="20"
+                        Text="Delete"
+                        TextColor="White"
+                        BackgroundColor="Red"
+                        Command="{Binding RemoveUserWordCommand}"/>
+        </StackLayout>
+    </mvvm:BaseView.Content>
+</mvvm:BaseView>

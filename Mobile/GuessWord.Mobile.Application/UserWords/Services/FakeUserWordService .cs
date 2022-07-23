@@ -26,8 +26,8 @@ namespace GuessWord.Mobile.Application.UserWords.Services
 
         public async Task<List<UserWord>> GetAllAsync()
         {
-            return userWords;
-            //return null;
+            //return userWords;
+            return null;
         }
 
         public async Task<UserWord> GetAsync(int id)
@@ -45,6 +45,7 @@ namespace GuessWord.Mobile.Application.UserWords.Services
 
         public Task<UserWord> CreateAsync(UserWord userWord)
         {
+            userWord.Id = userWords.OrderBy(x => x.Id).Last().Id;
             userWords.Add(userWord);
             return Task.FromResult(userWord);
         }
@@ -72,11 +73,6 @@ namespace GuessWord.Mobile.Application.UserWords.Services
             userWords.Remove(userWord);
 
             return Task.CompletedTask;
-        }
-
-        public Task<UserWord> CreateAsync(string word)
-        {
-            throw new NotImplementedException();
         }
 
         Task<UserWordEdit> IUserWordEditService.GetAsync(int id)

@@ -55,9 +55,9 @@ namespace GuessWord.Mobile.Application.UserWords.Services
             return userWord;
         }
 
-        public async Task<UserWord> CreateAsync(string word)
+        public async Task<UserWord> CreateAsync(UserWord word)
         {
-            var userWordDto = await _apiClient.CreateUserWordAsync(word);
+            var userWordDto = await _apiClient.CreateUserWordAsync(word.Word);
 
             var newUserWord = new UserWord
             {

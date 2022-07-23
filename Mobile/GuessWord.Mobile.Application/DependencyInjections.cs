@@ -4,7 +4,7 @@ using GuessWord.Mobile.Application.Common.Services;
 using GuessWord.Mobile.Application.Game.Controllers;
 using GuessWord.Mobile.Application.Game.ViewModels;
 using GuessWord.Mobile.Application.Home;
-using GuessWord.Mobile.Application.UserWords.Controllers;
+using GuessWord.Mobile.Application.UserWords;
 using GuessWord.Mobile.Application.UserWords.Services;
 using GuessWord.Mobile.Application.UserWords.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,8 +27,8 @@ namespace GuessWord.Mobile.Application
             services.AddTransient<EditWordViewModel>();
 
             // Controllers
-            services.AddTransient<AddUserWordController>();
             services.AddSingleton<ILevelsController, LevelsController>();
+            services.AddSingleton<UserWordsController>();
 
             // Services
 

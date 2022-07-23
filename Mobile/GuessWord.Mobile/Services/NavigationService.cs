@@ -54,7 +54,7 @@ namespace GuessWord.Mobile.Services
         }
         public async Task NavigateToAddWordViewAsync()
         {
-            await _shell.GoToAsync($"///{nameof(UserWordView)}//{nameof(AddWordView)}");
+            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(AddWordView)}");
         }
         public async Task NavigateToSearchWordViewAsync()
         {
@@ -62,11 +62,12 @@ namespace GuessWord.Mobile.Services
         }
         public async Task NavigateBackFromSearchAsync()
         {
+           
             await _shell.GoToAsync($"//{nameof(SearchWordView)}/{nameof(AddWordView)}");
         }
         public async Task NavigateToAddWordViewAfterSearchAsync(string word)
         {
-            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(AddWordView)}?{nameof(AddWordViewModel.Word)}={word}&{nameof(AddWordViewModel.WordSelected)}={true}");
+            await _shell.GoToAsync($"//{nameof(UserWordView)}/{nameof(AddWordView)}?{nameof(AddWordViewModel.Word)}={word}");
         }
         public async Task NavigateToEditWordViewAsync(int wordId)
         {
@@ -89,7 +90,7 @@ namespace GuessWord.Mobile.Services
         public async Task NavigateBackAsync()
         {
             await _shell.GoToAsync("..");
-        } 
+        }
         public async Task NavigateToMainAsync()
         {
             await _shell.GoToAsync($"//{nameof(HomeView)}");

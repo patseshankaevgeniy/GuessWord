@@ -1,6 +1,7 @@
-﻿using GuessWord.Api.Meddleware;
-using GuessWord.BusinessLogic;
-using GuessWord.DataAccess;
+﻿using GuessWord.Api.Infrastructure.Meddleware;
+using GuessWord.Application;
+using GuessWord.Infrastructure;
+using GuessWord.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,19 +20,11 @@ namespace GuessWord.Api
     public class Startup
     {
         private readonly IConfiguration _configuration;
-        public IConfigurationRoot Configuration { get; }
 
-        public Startup(IConfiguration configuration,
-            IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
 
-        var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-    
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(_configuration)
                 .CreateLogger();
@@ -39,23 +32,17 @@ namespace GuessWord.Api
             Log.Information("Starting up");
         }
 
-
         public void ConfigureServices(IServiceCollection services)
         {
             // Application dependencies
             services
-                .AddBusinessLogicDependencies()
-                .AddDataAccessDependencies(_configuration);
-
-            //Serilog Configuration
-           
-
+                .AddApplicationDependencies()
+                .AddPersistenceDependencies(_configuration)
+                .AddInfrastructureDependencies();
 
             // Api configuration
             services.AddControllers();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddCors(opt => opt.AddDefaultPolicy(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
-
 
             // Auth configuration
             services
@@ -122,8 +109,6 @@ namespace GuessWord.Api
                      }
                 });
             });
-
-
         }
 
         public void Configure(IApplicationBuilder builder, ILoggerFactory loggerFactory)

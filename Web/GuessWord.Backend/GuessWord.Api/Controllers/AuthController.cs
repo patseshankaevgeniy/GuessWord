@@ -1,13 +1,11 @@
-﻿using GuessWord.Api.Models;
-using GuessWord.BusinessLogic.Exceptions;
-using GuessWord.BusinessLogic.Models;
-using GuessWord.BusinessLogic.Services;
+﻿using GuessWord.Application.Auth;
+using GuessWord.Application.Auth.Models;
+using GuessWord.Application.Common.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GuessWord.Api.Controllers
 {
-
     [Route("api/auth")]
     public class AuthController : ControllerBase
     {
@@ -22,33 +20,20 @@ namespace GuessWord.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SignInResultDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
-        public ActionResult<SignInResultDto> SignIn([FromBody] SignInDto model)
+        public ActionResult<SignInResultDto> SignIn(SignInDto model)
         {
-            if (model == null)
-            {
-                throw new ValidationException("Model is empty");
-            }
-
             var signInResult = _authService.SignIn(model.Login, model.Password);
             return Ok(signInResult);
-
         }
 
         [HttpPost("signUp", Name = "SignUp")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SignUpResultDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
-        public ActionResult<SignUpResultDto> SignUp([FromBody] SignUpDto model)
+        public ActionResult<SignUpResultDto> SignUp(SignUpDto model)
         {
-            if (model == null)
-            {
-                throw new ValidationException("Model is empty");
-            }
-
             var signUpResult = _authService.SignUp(model.Name, model.Login, model.Password);
-
             return Ok(signUpResult);
         }
-
     }
 }

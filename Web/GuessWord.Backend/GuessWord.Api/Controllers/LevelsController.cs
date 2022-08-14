@@ -1,5 +1,5 @@
-﻿using GuessWord.Api.Models;
-using GuessWord.BusinessLogic.Services;
+﻿using GuessWord.Application.Levels;
+using GuessWord.Application.Levels.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,6 @@ namespace GuessWord.Api.Controllers
         public async Task<ActionResult<LevelDto>> GetAsync()
         {
             var level = await _levelsService.GetLevelAsync();
-
             return level;
         }
     }

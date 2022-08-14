@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GuessWord.DataAccess
+namespace GuessWord.Persistence
 {
     public class Role
     {

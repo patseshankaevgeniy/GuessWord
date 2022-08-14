@@ -1,0 +1,47 @@
+.grid-container {
+    height:1fr;
+    width: 80%;
+    
+    display: grid;
+    background-color: rgb(205, 205, 205);
+    border: 2px solid rgb(181, 179, 179);;
+    border-radius: 3px;
+    margin-top: 15px;
+    
+    grid-template-areas: 
+                         ". word . translation . addButton .";
+    grid-template-columns: 20px 1fr 10px 1fr 10px 40px  20px;
+    grid-template-rows:  30px;
+}
+
+.searchWord {
+    grid-area: searchWord;
+    background-color: bisque;
+}
+
+.word {
+    grid-area: word;
+    
+}
+
+.translation {
+    grid-area: translation;
+}
+
+.addButton{
+    grid-area: addButton;
+    background-color: white;
+    border-radius: 5px;
+    margin: 2px 0px;
+    font-size: smaller;
+}
+
+.searchInput{
+    background-image: url('file:///C:/Users/zheny/AppData/Local/Temp/Temp1_Tilda_Icons_2_Webinar.zip/Tilda_Icons_2_Webinar/Tilda_Icons_2web_magnifier.svg');
+}
+
+.searchInput:focus{
+    border: 1px solid #555;
+}
+
+

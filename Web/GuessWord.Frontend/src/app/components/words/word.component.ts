@@ -1,11 +1,14 @@
-import { Component, Input } from '@angular/core'
-import { IWord } from 'src/app/models/word'
+import { Component, Input, OnInit } from '@angular/core'
+
 
 @Component({
     selector: 'app-word',
     templateUrl: './word.component.html'
 })
 
-export class WordComponent {
-    @Input() word: IWord
+export class WordComponent implements OnInit {
+
+    ngOnInit(): void {
+       
+    }
 }

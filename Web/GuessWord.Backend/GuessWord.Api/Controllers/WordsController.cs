@@ -57,11 +57,11 @@ namespace GuessWord.Api.Controllers
             return Ok(wordDto);
         }
 
-        [HttpGet("search/{letter}", Name = "GetByLetter")]
+        [HttpGet("search", Name = "GetByLetter")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<WordDto>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
-        public async Task<ActionResult<List<WordDto>>> GetByLetterAsync(string letter)
+        public async Task<ActionResult<List<WordDto>>> GetByLetterAsync([FromQuery] string letter)
         {
             if (string.IsNullOrEmpty(letter))
             {
@@ -81,16 +81,11 @@ namespace GuessWord.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(WordDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
-        public async Task<ActionResult<WordDto>> CreateAsync([FromBody] string wordValue)
+        public async Task<ActionResult<WordDto>> CreateAsync([FromBody] WordDto word)
         {
-            if (string.IsNullOrEmpty(wordValue))
-            {
-                return BadRequest("Word is empty");
-            }
+            var newWord = await _wordsService.CreateAsync(word);
 
-            var word = await _wordsService.CreateAsync(wordValue);
-
-            return Created($"api/words/{word.Id}", word);
+            return Created($"api/words/{newWord.Id}", newWord);
         }
     }
 }

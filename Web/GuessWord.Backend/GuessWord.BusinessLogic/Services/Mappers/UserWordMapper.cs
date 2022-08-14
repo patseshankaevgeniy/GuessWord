@@ -12,6 +12,8 @@ namespace GuessWord.BusinessLogic.Services.Mappers
             {
                 Id = userWord.Id,
                 Word = userWord.Word.Value,
+                Language = (int)userWord.Word.Language,
+                Status = (int)userWord.Status,
                 Translations = userWord.Word.Translations
                          .Select(x => x.Translation.Value)
                          .ToList()

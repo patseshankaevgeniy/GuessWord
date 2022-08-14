@@ -61,43 +61,41 @@ namespace GuessWord.BusinessLogic.Services
             return userWordDto;
         }
 
-        public async Task<UserWordDto> CreateAsync(string wordValue)
+        public async Task<UserWordDto> CreateAsync(UserWordDto newUserWordDto)
         {
-
-            var word = await _wordsRepository.GetByNameAsync(wordValue);
+            var word = await _wordsRepository.GetByNameAsync(newUserWordDto.Word);
             if (word == null)
             {
-                word = new Word
+                var newWord = new Word
                 {
-                    Language = Language.English,
-                    Value = wordValue
+                    Language = (Language)newUserWordDto.Language,
+                    Value = newUserWordDto.Word
                 };
-                word = await _wordsRepository.CreateAsync(word);
+                word = await _wordsRepository.CreateAsync(newWord);
             }
 
-            var userWord = new UserWord
+            var newUserWord = new UserWord
             {
-                Status = (int)WordStatus.New,
-                Word = word,
+                Status = WordStatus.New,
+                Word = word,    
                 UserId = _currentUser.UserId,
                 TargetRepeatNumber = 2
             };
 
-            userWord = await _userWordsRepository.CreateAsync(userWord);
+            var userWord = await _userWordsRepository.CreateAsync(newUserWord);
             var userWordDto = _wordMapper.Map(userWord);
 
             return userWordDto;
         }
 
-        public async Task<UserWordDto> UpdateAsync(int status, int id)
+        public async Task UpdateAsync(int id, UserWordPatchDto userWordDto)
         {
-            if (status == null)
+            if (!userWordDto.Status.HasValue)
             {
                 throw new ValidationException("bad word");
             }
 
             var userWord = await _userWordsRepository.GetAsync(id);
-
             if (userWord == null)
             {
                 throw new ValidationException("No word");
@@ -108,13 +106,8 @@ namespace GuessWord.BusinessLogic.Services
                 throw new AccessViolationException("No rights");
             }
 
-            userWord.Status = (WordStatus)status;
-
+            userWord.Status = (WordStatus)userWordDto.Status;
             userWord = await _userWordsRepository.UpdateAsync(userWord);
-
-            var userWordDto = _wordMapper.Map(userWord);
-            return userWordDto;
-
         }
 
         public async Task DeleteAsync(int id)

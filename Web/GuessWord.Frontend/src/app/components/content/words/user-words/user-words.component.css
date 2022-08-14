@@ -1,0 +1,38 @@
+.grid-container {
+    height:1fr;
+    width: 80%;
+    transition: all .2s;
+    
+    
+    display: grid;
+    background-color: rgb(205, 205, 205);
+    border: 2px solid rgb(181, 179, 179);;
+    border-radius: 3px;
+    margin-top: 15px;
+    
+    grid-template-areas: 
+                         ". word . translation . status . deleteButton .";
+    grid-template-columns: 20px 1fr 10px 1fr 10px 1fr 10px 1fr 10px;
+    grid-template-rows:  30px;
+}
+.grid-container ::selection {
+    background-color: #eee;
+}
+
+.word{
+    grid-area:  word;   
+}
+
+.translation{
+    grid-area: translation;
+}
+
+.status{
+    grid-area: status;
+}
+
+.deleteButton{
+    grid-area: deleteButton;
+    background-color: white;
+    margin: 5px 15px;
+}

@@ -8,8 +8,8 @@ namespace GuessWord.BusinessLogic.Services.Interfaces
     {
         Task<List<UserWordDto>> GetAllAsync();
         Task<UserWordDto> GetAsync(int id);
-        Task<UserWordDto> CreateAsync(string word);
-        Task<UserWordDto> UpdateAsync(int status, int id);
+        Task<UserWordDto> CreateAsync(UserWordDto word);
+        Task UpdateAsync(int id, UserWordPatchDto userWord);
         Task DeleteAsync(int id);
 
     }

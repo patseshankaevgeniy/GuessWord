@@ -21,7 +21,8 @@ namespace GuessWord.DataAccess.Repositories
         {
             var words = await _db.Translations
                 .Include(x => x.Word)
-                .Where(x => x.Word.Language == Language.English)
+                .ThenInclude(x => x.Translations)
+                .ThenInclude(x => x.Translation)
                 .Select(x => new Word
                 {
                     Id = x.WordId,
@@ -48,6 +49,8 @@ namespace GuessWord.DataAccess.Repositories
         {
             var words = await _db.Translations
                 .Include(x => x.Word)
+                 .ThenInclude(x => x.Translations)
+                .ThenInclude(x => x.Translation)
                 .Where(x => x.Word.Value.StartsWith(letter))
                 .Select(x => new Word
                 {

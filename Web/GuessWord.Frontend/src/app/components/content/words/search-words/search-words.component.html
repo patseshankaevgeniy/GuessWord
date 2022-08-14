@@ -1,0 +1,14 @@
+<div >
+    <input class="searchInput" type="text" [(ngModel)]="term" (change)="getByLetter()">
+</div>
+<div class="grid-container" *ngFor="let word of words">      
+    <div class="word " >
+        {{word.value}}
+    </div>
+    <div class="translation ">
+        {{word.translations}}
+    </div>
+    <button class="addButton " (click)="addUserWord(word)">Add</button> 
+</div>
+
+

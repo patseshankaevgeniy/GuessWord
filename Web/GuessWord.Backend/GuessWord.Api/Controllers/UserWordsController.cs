@@ -61,42 +61,25 @@ namespace GuessWord.Api.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserWordDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserWordDto>> CreateAsync([FromBody] string word)
+        public async Task<ActionResult<UserWordDto>> CreateAsync([FromBody] UserWordDto userWord)
         {
-            if (string.IsNullOrEmpty(word))
-            {
-                return BadRequest("Word is empty");
-            }
-
-            var userWord = await _userWordsService.CreateAsync(word);
-
+            userWord = await _userWordsService.CreateAsync(userWord);
             return Created($"api/user-words/{userWord.Id}", userWord);
         }
 
-        [HttpPut("{id}", Name = "UpdateUserWord")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserWordDto))]
+        [HttpPatch("{id}", Name = "UpdateUserWord")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserWordDto>> UpdateAsync(int? id, [FromBody] int? status)
+        public async Task<ActionResult<UserWordDto>> UpdateAsync(int id, UserWordPatchDto userWord)
         {
-            if (status == null || !id.HasValue)
+            if (id <= 0)
             {
                 return BadRequest("");
             }
-            var updateWord = new UserWordDto();
-            try
-            {
-                updateWord = await _userWordsService.UpdateAsync(status.Value, id.Value);
-            }
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (AccessViolationException ex)
-            {
-                return StatusCode(403, ex.Message);
-            }
-            return Ok(updateWord);
+           
+            await _userWordsService.UpdateAsync(id, userWord);
+            return NoContent();
         }
 
         [HttpDelete("{id}", Name = "DeleteUserWord")]

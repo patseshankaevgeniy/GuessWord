@@ -1,0 +1,60 @@
+.grid-container {
+    height:100vh;
+    display: grid;
+    grid-template-areas: 
+                            ". . ."
+                            ". game ."
+                            ". . ."
+                            ". info . "
+                            ". . . "
+                            ". settings ."
+                            ". . ."
+                            ". words ."
+                            ". . .";
+    grid-template-columns: 5px 80px 5px;
+    grid-template-rows: 5px 40px 5px 40px 5px 40px 5px 40px 5px;
+}   
+
+.game {
+    grid-area: game;
+    background-color: white;
+    border: 1px;
+
+}
+
+.info {
+    grid-area: info;
+    background-color: white;
+}
+
+.settings {
+    grid-area: settings;
+    background-color: white;
+}
+
+.words {
+    grid-area: words;
+   background-color: white;
+}
+
+.grid-container2{
+    height:100vh;
+    display: grid;
+    
+    grid-template-areas: 
+                        " h2 . status";
+    grid-template-columns: 20px 30px 20px 30px;
+    grid-template-rows: 20px;
+}
+
+.h2{
+    grid-area: h2;
+}
+
+.text{
+    grid-area: text;
+}
+
+.status{
+    grid-area: status;
+}

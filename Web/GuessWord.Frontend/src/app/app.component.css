@@ -1,13 +1,14 @@
 .grid-container {
     height:100vh;
     display: grid;
+    
     grid-template-areas: "header header header header header"
                          ". . . . ."
                          "navigation . content . advices"
                          ". . . . ."
                          "footer footer footer footer footer";
-    grid-template-columns: 130px 5px 1fr 5px 130px;
-    grid-template-rows: 90px 5px 1fr 5px 90px;
+    grid-template-columns: 100px 10px 1fr 10px 160px;
+    grid-template-rows: 60px 10px 1fr 10px 50px;
 }
 
 .header { 

@@ -4,12 +4,13 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-words',
   templateUrl: './words.component.html',
   styleUrls: ['./words.component.css']
+  
+  
 })
 export class WordsComponent implements OnInit {
-
+ 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
 }

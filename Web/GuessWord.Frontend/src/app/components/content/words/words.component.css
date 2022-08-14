@@ -1,0 +1,25 @@
+.grid-container {
+    height:100vh;
+    display: grid;
+    
+    grid-template-areas: "userWords border searchWords"
+                         ;
+    grid-template-columns: 1fr 3px 1fr;
+    grid-template-rows: 1fr;
+}
+
+.userWords {
+    grid-area: userWords;
+    border-right: 2px;
+    border-color: black;
+}
+
+.searchWords {
+    grid-area: searchWords;
+}
+
+.border {
+   border-top: 3px;
+   border-color: blue;
+
+}

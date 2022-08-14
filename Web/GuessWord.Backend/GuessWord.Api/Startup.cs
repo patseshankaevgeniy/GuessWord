@@ -54,6 +54,7 @@ namespace GuessWord.Api
             // Api configuration
             services.AddControllers();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddCors(opt => opt.AddDefaultPolicy(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
 
             // Auth configuration
@@ -140,6 +141,7 @@ namespace GuessWord.Api
                 .UseMiddleware<CustomExceptionHandlerMiddleware>()
                 .UseMiddleware<SerilogMiddleware>()
                 .UseRouting()
+                .UseCors()
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>

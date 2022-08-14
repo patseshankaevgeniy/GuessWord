@@ -13,6 +13,6 @@ namespace GuessWord.BusinessLogic.Services.Interfaces
         Task<List<WordDto>> GetByLetterAsync(string letter);
         Task<List<Word>> GetOptionsWordsAsync();
         Task<List<WordWithTranslation>> GetWordsWithTranslation(int userId, WordStatus status);
-        Task<WordDto> CreateAsync(string word);
+        Task<WordDto> CreateAsync(WordDto word);
     }
 }

@@ -1,0 +1,28 @@
+<div class="grid-container2">
+    <div class="h2">    
+        <h1 >Words</h1>
+    </div>
+    
+    <div class="status">
+        <div>Filter by:</div>
+        
+        <select  [(ngModel)]="filterStatus">
+            <option *ngFor="let status of statuses" value="{{status.value}}">{{status.value}}</option>
+        </select>
+    </div>
+    
+</div>
+
+<div class="grid-container" *ngFor="let userWord of userWords | filter: filterStatus">     
+    <div class="word" >
+        {{userWord.word}}
+    </div>
+    <div class="translation">
+         {{userWord.translations}}
+    </div>
+    <div class="status">
+        {{userWord.status}}
+    </div>
+    <button class="deleteButton" (click)="deleteUserWord(userWord)">Delete</button> 
+</div>
+

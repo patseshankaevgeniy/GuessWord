@@ -75,16 +75,25 @@ namespace GuessWord.BusinessLogic.Services
                 .ToList();
         }
 
-        public async Task<WordDto> CreateAsync(string wordValue)
+        public async Task<WordDto> CreateAsync(WordDto word)
         {
-            var word = new Word
+            var newWord = new Word
             {
                 Language = Language.English,
-                Value = wordValue
+                Value = word.Value,
             };
+            foreach (var translation in word.Translations)
+            {
+                var newTranslation = new Word
+                {
+                    Language = Language.Russian,
+                    Value = translation,
+                };
+                await _wordsRepository.CreateAsync(newTranslation);
+            }
 
-            word = await _wordsRepository.CreateAsync(word);
-            var wordDto = _wordMapper.Map(word);
+            newWord = await _wordsRepository.CreateAsync(newWord);
+            var wordDto = _wordMapper.Map(newWord);
 
             return wordDto;
         }

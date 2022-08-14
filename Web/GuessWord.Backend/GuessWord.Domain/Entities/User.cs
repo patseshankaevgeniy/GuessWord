@@ -1,4 +1,4 @@
-﻿using GuessWord.DataAccess;
+﻿using GuessWord.Persistence;
 using System.Collections.Generic;
 
 namespace GuessWord.Domain.Entities

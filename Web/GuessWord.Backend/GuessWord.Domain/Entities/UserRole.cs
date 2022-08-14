@@ -1,6 +1,6 @@
 ﻿using GuessWord.Domain.Entities;
 
-namespace GuessWord.DataAccess
+namespace GuessWord.Persistence
 {
     public class UserRole
     {

@@ -1,7 +1,6 @@
-﻿using GuessWord.Api.Models;
-using GuessWord.BusinessLogic.Exceptions;
-using GuessWord.BusinessLogic.Models;
-using GuessWord.BusinessLogic.Services.Interfaces;
+﻿using GuessWord.Application.Common.Models;
+using GuessWord.Application.UserWords;
+using GuessWord.Application.UserWords.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,89 +22,60 @@ namespace GuessWord.Api.Controllers
         }
 
         [HttpGet(Name = "GetUserWords")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserWordDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserWordDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
-        public async Task<ActionResult<List<UserWordDto>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<UserWordDto>>> GetAsync()
         {
             var userWords = await _userWordsService.GetAllAsync();
-            if (userWords.Count == 0)
-            {
-                throw new NotFoundException("No words");
-            }
             return Ok(userWords);
         }
 
         [HttpGet("{id}", Name = "GetUserWord")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserWordDto))]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserWordDto>> GetAsync(int? id)
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
+        public async Task<ActionResult<UserWordDto>> GetAsync(int id)
         {
-            if (!id.HasValue)
-            {
-                throw new ValidationException("Wrong id");
-            }
-
-            var userWordDto = await _userWordsService.GetAsync(id.Value);
-            if (userWordDto == null)
-            {
-                throw new NotFoundException("");
-            }
-
+            var userWordDto = await _userWordsService.GetAsync(id);
             return Ok(userWordDto);
         }
 
         [HttpPost(Name = "CreateUserWord")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UserWordDto))]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserWordDto>> CreateAsync([FromBody] UserWordDto userWord)
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
+        public async Task<ActionResult<UserWordDto>> CreateAsync(UserWordDto userWordDto)
         {
-            userWord = await _userWordsService.CreateAsync(userWord);
-            return Created($"api/user-words/{userWord.Id}", userWord);
+            userWordDto = await _userWordsService.CreateAsync(userWordDto);
+            return Created($"api/user-words/{userWordDto.Id}", userWordDto);
         }
 
         [HttpPatch("{id}", Name = "UpdateUserWord")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserWordDto>> UpdateAsync(int id, UserWordPatchDto userWord)
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
+        public async Task<ActionResult<UserWordDto>> UpdateAsync(int id, UserWordPatchDto userWordDto)
         {
-            if (id <= 0)
-            {
-                return BadRequest("");
-            }
-           
-            await _userWordsService.UpdateAsync(id, userWord);
+            await _userWordsService.UpdateAsync(id, userWordDto);
             return NoContent();
         }
 
         [HttpDelete("{id}", Name = "DeleteUserWord")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> DeleteAsync(int? id)
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            if (!id.HasValue)
-            {
-                return BadRequest("Id is empty");
-            }
-            try
-            {
-                await _userWordsService.DeleteAsync(id.Value);
-            }
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (AccessViolationException ex)
-            {
-                return StatusCode(403, ex.Message);
-            }
-
+            await _userWordsService.DeleteAsync(id);
             return NoContent();
         }
     }

@@ -20,8 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GuessWord.BusinessLogic\GuessWord.BusinessLogic.csproj" />
-    <ProjectReference Include="..\GuessWord.DataAccess\GuessWord.DataAccess.csproj" />
+    <ProjectReference Include="..\GuessWord.Application\GuessWord.Application.csproj" />
+    <ProjectReference Include="..\GuessWord.Infrastructure\GuessWord.Infrastructure.csproj" />
+    <ProjectReference Include="..\GuessWord.Persistence\GuessWord.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace GuessWord.Domain.Entities
 {
-    public class Word
+    public class Word : BaseEntity
     {
-        public int Id { get; set; }
         public string Value { get; set; }
         public Language Language { get; set; }
 

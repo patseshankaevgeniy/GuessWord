@@ -12,6 +12,7 @@ namespace GuessWord.Application.UserWords
 {
     public class UserWordsService : IUserWordsService
     {
+        //private readonly IGenericRepository<UserWord> userWordsRepository;
         private readonly ICurrentUserService _currentUser;
         private readonly IUserWordsRepository _userWordsRepository;
         private readonly IWordsRepository _wordsRepository;
@@ -23,6 +24,7 @@ namespace GuessWord.Application.UserWords
             IWordsRepository wordsRepository,
             IUserWordMapper wordMapper)
         {
+            // this.userWordsRepository = UserWordsRepository;
             _currentUser = currentUser;
             _userWordsRepository = userWordsRepository;
             _wordsRepository = wordsRepository;

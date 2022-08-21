@@ -10,7 +10,7 @@
   },
   "codeGenerators": {
     "openApiToTypeScriptClient": {
-      "className": "GuessWordApiClient",
+      "className": "ApiClient",
       "moduleName": "",
       "namespace": "",
       "typeScriptVersion": 4.3,
@@ -19,13 +19,13 @@
       "httpClass": "HttpClient",
       "withCredentials": false,
       "useSingletonProvider": false,
-      "injectionTokenType": "OpaqueToken",
+      "injectionTokenType": "InjectionToken",
       "rxJsVersion": 7.0,
       "dateTimeType": "Date",
       "nullValue": "Undefined",
       "generateClientClasses": true,
       "generateClientInterfaces": false,
-      "generateOptionalParameters": false,
+      "generateOptionalParameters": true,
       "exportTypes": true,
       "wrapDtoExceptions": false,
       "exceptionClass": "ApiException",
@@ -69,7 +69,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "../../../Web/GuessWord.Frontend/src/api-client-generation/api-client.ts",
+      "output": "../app/clients/api.client.ts",
       "newLineBehavior": "Auto"
     }
   }

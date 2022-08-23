@@ -4,7 +4,6 @@ using GuessWord.Application.Exceptions;
 using GuessWord.Application.UserWords.Models;
 using GuessWord.Domain.Entities;
 using GuessWord.Domain.Enums;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,8 +12,6 @@ namespace GuessWord.Application.UserWords
 {
     public class UserWordsService : IUserWordsService
     {
-        private readonly IGenericRepository<UserWord> userWordsRepository;
-        private readonly IGenericRepository<Word> WordsRepository;
         private readonly ICurrentUserService _currentUser;
         private readonly IUserWordsRepository _userWordsRepository;
         private readonly IWordsRepository _wordsRepository;
@@ -22,14 +19,10 @@ namespace GuessWord.Application.UserWords
 
         public UserWordsService(
             ICurrentUserService currentUser,
-            IGenericRepository<UserWord> UserWordsRepository,
-            IGenericRepository<Word> WordsRepository,
             IUserWordsRepository userWordsRepository,
             IWordsRepository wordsRepository,
             IUserWordMapper wordMapper)
         {
-            this.WordsRepository = WordsRepository;
-            this.userWordsRepository = UserWordsRepository;
             _currentUser = currentUser;
             _userWordsRepository = userWordsRepository;
             _wordsRepository = wordsRepository;
@@ -38,7 +31,7 @@ namespace GuessWord.Application.UserWords
 
         public async Task<List<UserWordDto>> GetAllAsync()
         {
-            var userWords = await userWordsRepository.FindAsync(x => x.UserId == _currentUser.UserId);
+            var userWords = await _userWordsRepository.GetAllAsync(_currentUser.UserId);
             var userWordDtos = userWords
                 .Select(userWord => new UserWordDto
                 {
@@ -61,7 +54,7 @@ namespace GuessWord.Application.UserWords
                 throw new ValidationException("Wrong id");
             }
 
-            var userWord = await userWordsRepository.GetAsync(id);
+            var userWord = await _userWordsRepository.GetAsync(id);
             if (userWord == null)
             {
                 throw new NotFoundException($"Can't find userWord with id: {id}");
@@ -74,10 +67,7 @@ namespace GuessWord.Application.UserWords
 
         public async Task<UserWordDto> CreateAsync(UserWordDto newUserWordDto)
         {
-            var word = (await WordsRepository.FindAsync(
-                x => x.Value.Contains(newUserWordDto.Word),
-                x => x.Include(x => x.Translations).ThenInclude(x => x.Translation)))
-                      .FirstOrDefault();
+            var word = (await _wordsRepository.GetByNameAsync(newUserWordDto.Word));
             if (word == null)
             {
                 var newWord = new Word
@@ -85,13 +75,13 @@ namespace GuessWord.Application.UserWords
                     Language = (Language)newUserWordDto.Language,
                     Value = newUserWordDto.Word
                 };
-                word = await _wordsRepository.CreateAsync(newWord);
+                //word = await _wordsRepository.CreateAsync(newWord);
             }
 
             var newUserWord = new UserWord
             {
                 Status = WordStatus.New,
-                Word = word,
+                //Word = word,
                 UserId = _currentUser.UserId,
                 TargetRepeatNumber = 2
             };

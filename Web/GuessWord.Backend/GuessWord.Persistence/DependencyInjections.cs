@@ -13,7 +13,6 @@ namespace GuessWord.Persistence
             services.AddScoped<IUserWordsRepository, UserWordsRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IWordsRepository, WordsRepository>();
-            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {

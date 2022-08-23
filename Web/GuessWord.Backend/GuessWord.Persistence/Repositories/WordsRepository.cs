@@ -59,7 +59,7 @@ namespace GuessWord.Persistence.Repositories
         {
             var words = await _db.Translations
                 .Include(x => x.Word)
-                .ThenInclude(x => x.Translations)
+                 .ThenInclude(x => x.Translations)
                 .ThenInclude(x => x.Translation)
                 .Where(x => x.Word.Value.StartsWith(letter))
                 .Select(x => new Word
@@ -82,9 +82,9 @@ namespace GuessWord.Persistence.Repositories
             return words;
         }
 
-        public List<WordWithTranslation> GetWordsWithTranslation(int userId, WordStatus status)
+        public  List<WordWithTranslation> GetWordsWithTranslation(int userId, WordStatus status)
         {
-            var result = from userWord in _db.UsersWords
+            var result =  from userWord in _db.UsersWords
                          join word in _db.Words on userWord.WordId equals word.Id
                          join translation in _db.Translations on word.Id equals translation.WordId
                          join word1 in _db.Words on translation.TranslationId equals word1.Id

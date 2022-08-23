@@ -1,7 +1,8 @@
 ﻿namespace GuessWord.Domain.Entities
 {
-    public class WordTranslation : BaseEntity
+    public class WordTranslation
     {
+        public int Id { get; set; }
         public int WordId { get; set; }
         public int TranslationId { get; set; }
 

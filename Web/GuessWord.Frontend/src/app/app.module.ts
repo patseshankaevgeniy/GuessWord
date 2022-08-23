@@ -16,9 +16,11 @@ import { GameComponent } from './components/content/game/game.component';
 import { InfoComponent } from './components/content/info/info.component';
 import { SearchWordsComponent } from './components/content/words/search-words/search-words.component';
 import { UserWordsComponent } from './components/content/words/user-words/user-words.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { WordService } from './services/words.service';
 import { UserWordService } from './services/userWord.service';
+import { ApiClient, API_BASE_URL } from './clients/api.client';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 
 
@@ -47,7 +49,14 @@ import { UserWordService } from './services/userWord.service';
     FormsModule,
     HttpClientModule
   ],
-  providers: [HttpClient, WordService, UserWordService],
+  providers: [
+    HttpClient, 
+    WordService, 
+    UserWordService, 
+    ApiClient,
+    {provide: API_BASE_URL, useValue: "https://localhost:59378"},
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

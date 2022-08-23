@@ -12,6 +12,7 @@ namespace GuessWord.Application.UserWords
 {
     public class UserWordsService : IUserWordsService
     {
+        //private readonly IGenericRepository<UserWord> userWordsRepository;
         private readonly ICurrentUserService _currentUser;
         private readonly IUserWordsRepository _userWordsRepository;
         private readonly IWordsRepository _wordsRepository;
@@ -23,6 +24,7 @@ namespace GuessWord.Application.UserWords
             IWordsRepository wordsRepository,
             IUserWordMapper wordMapper)
         {
+            // this.userWordsRepository = UserWordsRepository;
             _currentUser = currentUser;
             _userWordsRepository = userWordsRepository;
             _wordsRepository = wordsRepository;
@@ -67,7 +69,7 @@ namespace GuessWord.Application.UserWords
 
         public async Task<UserWordDto> CreateAsync(UserWordDto newUserWordDto)
         {
-            var word = (await _wordsRepository.GetByNameAsync(newUserWordDto.Word));
+            var word = (await _wordsRepository.GetByNameAsync(newUserWordDto.Word)).FirstOrDefault();
             if (word == null)
             {
                 var newWord = new Word
@@ -75,13 +77,13 @@ namespace GuessWord.Application.UserWords
                     Language = (Language)newUserWordDto.Language,
                     Value = newUserWordDto.Word
                 };
-                //word = await _wordsRepository.CreateAsync(newWord);
+                word = await _wordsRepository.CreateAsync(newWord);
             }
 
             var newUserWord = new UserWord
             {
                 Status = WordStatus.New,
-                //Word = word,
+                Word = word,
                 UserId = _currentUser.UserId,
                 TargetRepeatNumber = 2
             };

@@ -3,6 +3,7 @@ using GuessWord.Application.Exceptions;
 using GuessWord.Application.Words.Models;
 using GuessWord.Domain.Entities;
 using GuessWord.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,17 +12,19 @@ namespace GuessWord.Application.Words
 {
     public class WordsService : IWordsService
     {
-        //private readonly IWordsRepository _wordsRepository;
-        //private readonly IGenericRepository<Word> _wordsRepository;
-        //private readonly IGenericRepository<Word> _translationRepository;
         private readonly IWordsRepository _wordsRepository;
+        private readonly IGenericRepository<Word> _WordsRepository;
+        private readonly IGenericRepository<Word> _translationRepository;
+
         private readonly IWordMapper _wordMapper;
 
         public WordsService(
+            IGenericRepository<Word> WordsRepository,
             IWordsRepository wordsRepository,
             IWordMapper wordMapper
             )
         {
+            _WordsRepository = WordsRepository;
             _wordsRepository = wordsRepository;
             _wordMapper = wordMapper;
         }
@@ -33,13 +36,12 @@ namespace GuessWord.Application.Words
                 return await GetByLetterAsync(letter);
             }
 
-            var words = await _wordsRepository.GetAllAsync();
             if (!string.IsNullOrEmpty(word))
             {
                 return await GetAsync(word);
             }
 
-            //var words = await _wordsRepository.GetAllAsync();
+            var words = await _WordsRepository.GetAllAsync();
             var wordDtos = words.Select(x => _wordMapper.Map(x)).ToList();
 
             return wordDtos;
@@ -65,10 +67,9 @@ namespace GuessWord.Application.Words
                 throw new ValidationException("Wrong id");
             }
 
-            //var words = await _wordsRepository.FindAsync(
-            //    x => x.Value.Contains(letter),
-            //    x => x.Include(x=> x.Translations).ThenInclude(x=> x.Translation));
-            var words = await _wordsRepository.GetByLetterAsync(letter);
+            var words = await _WordsRepository.FindAsync(
+                x => x.Value.Contains(letter),
+                x => x.Include(x=> x.Translations).ThenInclude(x=> x.Translation));
             if (words == null)
             {
                 throw new NotFoundException($"Can't find words with letter: {letter}");
@@ -95,11 +96,11 @@ namespace GuessWord.Application.Words
                 Translations = wordDto.Translations
                                 .Select(value => new WordTranslation
                                 {
-                                   Translation = new Word 
-                                   { 
-                                       Value = value,
-                                       Language = Language.Russian
-                                   } 
+                                    Translation = new Word
+                                    {
+                                        Value = value,
+                                        Language = Language.Russian
+                                    }
                                 })
                                 .ToList()
             };
@@ -112,8 +113,8 @@ namespace GuessWord.Application.Words
 
         public Task<List<Word>> GetOptionsWordsAsync()
         {
-            //var optionWords = _wordsRepository.FindAsync(x => x.Language == Language.Russian);
-            return null;
+            var optionWords = _wordsRepository.GetOptionsWordsAsync();
+            return optionWords;
         }
 
         public async Task<List<WordWithTranslation>> GetWordsWithTranslation(int userId, WordStatus status)

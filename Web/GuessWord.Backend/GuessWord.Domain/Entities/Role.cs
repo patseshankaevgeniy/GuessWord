@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using GuessWord.Domain.Entities;
+using System.Collections.Generic;
 
 namespace GuessWord.Persistence
 {
-    public class Role
+    public class Role : BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; }

@@ -1,4 +1,5 @@
 ﻿using GuessWord.Application.UserWords.Models;
+using GuessWord.Domain.Enums;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -2,9 +2,8 @@
 
 namespace GuessWord.Persistence
 {
-    public class UserRole
+    public class UserRole : BaseEntity
     {
-        public int Id { get; set; }
         public int UserId { get; set; }
         public int RoleId { get; set; }
 

@@ -12,10 +12,7 @@ namespace GuessWord.Api
     {
         public static async Task Main(string[] args)
         {
-            var app = Host
-                .CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
-                .Build();
+            var app = CreateHostBuilder(args).Build();
 
             try
             {
@@ -32,5 +29,8 @@ namespace GuessWord.Api
 
             await app.RunAsync();
         }
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
     }
 }

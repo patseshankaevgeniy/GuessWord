@@ -1,8 +1,9 @@
 ﻿using GuessWord.Application.Common.Interfaces;
 using GuessWord.Domain.Entities;
+using GuessWord.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace GuessWord.Persistence
+namespace GuessWord.IntegrationTests.Persistence
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {

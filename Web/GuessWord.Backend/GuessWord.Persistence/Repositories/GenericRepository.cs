@@ -1,5 +1,5 @@
-﻿using GuessWord.Application.Common.Interfaces.Repositories;
-using GuessWord.Application.Exceptions;
+﻿using GuessWord.Application.Common.Interfaces;
+using GuessWord.Application.Common.Interfaces.Repositories;
 using GuessWord.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -13,10 +13,10 @@ namespace GuessWord.Persistence.Repositories
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IApplicationDbContext _db;
         private readonly DbSet<TEntity> _entities;
 
-        public GenericRepository(ApplicationDbContext db)
+        public GenericRepository(IApplicationDbContext db)
         {
             _db = db;
             _entities = _db.Set<TEntity>();

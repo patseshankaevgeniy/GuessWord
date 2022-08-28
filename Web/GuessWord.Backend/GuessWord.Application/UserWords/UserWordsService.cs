@@ -4,6 +4,7 @@ using GuessWord.Application.Exceptions;
 using GuessWord.Application.UserWords.Models;
 using GuessWord.Domain.Entities;
 using GuessWord.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,48 +13,34 @@ namespace GuessWord.Application.UserWords
 {
     public class UserWordsService : IUserWordsService
     {
-        //private readonly IGenericRepository<UserWord> userWordsRepository;
+        private readonly IGenericRepository<UserWord> _userWordsRepository;
         private readonly ICurrentUserService _currentUser;
-        private readonly IUserWordsRepository _userWordsRepository;
-        private readonly IWordsRepository _wordsRepository;
-        private readonly IUserWordMapper _wordMapper;
+        private readonly IGenericRepository<Word> _wordsRepository;
+        private readonly IUserWordMapper _mapper;
 
         public UserWordsService(
             ICurrentUserService currentUser,
-            IUserWordsRepository userWordsRepository,
-            IWordsRepository wordsRepository,
+            IGenericRepository<UserWord> userWordsRepository,
+            IGenericRepository<Word> wordsRepository,
             IUserWordMapper wordMapper)
         {
-            // this.userWordsRepository = UserWordsRepository;
             _currentUser = currentUser;
             _userWordsRepository = userWordsRepository;
             _wordsRepository = wordsRepository;
-            _wordMapper = wordMapper;
+            _mapper = wordMapper;
         }
 
         public async Task<List<UserWordDto>> GetAllAsync()
         {
-            var userWords = await _userWordsRepository.GetAllAsync(_currentUser.UserId);
-            var userWordDtos = userWords
-                .Select(userWord => new UserWordDto
-                {
-                    Id = userWord.Id,
-                    Word = userWord.Word.Value,
-                    Status = (int)userWord.Status,
-                    Translations = userWord.Word.Translations
-                        .Select(x => x.Translation.Value)
-                        .ToList()
-                })
-                .ToList();
-
-            return userWordDtos;
+            var userWords = await _userWordsRepository.GetAllAsync();
+            return userWords.Select(_mapper.Map).ToList();
         }
 
         public async Task<UserWordDto> GetAsync(int id)
         {
             if (id <= 0)
             {
-                throw new ValidationException("Wrong id");
+                throw new ValidationException("Id can't be less or equal zero");
             }
 
             var userWord = await _userWordsRepository.GetAsync(id);
@@ -62,63 +49,69 @@ namespace GuessWord.Application.UserWords
                 throw new NotFoundException($"Can't find userWord with id: {id}");
             }
 
-            var userWordDto = _wordMapper.Map(userWord);
-
-            return userWordDto;
+            return _mapper.Map(userWord);
         }
 
-        public async Task<UserWordDto> CreateAsync(UserWordDto newUserWordDto)
+        public async Task<UserWordDto> CreateAsync(UserWordDto userWordDto)
         {
-            var word = (await _wordsRepository.GetByNameAsync(newUserWordDto.Word)).FirstOrDefault();
+            var word = await _wordsRepository.FirstAsync(
+                x => x.Value == userWordDto.Word,
+                x => x.Include(x => x.Translations).ThenInclude(x => x.Translation));
+
             if (word == null)
             {
-                var newWord = new Word
+                word = new Word
                 {
-                    Language = (Language)newUserWordDto.Language,
-                    Value = newUserWordDto.Word
+                    Language = (Language)userWordDto.Language,
+                    Value = userWordDto.Word,
+                    Translations = userWordDto.Translations
+                        .Select(translation => new WordTranslation
+                        {
+                            Translation = new Word { Value = translation }
+                        })
+                        .ToList()
                 };
-                word = await _wordsRepository.CreateAsync(newWord);
+                word = await _wordsRepository.CreateAsync(word);
             }
 
-            var newUserWord = new UserWord
+            var userWord = new UserWord
             {
-                Status = WordStatus.New,
+                WordId = word.Id,
                 Word = word,
                 UserId = _currentUser.UserId,
+                Status = WordStatus.New,
                 TargetRepeatNumber = 2
             };
 
-            var userWord = await _userWordsRepository.CreateAsync(newUserWord);
-            var userWordDto = _wordMapper.Map(userWord);
-
-            return userWordDto;
+            userWord = await _userWordsRepository.CreateAsync(userWord);
+            return _mapper.Map(userWord);
         }
 
         public async Task UpdateAsync(int id, UserWordPatchDto userWordDto)
         {
             if (id <= 0)
             {
-                throw new ValidationException("");
+                throw new ValidationException("Id can't be less or equal zero");
             }
 
             if (!userWordDto.Status.HasValue)
             {
-                throw new ValidationException("bad word");
+                throw new ValidationException("Status can't be null!");
             }
 
             var userWord = await _userWordsRepository.GetAsync(id);
             if (userWord == null)
             {
-                throw new ValidationException("No word");
+                throw new ValidationException($"Can't find word with {id}");
             }
 
             if (_currentUser.UserId != userWord.UserId)
             {
-                throw new AccessViolationException("No rights");
+                throw new AccessViolationException("You have no rights");
             }
 
             userWord.Status = (WordStatus)userWordDto.Status;
-            userWord = await _userWordsRepository.UpdateAsync(userWord);
+            await _userWordsRepository.UpdateAsync(userWord);
         }
 
         public async Task DeleteAsync(int id)
@@ -136,10 +129,10 @@ namespace GuessWord.Application.UserWords
 
             if (_currentUser.UserId != userWord.UserId)
             {
-                throw new AccessViolationException("No rights");
+                throw new AccessViolationException("You have no rights");
             }
 
-            await _userWordsRepository.RemoveAsync(userWord);
+            await _userWordsRepository.DeleteAsync(userWord);
         }
     }
 }

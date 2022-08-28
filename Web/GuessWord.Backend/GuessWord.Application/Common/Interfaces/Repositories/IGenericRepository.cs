@@ -11,6 +11,7 @@ namespace GuessWord.Application.Common.Interfaces.Repositories
     {
         Task<List<TEntity>> GetAllAsync();
         Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
+        Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
         Task<TEntity> GetAsync(int id);
         Task<TEntity> CreateAsync(TEntity item);
         Task<TEntity> UpdateAsync(TEntity item);

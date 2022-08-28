@@ -26,9 +26,9 @@ namespace GuessWord.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
-        public async Task<ActionResult<IEnumerable<WordDto>>> GetAsync(string letter, string word)
+        public async Task<ActionResult<IEnumerable<WordDto>>> GetAsync(string letter)
         {
-            var words = await _wordsService.FindAsync(letter, word);
+            var words = await _wordsService.FindAsync(letter);
             return Ok(words);
         }
 

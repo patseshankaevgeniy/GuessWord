@@ -1,59 +1,102 @@
 ﻿using GuessWord.Application.Auth.Models;
 using GuessWord.Application.Common.Interfaces;
 using GuessWord.Application.Common.Interfaces.Repositories;
+using GuessWord.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace GuessWord.Application.Auth
 {
     public class AuthService : IAuthService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IGenericRepository<User> _userRepository;
         private readonly ITokenService _tokenService;
 
-        private const int DublicateResult = -1;
-
         public AuthService(
-            IUserRepository userRepository,
+            IGenericRepository<User> userRepository,
             ITokenService tokenService)
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
         }
 
-        public SignInResultDto SignIn(string login, string password)
+        public async Task<SignInResultDto> SignInAsync(SignInDto signInDto)
         {
-            var signInResult = new SignInResultDto() { Succeeded = true };
-            var user = _userRepository.GetByLogin(login);
+            if (string.IsNullOrEmpty(signInDto.Login))
+            {
+                throw new ValidationException("Login can't be null or empty");
+            }
+
+            if (string.IsNullOrEmpty(signInDto.Password))
+            {
+                throw new ValidationException("Password can't be null or empty");
+            }
+
+            var user = await _userRepository.FirstAsync(
+                x => x.Login == signInDto.Login,
+                x => x.Include(x => x.UserRoles));
             if (user == null)
             {
-                signInResult.Succeeded = false;
-                signInResult.ErrorType = (int)AuthErrorType.UserNotFound;
-                return signInResult;
+                return new SignInResultDto
+                {
+                    Succeeded = false,
+                    ErrorType = (int)AuthErrorType.UserNotFound
+                };
             }
 
-            if (user.Login == login && user.Password != password)
+            if (user.Login == signInDto.Login && user.Password != signInDto.Password)
             {
-                signInResult.Succeeded = false;
-                signInResult.ErrorType = (int)AuthErrorType.WrongPassword;
-                return signInResult;
+                return new SignInResultDto
+                {
+                    Succeeded = false,
+                    ErrorType = (int)AuthErrorType.WrongPassword
+                };
             }
 
-            signInResult.Token = _tokenService.BuildToken(user);
-
-            return signInResult;
+            return new SignInResultDto
+            {
+                Succeeded = true,
+                Token = _tokenService.BuildToken(user)
+            };
         }
 
-        public SignUpResultDto SignUp(string name, string login, string password)
+        public async Task<SignUpResultDto> SignUpAsync(SignUpDto signUpDto)
         {
-            var signUpResult = new SignUpResultDto() { Succeeded = true };
-            var userId = _userRepository.AddNewUser(name, login, password);
-            if (userId == DublicateResult)
+            if (string.IsNullOrEmpty(signUpDto.Login))
             {
-                signUpResult.Succeeded = false;
-                signUpResult.ErrorType = (int)AuthErrorType.LoginAlreadyExists;
-                return signUpResult;
+                throw new ValidationException("Login can't be null or empty");
             }
 
-            return signUpResult;
+            if (string.IsNullOrEmpty(signUpDto.Password))
+            {
+                throw new ValidationException("Password can't be null or empty");
+            }
+
+            if (string.IsNullOrEmpty(signUpDto.Name))
+            {
+                throw new ValidationException("Name can't be null or empty");
+            }
+
+            var user = await _userRepository.FirstAsync(x => x.Login == signUpDto.Login);
+            if (user != null)
+            {
+                return new SignUpResultDto
+                {
+                    Succeeded = false,
+                    ErrorType = (int)AuthErrorType.LoginAlreadyExists
+                };
+            }
+
+            user = new User
+            {
+                Name = signUpDto.Name,
+                Login = signUpDto.Login,
+                Password = signUpDto.Password,
+            };
+
+            await _userRepository.CreateAsync(user);
+            return new SignUpResultDto { Succeeded = true };
         }
     }
 }

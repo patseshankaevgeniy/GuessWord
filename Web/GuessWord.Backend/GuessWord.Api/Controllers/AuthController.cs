@@ -3,9 +3,11 @@ using GuessWord.Application.Auth.Models;
 using GuessWord.Application.Common.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace GuessWord.Api.Controllers
 {
+    [ApiController]
     [Route("api/auth")]
     public class AuthController : ControllerBase
     {
@@ -16,24 +18,24 @@ namespace GuessWord.Api.Controllers
             _authService = authService;
         }
 
-        [HttpPost("signIn", Name = "SignIn")]
+        [HttpPost("sign-in", Name = "SignIn")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SignInResultDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
-        public ActionResult<SignInResultDto> SignIn(SignInDto model)
+        public async Task<ActionResult<SignInResultDto>> SignInAsync(SignInDto signInDto)
         {
-            var signInResult = _authService.SignIn(model.Login, model.Password);
-            return Ok(signInResult);
+            var signInResultDto = await _authService.SignInAsync(signInDto);
+            return Ok(signInResultDto);
         }
 
-        [HttpPost("signUp", Name = "SignUp")]
+        [HttpPost("sign-up", Name = "SignUp")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SignUpResultDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
-        public ActionResult<SignUpResultDto> SignUp(SignUpDto model)
+        public async Task<ActionResult<SignUpResultDto>> SignUpAsync(SignUpDto signUpDto)
         {
-            var signUpResult = _authService.SignUp(model.Name, model.Login, model.Password);
-            return Ok(signUpResult);
+            var signUpResultDto = await _authService.SignUpAsync(signUpDto);
+            return Ok(signUpResultDto);
         }
     }
 }

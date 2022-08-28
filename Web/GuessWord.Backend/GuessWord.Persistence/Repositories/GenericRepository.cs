@@ -1,4 +1,5 @@
 ﻿using GuessWord.Application.Common.Interfaces.Repositories;
+using GuessWord.Application.Exceptions;
 using GuessWord.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -37,10 +38,26 @@ namespace GuessWord.Persistence.Repositories
         {
             var query = _entities.AsQueryable();
             query = query.Where(predicate);
-            query = include.Invoke(query);
+            if (include != null)
+            {
+                query = include.Invoke(query);
+            }
             return await query
                     .AsNoTracking()
                     .ToListAsync();
+        }
+
+        public async Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
+        {
+            var query = _entities.AsQueryable();
+            query = query.Where(predicate);
+            if (include != null)
+            {
+                query = include.Invoke(query);
+            }
+            return await query
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
         }
 
         public async Task<TEntity> CreateAsync(TEntity item)

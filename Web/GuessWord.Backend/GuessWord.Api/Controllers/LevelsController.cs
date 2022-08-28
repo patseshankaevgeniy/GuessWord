@@ -10,6 +10,7 @@ namespace GuessWord.Api.Controllers
     [Authorize]
     [ApiController]
     [Route("api/levels")]
+    [Produces("application/json")]
     public class LevelsController : ControllerBase
     {
         private readonly ILevelsService _levelsService;

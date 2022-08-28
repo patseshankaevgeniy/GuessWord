@@ -9,6 +9,7 @@ namespace GuessWord.Api.Controllers
 {
     [ApiController]
     [Route("api/auth")]
+    [Produces("application/json")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

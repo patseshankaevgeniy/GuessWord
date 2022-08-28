@@ -12,6 +12,7 @@ namespace GuessWord.Api.Controllers
     [Authorize]
     [ApiController]
     [Route("api/user-words")]
+    [Produces("application/json")]
     public class UserWordsController : ControllerBase
     {
         private readonly IUserWordsService _userWordsService;

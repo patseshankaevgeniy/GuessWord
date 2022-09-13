@@ -1,9 +1,11 @@
-﻿using GuessWord.Application.Common.Models;
+﻿using GuessWord.Application.Common.Exceptions;
+using GuessWord.Application.Common.Models;
 using GuessWord.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using AccessViolationException = GuessWord.Application.Exceptions.AccessViolationException;
 
 namespace GuessWord.Api.Infrastructure.Meddleware
 {
@@ -36,6 +38,16 @@ namespace GuessWord.Api.Infrastructure.Meddleware
                     case NotFoundException notFoundException:
                         result.StatusCode = (int)HttpStatusCode.NotFound;
                         result.Message = notFoundException.Message;
+                        break;
+
+                    case AccessViolationException accessViolationException:
+                        result.StatusCode = (int)HttpStatusCode.Forbidden;
+                        result.Message = accessViolationException.Message;
+                        break;
+
+                    case UnauthorizedException unauthorizedException:
+                        result.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        result.Message = unauthorizedException.Message;
                         break;
 
                     default:

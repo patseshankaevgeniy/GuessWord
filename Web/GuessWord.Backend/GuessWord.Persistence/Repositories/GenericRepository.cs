@@ -22,9 +22,16 @@ namespace GuessWord.Persistence.Repositories
             _entities = _db.Set<TEntity>();
         }
 
-        public async Task<List<TEntity>> GetAllAsync()
+        public async Task<List<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
-            return await _entities.ToListAsync();
+            var query = _entities.AsQueryable();
+            if (include != null)
+            {
+                query = include.Invoke(query);
+            }
+            return await query
+                    .AsNoTracking()
+                    .ToListAsync();
         }
 
         public async Task<TEntity> GetAsync(int id)
@@ -56,11 +63,10 @@ namespace GuessWord.Persistence.Repositories
                 query = include.Invoke(query);
             }
             return await query
-                    .AsNoTracking()
                     .FirstOrDefaultAsync();
         }
 
-        public async Task<TEntity> CreateAsync(TEntity item)
+        public async Task<TEntity> CreateAsync(TEntity item, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
             _entities.Add(item);
             await _db.SaveChangesAsync();

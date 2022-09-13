@@ -21,6 +21,7 @@ namespace GuessWord.IntegrationTests.Words
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)response.StatusCode);
+
             var words = response.Result.ToList();
             Assert.Single(words);
             Assert.Equal(expectedWords[0].Value, words[0].Value);
@@ -34,11 +35,16 @@ namespace GuessWord.IntegrationTests.Words
             DbContext.Words.AddRange(expectedWords);
             await DbContext.SaveChangesAsync();
 
+            MockCurrentUserService
+               .SetupGet(x => x.UserId)
+               .Returns(SeedData.UserId);
+
             // Act
             var response = await ApiClient.GetWordsAsync(null);
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, (HttpStatusCode)response.StatusCode);
+
             var words = response.Result.ToList();
             Assert.Equal(2, words.Count);
             Assert.Equal(expectedWords[0].Value, words[0].Value);

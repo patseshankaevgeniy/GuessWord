@@ -7,6 +7,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Moq;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -24,9 +25,12 @@ namespace GuessWord.IntegrationTests
 
         protected IGuessWordApiClient ApiClient { get; private set; }
         protected IApplicationDbContext DbContext { get; private set; }
+        protected Mock<ICurrentUserService> MockCurrentUserService { get; private set; }
 
         public async Task InitializeAsync()
         {
+            MockCurrentUserService = new Mock<ICurrentUserService>();
+
             application = new WebApplicationFactory<Startup>()
                 .WithWebHostBuilder(builder =>
                 {
@@ -44,6 +48,10 @@ namespace GuessWord.IntegrationTests
                             options.UseSqlite(CreateInMemoryDateBase());
                         });
                         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+
+                        // Replace ICurrentUserService
+                        services.RemoveAll(typeof(ICurrentUserService));
+                        services.AddScoped<ICurrentUserService>(_ => MockCurrentUserService.Object);
                     });
                 });
 

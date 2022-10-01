@@ -37,6 +37,7 @@ namespace GuessWord.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserWordDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ApiErrorDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ApiErrorDto))]
         public async Task<ActionResult<UserWordDto>> GetAsync(int id)
         {

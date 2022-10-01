@@ -51,7 +51,7 @@ namespace GuessWord.IntegrationTests.UserWords
         }
 
         [Fact]
-        public async Task Get_ShouldReturn404IfIdIsExist()
+        public async Task Get_ShouldReturn404IfIdIsNotExist()
         {
             // Arrange
             var expectedUserWords = SeedData.GetUserWords();
@@ -67,7 +67,7 @@ namespace GuessWord.IntegrationTests.UserWords
 
             // Assert
             var exeption = await Assert.ThrowsAsync<ApiException<ApiErrorDto>>(() => task);
-            Assert.Equal(HttpStatusCode.NotFound, (HttpStatusCode)exeption.StatusCode);
+            Assert.Equal((int)HttpStatusCode.NotFound, exeption.StatusCode);
         }
     }
 }

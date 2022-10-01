@@ -21,8 +21,6 @@ namespace GuessWord.Application
 
             // Mappers
             services.AddAutoMapper(typeof(WordAutoMapper), typeof(UserWordAutoMapper));
-            services.AddScoped<IUserWordMapper, UserWordMapper>();
-            services.AddScoped<IWordMapper, WordMapper>();
 
             // Validators
             services.AddScoped<IValidator<UserWordDto>, UserWordDtoValidator>();

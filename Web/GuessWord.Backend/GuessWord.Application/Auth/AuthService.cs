@@ -35,7 +35,7 @@ namespace GuessWord.Application.Auth
 
             var user = await _userRepository.FirstAsync(
                 x => x.Login == signInDto.Login,
-                x => x.Include(x => x.UserRoles));
+                x => x.Include(x => x.UserRoles).ThenInclude(x => x.Role));
             if (user == null)
             {
                 return new SignInResultDto

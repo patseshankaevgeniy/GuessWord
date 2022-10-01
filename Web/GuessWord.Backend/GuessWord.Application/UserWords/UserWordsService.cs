@@ -22,7 +22,6 @@ namespace GuessWord.Application.UserWords
 
         private readonly ICurrentUserService _currentUser;
         private readonly IValidator<UserWordDto> _validator;
-       // private readonly IUserWordMapper _mapper;
         private readonly IMapper _mapper;
 
         public UserWordsService(
@@ -30,8 +29,7 @@ namespace GuessWord.Application.UserWords
             IValidator<UserWordDto> validator,
             IMapper mapper,
             IGenericRepository<UserWord> userWordsRepository,
-            IGenericRepository<Word> wordsRepository,
-            IUserWordMapper wordMapper)
+            IGenericRepository<Word> wordsRepository)
         {
             _currentUser = currentUser;
             _validator = validator;

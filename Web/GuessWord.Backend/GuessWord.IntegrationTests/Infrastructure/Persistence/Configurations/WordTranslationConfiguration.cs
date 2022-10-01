@@ -15,13 +15,13 @@ namespace GuessWord.IntegrationTests.Persistence.Configurations
                 .HasOne(t => t.Word)
                 .WithMany(t => t.Translations)
                 .HasForeignKey(t => t.WordId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder
                 .HasOne(t => t.Translation)
                 .WithMany()
                 .HasForeignKey(t => t.TranslationId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.SetNull);
         }
 
     }

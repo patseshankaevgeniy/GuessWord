@@ -1,5 +1,5 @@
-﻿using GuessWord.Application.Common.Interfaces.Repositories;
-using GuessWord.Application.Exceptions;
+﻿using GuessWord.Application.Common.Interfaces;
+using GuessWord.Application.Common.Interfaces.Repositories;
 using GuessWord.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -13,18 +13,25 @@ namespace GuessWord.Persistence.Repositories
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IApplicationDbContext _db;
         private readonly DbSet<TEntity> _entities;
 
-        public GenericRepository(ApplicationDbContext db)
+        public GenericRepository(IApplicationDbContext db)
         {
             _db = db;
             _entities = _db.Set<TEntity>();
         }
 
-        public async Task<List<TEntity>> GetAllAsync()
+        public async Task<List<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
-            return await _entities.ToListAsync();
+            var query = _entities.AsQueryable();
+            if (include != null)
+            {
+                query = include.Invoke(query);
+            }
+            return await query
+                    .AsNoTracking()
+                    .ToListAsync();
         }
 
         public async Task<TEntity> GetAsync(int id)
@@ -56,11 +63,10 @@ namespace GuessWord.Persistence.Repositories
                 query = include.Invoke(query);
             }
             return await query
-                    .AsNoTracking()
                     .FirstOrDefaultAsync();
         }
 
-        public async Task<TEntity> CreateAsync(TEntity item)
+        public async Task<TEntity> CreateAsync(TEntity item, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
             _entities.Add(item);
             await _db.SaveChangesAsync();

@@ -22,7 +22,6 @@ namespace GuessWord.Infrastructure.Services
                 var claim = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier); ;
                 if (claim != null)
                 {
-
                     return Convert.ToInt32(claim.Value);
                 }
                 else

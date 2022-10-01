@@ -1,4 +1,7 @@
-﻿using GuessWord.Application.Common.Interfaces;
+﻿using AutoMapper;
+using FluentValidation;
+using GuessWord.Application.Common.Exceptions;
+using GuessWord.Application.Common.Interfaces;
 using GuessWord.Application.Common.Interfaces.Repositories;
 using GuessWord.Application.Exceptions;
 using GuessWord.Application.UserWords.Models;
@@ -8,32 +11,47 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ValidationException = GuessWord.Application.Exceptions.ValidationException;
 
 namespace GuessWord.Application.UserWords
 {
     public class UserWordsService : IUserWordsService
     {
         private readonly IGenericRepository<UserWord> _userWordsRepository;
-        private readonly ICurrentUserService _currentUser;
         private readonly IGenericRepository<Word> _wordsRepository;
-        private readonly IUserWordMapper _mapper;
+
+        private readonly ICurrentUserService _currentUser;
+        private readonly IValidator<UserWordDto> _validator;
+        private readonly IMapper _mapper;
 
         public UserWordsService(
             ICurrentUserService currentUser,
+            IValidator<UserWordDto> validator,
+            IMapper mapper,
             IGenericRepository<UserWord> userWordsRepository,
-            IGenericRepository<Word> wordsRepository,
-            IUserWordMapper wordMapper)
+            IGenericRepository<Word> wordsRepository)
         {
             _currentUser = currentUser;
+            _validator = validator;
             _userWordsRepository = userWordsRepository;
             _wordsRepository = wordsRepository;
-            _mapper = wordMapper;
+            _mapper = mapper;
         }
 
         public async Task<List<UserWordDto>> GetAllAsync()
         {
-            var userWords = await _userWordsRepository.GetAllAsync();
-            return userWords.Select(_mapper.Map).ToList();
+            if (_currentUser.UserId < 1)
+            {
+                throw new UnauthorizedException("Please log in");
+            }
+
+            var userWords = await _userWordsRepository.FindAsync(
+                x => x.UserId == _currentUser.UserId,
+                x => x.Include(x => x.Word)
+                      .ThenInclude(x => x.Translations)
+                      .ThenInclude(x => x.Translation));
+
+            return userWords.Select(_mapper.Map<UserWordDto>).ToList();
         }
 
         public async Task<UserWordDto> GetAsync(int id)
@@ -43,23 +61,39 @@ namespace GuessWord.Application.UserWords
                 throw new ValidationException("Id can't be less or equal zero");
             }
 
-            var userWord = await _userWordsRepository.GetAsync(id);
+            var userWord = await _userWordsRepository.FirstAsync(
+                x => x.Id == id,
+                x => x.Include(x => x.Word)
+                     .ThenInclude(x => x.Translations)
+                     .ThenInclude(x => x.Translation));
+
             if (userWord == null)
             {
                 throw new NotFoundException($"Can't find userWord with id: {id}");
             }
 
-            return _mapper.Map(userWord);
+            return _mapper.Map<UserWordDto>(userWord);
         }
 
         public async Task<UserWordDto> CreateAsync(UserWordDto userWordDto)
         {
+            var result = _validator.Validate(userWordDto);
+            if (!result.IsValid)
+            {
+                throw new ValidationException(result.ToString());
+            }
+
             var word = await _wordsRepository.FirstAsync(
                 x => x.Value == userWordDto.Word,
                 x => x.Include(x => x.Translations).ThenInclude(x => x.Translation));
 
             if (word == null)
             {
+                if (userWordDto.Translations.Count == 0)
+                {
+                    throw new ValidationException("This word doesn't have translations!");
+                }
+
                 word = new Word
                 {
                     Language = (Language)userWordDto.Language,
@@ -84,7 +118,8 @@ namespace GuessWord.Application.UserWords
             };
 
             userWord = await _userWordsRepository.CreateAsync(userWord);
-            return _mapper.Map(userWord);
+            userWordDto = _mapper.Map<UserWordDto>(userWord);
+            return userWordDto;
         }
 
         public async Task UpdateAsync(int id, UserWordPatchDto userWordDto)

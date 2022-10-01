@@ -32,7 +32,7 @@ namespace GuessWord.UnitTests.UserWords
             };
 
             _mocker
-                .GetMock<IUserWordsRepository>()
+                .GetMock<IGenericRepository<UserWord>>()
                 .Setup(x => x.GetAsync(It.IsAny<int>()))
                 .ReturnsAsync(() => expectedUserWord);
 
@@ -53,7 +53,7 @@ namespace GuessWord.UnitTests.UserWords
             Assert.NotNull(userWordDto);
 
             _mocker
-                .GetMock<IUserWordsRepository>()
+                .GetMock<IGenericRepository<UserWord>>()
                 .Verify(x => x.GetAsync(It.IsAny<int>()), Times.Once);
 
             _mocker
@@ -73,7 +73,7 @@ namespace GuessWord.UnitTests.UserWords
             await Assert.ThrowsAsync<ValidationException>(() => task);
 
             _mocker
-               .GetMock<IUserWordsRepository>()
+               .GetMock<IGenericRepository<UserWord>>()
                .Verify(x => x.GetAsync(It.IsAny<int>()), Times.Never);
 
             _mocker
@@ -86,7 +86,7 @@ namespace GuessWord.UnitTests.UserWords
         {
             // Arrange
             _mocker
-                .GetMock<IUserWordsRepository>()
+                .GetMock<IGenericRepository<UserWord>>()
                 .Setup(x => x.GetAsync(It.IsAny<int>()))
                 .ReturnsAsync(() => null);
 
@@ -97,7 +97,7 @@ namespace GuessWord.UnitTests.UserWords
             await Assert.ThrowsAsync<NotFoundException>(() => task);
 
             _mocker
-                .GetMock<IUserWordsRepository>()
+                .GetMock<IGenericRepository<UserWord>>()
                 .Verify(x => x.GetAsync(It.IsAny<int>()), Times.Once);
 
             _mocker

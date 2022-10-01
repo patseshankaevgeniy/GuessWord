@@ -1,4 +1,5 @@
-﻿using GuessWord.Application.Auth;
+﻿using FluentValidation;
+using GuessWord.Application.Auth;
 using GuessWord.Application.Levels;
 using GuessWord.Application.UserWords;
 using GuessWord.Application.UserWords.Models;
@@ -19,8 +20,11 @@ namespace GuessWord.Application
             services.AddScoped<IWordsService, WordsService>();
 
             // Mappers
-            services.AddScoped<IUserWordMapper, UserWordMapper>();
-            services.AddScoped<IWordMapper, WordMapper>();
+            services.AddAutoMapper(typeof(WordAutoMapper), typeof(UserWordAutoMapper));
+
+            // Validators
+            services.AddScoped<IValidator<UserWordDto>, UserWordDtoValidator>();
+            services.AddScoped<IValidator<WordDto>, WordDtoValidator>();
 
             return services;
         }
